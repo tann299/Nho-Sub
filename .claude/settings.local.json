@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where composer *)",
+      "Bash(where node *)",
+      "Bash(where mysql *)"
+    ]
+  }
+}
