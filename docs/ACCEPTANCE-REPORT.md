@@ -2,7 +2,8 @@
 
 - **Ngày:** 2026-10-31
 - **Môi trường:** PHP 8.3.24 (CLI), MySQL 8.0.30, Laravel 12.70.2, Windows 11 (Laragon)
-- **Test tự động:** `php artisan test` → **164 passed (602 assertions)**, chạy trên MySQL thật `nhosub_testing`
+- **Test tự động:** `php artisan test` → **168 passed (616 assertions)**, chạy trên MySQL thật `nhosub_testing`
+- **Code review độc lập:** 2 Critical + 4 Medium phát hiện → đã fix 2 Critical + 2 Medium (xem cuối file)
 
 ## Mục 1 — Đăng ký → đăng nhập → nạp tiền (SePay test mode) → số dư tăng đúng
 
@@ -88,6 +89,21 @@ Kiểm tra bằng trình duyệt thật (preview browser):
 | /services — card dịch vụ giá/1000, min/max, tốc độ | ✅ |
 | Console không lỗi | ✅ "No console logs" |
 | Nút chính màu #1E6FD9, transition .25s | ✅ (preview_inspect) |
+
+## Code review độc lập — đã xử lý
+
+Reviewer chạy trên toàn branch (18 commit). Kết quả và xử lý:
+
+| Mức | Phát hiện | Xử lý |
+|---|---|---|
+| Critical | PayOS webhook cộng tiền từ orderCode lạ (description do bên gửi chọn) + số tiền không đối chiếu với yêu cầu nạp | **Đã fix** — orderCode lạ chỉ ghi log `unmatched`; số tiền phải khớp đúng `deposit.amount`; idempotency luôn theo `payos-{orderCode}`. 2 test mới |
+| Critical | DemoProvider gắn mã đơn theo link+quantity → 2 đơn giống nhau nhận nhầm mã | **Đã fix** — `ProviderInterface::addOrder` nhận thêm `reference` (client_token); DemoProvider đối chiếu chính xác. 1 test mới |
+| Medium | Admin cộng/trừ tiền không có chống double-submit (key uuid mỗi request) | **Đã fix** — form gửi `client_token`, key idempotency theo token. 1 test mới |
+| Medium | SePay trả 503 khi chưa cấu hình key → gateway retry vô hạn | **Deferred** — ops, không phải bảo mật |
+| Medium | Thông báo "tài khoản bị khoá" lộ thông tin tài khoản hợp lệ | **Deferred** — SRS UC-02 2b yêu cầu thông báo riêng |
+| Medium | Form nạp tay `min:1000` lệch cấu hình `min_deposit` | **Đã fix** — validation dùng đúng cấu hình |
+
+**Đã xác nhận an toàn (reviewer kiểm tra code thật):** khoá `FOR UPDATE` + `idempotency_key` UNIQUE không có đường cộng trùng; công thức hoàn tiền nhiều đợt không bao giờ hoàn vượt tổng; regex nội dung CK không cắt nhầm username tiền tố; `intdiv` không tràn số với 100 triệu lượt; chặn `javascript:` + Blade escape toàn bộ view (không `{!! !!}`); SePay `hash_equals` + PayOS HMAC đúng; middleware admin ở server, không IDOR.
 
 ## Việc chưa làm / cần bạn cung cấp
 
