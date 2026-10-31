@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminApiLogController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminDepositController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminServiceController;
+use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminWebhookController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -72,4 +79,30 @@ Route::middleware('auth')->group(function () {
 // ---------- Khu vực quản trị ----------
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::post('/users/{user}/adjust', [AdminUserController::class, 'adjust'])->name('users.adjust');
+    Route::post('/users/{user}/toggle', [AdminUserController::class, 'toggle'])->name('users.toggle');
+
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/refund', [AdminOrderController::class, 'refund'])->name('orders.refund');
+    Route::post('/orders/{order}/resolve-stuck', [AdminOrderController::class, 'resolveStuck'])->name('orders.resolveStuck');
+
+    Route::get('/services', [AdminServiceController::class, 'index'])->name('services.index');
+    Route::post('/services/sync', [AdminServiceController::class, 'sync'])->name('services.sync');
+    Route::post('/services/{service}', [AdminServiceController::class, 'update'])->name('services.update');
+
+    Route::get('/deposits', [AdminDepositController::class, 'index'])->name('deposits.index');
+    Route::post('/deposits/{deposit}/approve', [AdminDepositController::class, 'approve'])->name('deposits.approve');
+    Route::post('/deposits/{deposit}/reject', [AdminDepositController::class, 'reject'])->name('deposits.reject');
+
+    Route::get('/webhooks', [AdminWebhookController::class, 'index'])->name('webhooks.index');
+    Route::post('/webhooks/{webhook}/credit', [AdminWebhookController::class, 'credit'])->name('webhooks.credit');
+
+    Route::get('/api-logs', [AdminApiLogController::class, 'index'])->name('apiLogs.index');
+
+    Route::get('/settings', [AdminSettingController::class, 'edit'])->name('settings.edit');
+    Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
 });
