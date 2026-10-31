@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 // ---------- Công khai ----------
 Route::view('/', 'landing.index')->name('landing');
 
+// ---------- Webhook cổng thanh toán (ngoại lệ CSRF đã khai ở bootstrap) ----------
+Route::post('/webhook/sepay', [\App\Http\Controllers\Webhook\SePayController::class, 'handle'])
+    ->middleware('throttle:120,1')
+    ->name('webhook.sepay');
+
 // ---------- Xác thực ----------
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
