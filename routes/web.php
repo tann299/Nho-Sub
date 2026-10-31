@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
@@ -24,7 +25,7 @@ use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 // ---------- Công khai ----------
-Route::view('/', 'landing.index')->name('landing');
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // ---------- Webhook cổng thanh toán (ngoại lệ CSRF đã khai ở bootstrap) ----------
 Route::post('/webhook/sepay', [\App\Http\Controllers\Webhook\SePayController::class, 'handle'])
