@@ -238,6 +238,18 @@ a { color: var(--primary); text-decoration: none; }
 }
 .nav-item.active .nav-badge { background: #fff; color: var(--primary); }
 
+/* Mục submenu (danh mục con trong "Sản phẩm & dịch vụ") */
+.nav-item-sub { padding-left: 26px; font-size: 13.5px; font-weight: 400; }
+.nav-item-sub::before { display: none; }
+.nav-item-sub:hover { background: var(--primary-light); }
+.nav-item-sub.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+.nav-item-sub.active::before {
+  display: block; content: ""; position: absolute; left: 8px; top: 50%;
+  transform: translateY(-50%); width: 3px; height: 16px; border-radius: 2px;
+  background: var(--primary);
+}
+.sidebar-collapsed .nav-item-sub { display: none; }
+
 /* Sidebar thu gọn (desktop) */
 .sidebar-collapsed .sidebar { width: var(--sidebar-w-collapsed); }
 .sidebar-collapsed .sidebar-brand-text,

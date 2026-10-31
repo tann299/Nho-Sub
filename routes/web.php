@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminApiLogController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepositController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\AdminServiceController;
 use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\LandingController;
@@ -26,6 +28,12 @@ use Illuminate\Support\Facades\Route;
 
 // ---------- Công khai ----------
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+// Nội dung công khai (bài viết, điều khoản, FAQ)
+Route::get('/posts', [ContentController::class, 'posts'])->name('content.posts');
+Route::get('/posts/{slug}', [ContentController::class, 'post'])->name('content.post')->where('slug', '[a-z0-9\-]+');
+Route::get('/terms', [ContentController::class, 'terms'])->name('content.terms');
+Route::get('/faq', [ContentController::class, 'faq'])->name('content.faq');
 
 // ---------- Webhook cổng thanh toán (ngoại lệ CSRF đã khai ở bootstrap) ----------
 Route::post('/webhook/sepay', [\App\Http\Controllers\Webhook\SePayController::class, 'handle'])
@@ -101,6 +109,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/webhooks', [AdminWebhookController::class, 'index'])->name('webhooks.index');
     Route::post('/webhooks/{webhook}/credit', [AdminWebhookController::class, 'credit'])->name('webhooks.credit');
+
+    Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [AdminPostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [AdminPostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('posts.edit');
+    Route::post('/posts/{post}', [AdminPostController::class, 'update'])->name('posts.update');
+    Route::post('/posts/{post}/delete', [AdminPostController::class, 'destroy'])->name('posts.destroy');
 
     Route::get('/api-logs', [AdminApiLogController::class, 'index'])->name('apiLogs.index');
 

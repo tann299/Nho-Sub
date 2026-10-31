@@ -1,6 +1,22 @@
 @extends('layouts.panel')
 @section('title', 'Tổng quan')
 @section('content')
+    {{-- Banner thông báo mới nhất --}}
+    @if ($latestPosts->isNotEmpty())
+        <div class="card mb-3" style="border-left:4px solid var(--primary);">
+            <div class="flex-between mb-1">
+                <h3 class="card-title mb-0">Thông báo mới</h3>
+                <a href="{{ route('content.posts') }}" class="text-sm link-underline">Xem tất cả</a>
+            </div>
+            @foreach ($latestPosts as $post)
+                <div class="flex-between" style="padding:8px 0;border-bottom:1px solid #EDF2FA;">
+                    <a href="{{ route('content.post', $post->slug) }}" class="link-underline" style="font-weight:500;">{{ $post->title }}</a>
+                    <span class="text-sm text-muted nowrap">{{ $post->published_at?->format('d/m') }}</span>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <div class="grid grid-4 mb-3">
         <div class="stat">
             <div class="stat-label">Số dư ví</div>

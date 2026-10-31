@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\ContentController;
+use App\Models\Post;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,6 +15,16 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('layouts.panel', function ($view) {
             $count = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
             $view->with('unreadCount', $count);
+        });
+
+        // Submenu "Sản phẩm & dịch vụ": danh mục đang bán, nhóm theo nền tảng.
+        View::composer('partials.sidebar-menu', function ($view) {
+            $view->with('menuCategories', ContentController::menuCategories());
+        });
+
+        // Banner thông báo mới nhất trên dashboard (tối đa 3 bài).
+        View::composer('panel.dashboard', function ($view) {
+            $view->with('latestPosts', Post::published()->limit(3)->get(['id', 'title', 'slug', 'published_at']));
         });
     }
 }

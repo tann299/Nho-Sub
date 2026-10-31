@@ -12,6 +12,7 @@ class ServiceCatalogController extends Controller
     {
         $q = trim((string) $request->query('q', ''));
         $platform = (string) $request->query('platform', '');
+        $categoryId = (int) $request->query('category_id', 0);
 
         $categories = Category::query()
             ->where('is_active', true)
@@ -26,6 +27,7 @@ class ServiceCatalogController extends Controller
                     ->orderBy('sell_price');
             }])
             ->when($platform !== '', fn ($c) => $c->where('platform', $platform))
+            ->when($categoryId > 0, fn ($c) => $c->where('id', $categoryId))
             ->orderBy('sort_order')
             ->get()
             ->filter(fn (Category $c) => $c->services->isNotEmpty())
@@ -35,6 +37,7 @@ class ServiceCatalogController extends Controller
             'categories' => $categories,
             'q' => $q,
             'platform' => $platform,
+            'categoryId' => $categoryId,
             'platforms' => Category::where('is_active', true)->distinct()->pluck('platform'),
         ]);
     }

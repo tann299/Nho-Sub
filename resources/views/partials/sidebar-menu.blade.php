@@ -1,21 +1,24 @@
 @php
-    // Menu theo 7 nhóm đúng yêu cầu. Mỗi mục: [route, nhãn, icon path].
+    // Menu theo nhóm. Mỗi mục: [route, nhãn, icon path].
     $groups = [
         'Tổng quan' => [
             ['panel.dashboard', 'Bảng điều khiển', 'M3 12l9-9 9 9M5 10v10h14V10'],
         ],
         'Dịch vụ' => [
-            ['panel.services.index', 'Bảng giá dịch vụ', 'M4 6h16M4 12h16M4 18h10'],
-        ],
-        'Đặt đơn' => [
+            ['panel.services.index', 'Danh sách dịch vụ', 'M4 6h16M4 12h16M4 18h10'],
             ['panel.orders.create', 'Đặt đơn mới', 'M12 5v14M5 12h14'],
         ],
         'Đơn hàng' => [
             ['panel.orders.index', 'Đơn hàng của tôi', 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'],
         ],
-        'Nạp tiền' => [
+        'Thanh toán' => [
             ['panel.deposit.create', 'Nạp tiền', 'M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'],
             ['panel.wallet.index', 'Lịch sử giao dịch', 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z'],
+        ],
+        'Thông tin' => [
+            ['content.posts', 'Bài viết & thông báo', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
+            ['content.terms', 'Điều khoản sử dụng', 'M14 3v4a1 1 0 0 0 1 1h4M7 21h10a2 2 0 0 0 2-2V8l-5-5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z'],
+            ['content.faq', 'Câu hỏi thường gặp', 'M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.3-1.7 2.5M12 17h.01'],
         ],
         'Hỗ trợ' => [
             ['panel.support.index', 'Trung tâm hỗ trợ', 'M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.3-1.7 2.5M12 17h.01'],
@@ -32,12 +35,27 @@
             ['admin.users.index', 'Người dùng', 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75'],
             ['admin.orders.index', 'Tất cả đơn hàng', 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2'],
             ['admin.services.index', 'Quản lý dịch vụ', 'M20 7l-8-4-8 4 8 4 8-4zM4 12l8 4 8-4M4 17l8 4 8-4'],
+            ['admin.posts.index', 'Bài viết', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
             ['admin.deposits.index', 'Duyệt nạp tiền', 'M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'],
             ['admin.webhooks.index', 'Nhật ký webhook', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
             ['admin.apiLogs.index', 'Nhật ký API', 'M4 7h16M4 12h16M4 17h10'],
             ['admin.settings.edit', 'Cấu hình hệ thống', 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.6.6 1.05 1.2 1.2H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'],
         ],
     ];
+
+    // Nhóm nền tảng → danh mục con (điểm giống menu TopSubRe).
+    // Nền tảng chỉ hiện khi có ít nhất một danh mục đang bán.
+    $platformLabels = [
+        'facebook' => 'Facebook',
+        'tiktok' => 'TikTok',
+        'instagram' => 'Instagram',
+        'youtube' => 'YouTube',
+        'khac' => 'Khác',
+    ];
+
+    $byPlatform = isset($menuCategories)
+        ? $menuCategories->groupBy('platform')
+        : collect();
 @endphp
 
 @foreach ($groups as $groupName => $items)
@@ -59,6 +77,34 @@
         </div>
     @endif
 @endforeach
+
+{{-- Sản phẩm & dịch vụ: nền tảng → danh mục con --}}
+@if ($byPlatform->isNotEmpty())
+    <div class="nav-group">
+        <div class="nav-group-title">{{ __('Sản phẩm & dịch vụ') }}</div>
+        @foreach ($byPlatform as $platform => $categories)
+            @php
+                $platformUrl = route('panel.services.index', ['platform' => $platform]);
+                $isPlatformActive = request()->routeIs('panel.services.index')
+                    && request()->query('platform') === $platform;
+            @endphp
+            <a href="{{ $platformUrl }}" class="nav-item {{ $isPlatformActive ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7l-8-4-8 4 8 4 8-4zM4 12l8 4 8-4M4 17l8 4 8-4"/></svg>
+                <span>{{ $platformLabels[$platform] ?? ucfirst($platform) }}</span>
+            </a>
+            @foreach ($categories as $category)
+                @php
+                    $catUrl = route('panel.services.index', ['category_id' => $category->id]);
+                    $isCatActive = request()->routeIs('panel.services.index')
+                        && (int) request()->query('category_id') === (int) $category->id;
+                @endphp
+                <a href="{{ $catUrl }}" class="nav-item nav-item-sub {{ $isCatActive ? 'active' : '' }}">
+                    <span>{{ $category->name }}</span>
+                </a>
+            @endforeach
+        @endforeach
+    </div>
+@endif
 
 @auth
     @if (auth()->user()->isAdmin())
