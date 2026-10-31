@@ -201,14 +201,16 @@ class AcceptanceTest extends TestCase
         $this->actingAs($admin)->post("/admin/deposits/{$req->id}/approve")->assertRedirect();
         $this->assertSame(30000, $khach->fresh()->balance);
 
-        // 4. Cộng/trừ tiền
+        // 4. Cộng/trừ tiền (mỗi lần một token riêng — chống double-submit)
         $this->actingAs($admin)->post("/admin/users/{$khach->id}/adjust", [
             'amount' => 20000, 'reason' => 'Thưởng nghiệm thu',
+            'client_token' => (string) \Illuminate\Support\Str::uuid(),
         ])->assertRedirect();
         $this->assertSame(50000, $khach->fresh()->balance);
 
         $this->actingAs($admin)->post("/admin/users/{$khach->id}/adjust", [
             'amount' => -10000, 'reason' => 'Trừ nghiệm thu',
+            'client_token' => (string) \Illuminate\Support\Str::uuid(),
         ])->assertRedirect();
         $this->assertSame(40000, $khach->fresh()->balance);
 

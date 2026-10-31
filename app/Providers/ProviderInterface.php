@@ -18,7 +18,7 @@ interface ProviderInterface
     /** @return ProviderService[] */
     public function services(): array;
 
-    public function addOrder(string $serviceId, string $link, int $quantity): ProviderOrderResult;
+    public function addOrder(string $serviceId, string $link, int $quantity, ?string $reference = null): ProviderOrderResult;
 
     public function orderStatus(string $providerOrderId): ProviderOrderStatus;
 }

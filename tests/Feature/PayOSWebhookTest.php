@@ -43,6 +43,7 @@ class PayOSWebhookTest extends TestCase
         return ['code' => $code, 'desc' => 'success', 'data' => $data, 'signature' => $signature];
     }
 
+
     private function makeDeposit(int $orderCode, int $amount = 50000): DepositRequest
     {
         $deposit = DepositRequest::create([
@@ -114,6 +115,41 @@ class PayOSWebhookTest extends TestCase
         $this->postJson('/webhook/payos', $payload)->assertStatus(401);
 
         $this->assertSame(0, $this->user->fresh()->balance);
+        $this->assertSame(0, WalletTransaction::count());
+    }
+
+    /** C1: orderCode lạ KHÔNG được cộng tiền theo description do attacker chọn. */
+    public function test_order_code_la_khong_cong_tien_chi_ghi_log(): void
+    {
+        $payload = $this->signed([
+            'orderCode' => 999999,
+            'amount' => 1000000,
+            'description' => 'NHOSUB ' . strtoupper($this->user->username),
+            'reference' => 'FT-ATTACK',
+        ]);
+
+        $this->postJson('/webhook/payos', $payload)->assertOk();
+
+        $this->assertSame(0, $this->user->fresh()->balance, 'Không được cộng tiền cho orderCode lạ');
+        $this->assertSame(0, WalletTransaction::count());
+        $this->assertSame('unmatched', \App\Models\WebhookLog::first()->status);
+    }
+
+    /** C1: số tiền PayOS báo lệch khỏi yêu cầu nạp nội bộ → không cộng, ghi log. */
+    public function test_so_tien_lech_khoi_yeu_cau_khong_cong(): void
+    {
+        $this->makeDeposit(555, 50000);
+
+        $payload = $this->signed([
+            'orderCode' => 555,
+            'amount' => 5, // PayOS báo 5₫ thay vì 50.000₫
+            'description' => 'NHOSUB ' . strtoupper($this->user->username),
+            'reference' => 'FT-555',
+        ]);
+
+        $this->postJson('/webhook/payos', $payload)->assertOk();
+
+        $this->assertSame(0, $this->user->fresh()->balance, 'Số tiền lệch không được cộng');
         $this->assertSame(0, WalletTransaction::count());
     }
 }

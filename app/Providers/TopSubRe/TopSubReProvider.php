@@ -64,8 +64,11 @@ class TopSubReProvider implements ProviderInterface
         return $list;
     }
 
-    public function addOrder(string $serviceId, string $link, int $quantity): ProviderOrderResult
+    public function addOrder(string $serviceId, string $link, int $quantity, ?string $reference = null): ProviderOrderResult
     {
+        // $reference không dùng với TopSubRe — API V2 không có trường đối chiếu.
+        unset($reference);
+
         $data = $this->call('add', [
             'service' => $serviceId,
             'link' => $link,

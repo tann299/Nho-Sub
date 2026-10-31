@@ -30,21 +30,22 @@ class PayOSController extends Controller
         $data = $payload['data'] ?? [];
         $orderCode = (int) ($data['orderCode'] ?? 0);
         $amount = (int) ($data['amount'] ?? 0);
-        $reference = (string) ($data['reference'] ?? $data['paymentLinkId'] ?? '');
 
         $tx = PayOsTransaction::where('order_code', $orderCode)->first();
 
-        // Không tìm thấy giao dịch nội bộ: ghi log để admin xử lý tay.
+        // Không tìm thấy giao dịch nội bộ: KHÔNG cộng tiền (mô tả trong webhook
+        // do bên gửi kiểm soát — cộng theo description là lỗ hổng mất tiền).
+        // Ghi log unmatched để admin đối soát tay, giống luồng SePay.
         if (! $tx) {
             $this->deposits->handleGatewayDeposit(
                 gateway: 'payos',
-                gatewayTxnId: 'payos-' . ($reference !== '' ? $reference : $orderCode),
+                gatewayTxnId: 'payos-' . $orderCode,
                 amount: $amount,
-                content: (string) ($data['description'] ?? ''),
+                content: 'UNKNOWN-ORDER-CODE:' . $orderCode,
                 payload: $payload,
             );
 
-            return response()->json(['success' => true, 'message' => 'Đã ghi nhận.']);
+            return response()->json(['success' => true, 'message' => 'Không tìm thấy giao dịch.']);
         }
 
         // PayOS đã báo trước đó → trả 200, không cộng lại.
@@ -58,7 +59,21 @@ class PayOSController extends Controller
             return response()->json(['success' => true]);
         }
 
-        DB::transaction(function () use ($tx, $deposit, $reference, $orderCode, $amount, $payload) {
+        // Số tiền PayOS báo phải khớp đúng yêu cầu nạp nội bộ —
+        // chặn mọi sai lệch (thiếu, thừa) trước khi chạm vào ví.
+        if ($amount !== (int) $deposit->amount) {
+            $this->deposits->handleGatewayDeposit(
+                gateway: 'payos',
+                gatewayTxnId: 'payos-' . $orderCode,
+                amount: $amount,
+                content: 'AMOUNT-MISMATCH:expected-' . $deposit->amount,
+                payload: $payload,
+            );
+
+            return response()->json(['success' => true, 'message' => 'Số tiền không khớp.']);
+        }
+
+        DB::transaction(function () use ($tx, $deposit, $orderCode, $amount, $payload) {
             // Key idempotency theo orderCode: webhook gửi lại không cộng trùng.
             $this->deposits->handleGatewayDeposit(
                 gateway: 'payos',

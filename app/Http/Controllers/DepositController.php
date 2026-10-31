@@ -39,13 +39,16 @@ class DepositController extends Controller
     /** Gửi yêu cầu nạp duyệt tay. */
     public function store(Request $request): RedirectResponse
     {
+        // min khớp đúng cấu hình min_deposit (tránh thông báo lệch với service).
+        $minDeposit = max(1000, $this->settings->getInt('min_deposit', 10000));
+
         $data = $request->validate([
-            'amount' => ['required', 'integer', 'min:1000', 'max:1000000000'],
+            'amount' => ['required', 'integer', "min:{$minDeposit}", 'max:1000000000'],
             'note' => ['nullable', 'string', 'max:255'],
         ], [
             'amount.required' => 'Vui lòng nhập số tiền đã chuyển.',
             'amount.integer' => 'Số tiền phải là số nguyên.',
-            'amount.min' => 'Số tiền không hợp lệ.',
+            'amount.min' => 'Số tiền nạp tối thiểu là ' . number_format($minDeposit, 0, ',', '.') . ' ₫.',
         ]);
 
         try {

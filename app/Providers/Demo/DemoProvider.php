@@ -55,7 +55,7 @@ class DemoProvider implements ProviderInterface
         ), $rows);
     }
 
-    public function addOrder(string $serviceId, string $link, int $quantity): ProviderOrderResult
+    public function addOrder(string $serviceId, string $link, int $quantity, ?string $reference = null): ProviderOrderResult
     {
         $scenario = $this->settings->get('demo_scenario', 'auto');
 
@@ -64,12 +64,22 @@ class DemoProvider implements ProviderInterface
             throw new ProviderException('Nhà cung cấp tạm thời không nhận đơn (chế độ demo).');
         }
 
-        // Lấy đơn vừa tạo gần nhất của link + số lượng này để gắn mã demo.
-        $order = Order::query()
-            ->where('target_link', $link)
-            ->where('quantity', $quantity)
-            ->latest('id')
-            ->first();
+        // Reference = client_token của đơn → đối chiếu chính xác, không đoán theo
+        // link+quantity (hai đơn giống nhau sẽ nhận nhầm mã của nhau).
+        $order = null;
+
+        if ($reference !== null) {
+            $order = Order::query()->where('client_token', $reference)->first();
+        }
+
+        if (! $order) {
+            // Fallback cho caller cũ không truyền reference: lấy đơn mới nhất khớp.
+            $order = Order::query()
+                ->where('target_link', $link)
+                ->where('quantity', $quantity)
+                ->latest('id')
+                ->first();
+        }
 
         $orderId = $order?->id ?? 0;
 

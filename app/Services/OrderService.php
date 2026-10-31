@@ -128,7 +128,8 @@ class OrderService
             $result = $this->providers->driver()->addOrder(
                 (string) $order->service->provider_service_id,
                 $order->target_link,
-                (int) $order->quantity
+                (int) $order->quantity,
+                (string) $order->client_token, // reference để provider đối chiếu đúng đơn
             );
 
             $order->forceFill([

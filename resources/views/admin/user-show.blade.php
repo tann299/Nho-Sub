@@ -19,6 +19,7 @@
 
             <form method="POST" action="{{ route('admin.users.adjust', $user) }}" class="mt-2" data-guard>
                 @csrf
+                <input type="hidden" name="client_token" value="{{ \Illuminate\Support\Str::uuid() }}">
                 <div class="form-group">
                     <label class="form-label" for="amount">Cộng / trừ tiền (₫)</label>
                     <input class="form-input" id="amount" name="amount" type="number" required

@@ -9,7 +9,6 @@ use App\Notifications\BalanceAdjusted;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AdminUserController extends Controller
@@ -49,17 +48,20 @@ class AdminUserController extends Controller
         ]);
     }
 
-    /** Cộng/trừ tiền thủ công — bắt buộc có lý do, không cho âm. */
+    /** Cộng/trừ tiền thủ công — bắt buộc có lý do, không cho âm, chống double-submit. */
     public function adjust(Request $request, User $user): RedirectResponse
     {
         $data = $request->validate([
             'amount' => ['required', 'integer', 'not_in:0'],
             'reason' => ['required', 'string', 'min:3', 'max:200'],
+            // Token do form sinh ra mỗi lần render — cùng token chỉ áp dụng một lần.
+            'client_token' => ['required', 'uuid'],
         ], [
             'amount.required' => 'Vui lòng nhập số tiền.',
             'amount.not_in' => 'Số tiền phải khác 0.',
             'reason.required' => 'Vui lòng nhập lý do điều chỉnh.',
             'reason.min' => 'Lý do cần ít nhất 3 ký tự.',
+            'client_token.required' => 'Phiên không hợp lệ, vui lòng tải lại trang.',
         ]);
 
         try {
@@ -67,7 +69,8 @@ class AdminUserController extends Controller
                 userId: $user->id,
                 type: WalletTransaction::TYPE_ADJUST,
                 amount: (int) $data['amount'],
-                idempotencyKey: 'adjust:' . Str::uuid(),
+                // Key theo token của form: double-POST/retry không cộng trùng.
+                idempotencyKey: 'adjust:' . $data['client_token'],
                 note: 'Admin điều chỉnh: ' . $data['reason'],
             );
         } catch (\App\Exceptions\InsufficientBalanceException $e) {

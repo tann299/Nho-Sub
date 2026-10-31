@@ -54,9 +54,32 @@ class AdminTest extends TestCase
         $this->actingAs($this->admin)->post("/admin/users/{$u->id}/adjust", [
             'amount' => 50000,
             'reason' => 'Bù tiền sự cố',
+            'client_token' => '0f14d0ab-9605-4a62-a9e4-5ed26688389b',
         ])->assertRedirect();
 
         $this->assertSame(50000, $u->fresh()->balance);
+        $this->assertSame(1, WalletTransaction::where('type', 'adjust')->count());
+    }
+
+    /** M9: double-POST cùng client_token chỉ được áp dụng một lần. */
+    public function test_admin_cong_tien_double_post_khong_cong_trung(): void
+    {
+        $u = User::factory()->create(['balance' => 0]);
+        $token = '7b8f5c1e-3d2a-4c9b-8e7f-1a2b3c4d5e6f';
+
+        $this->actingAs($this->admin)->post("/admin/users/{$u->id}/adjust", [
+            'amount' => 50000,
+            'reason' => 'Bù tiền sự cố',
+            'client_token' => $token,
+        ])->assertRedirect();
+
+        $this->actingAs($this->admin)->post("/admin/users/{$u->id}/adjust", [
+            'amount' => 50000,
+            'reason' => 'Bù tiền sự cố',
+            'client_token' => $token,
+        ])->assertRedirect();
+
+        $this->assertSame(50000, $u->fresh()->balance, 'Double-POST không được cộng hai lần');
         $this->assertSame(1, WalletTransaction::where('type', 'adjust')->count());
     }
 

@@ -24,7 +24,11 @@ class DemoProviderTest extends TestCase
     private function makeOrder(array $overrides = []): Order
     {
         $user = User::factory()->create();
-        $service = Service::factory()->create(['provider_service_id' => 'demo-1']);
+        // provider_service_id UNIQUE → tái sử dụng service demo-1 thay vì tạo mới mỗi lần.
+        $service = Service::firstOrCreate(
+            ['provider_service_id' => 'demo-1'],
+            Service::factory()->make(['provider_service_id' => 'demo-1'])->toArray()
+        );
 
         return Order::factory()->create(array_merge([
             'user_id' => $user->id,
@@ -46,9 +50,25 @@ class DemoProviderTest extends TestCase
     public function test_add_order_tra_ma_gan_voi_don(): void
     {
         $order = $this->makeOrder();
-        $result = $this->provider()->addOrder('demo-1', $order->target_link, 1000);
+        $result = $this->provider()->addOrder('demo-1', $order->target_link, 1000, $order->client_token);
 
         $this->assertSame('demo:' . $order->id, $result->providerOrderId);
+    }
+
+    /** C2: hai đơn giống hệt nhau (link+qty) phải nhận ĐÚNG mã của đơn mình. */
+    public function test_hai_don_giong_nhau_nhan_dung_ma_cua_chinh_no(): void
+    {
+        $a = $this->makeOrder();
+        $b = $this->makeOrder(); // cùng link+qty như đơn a (factory sinh link ngẫu nhiên → ép giống)
+
+        $b->forceFill(['target_link' => $a->target_link])->save();
+
+        $maA = $this->provider()->addOrder('demo-1', $a->target_link, 1000, $a->client_token)->providerOrderId;
+        $maB = $this->provider()->addOrder('demo-1', $a->target_link, 1000, $b->client_token)->providerOrderId;
+
+        $this->assertSame('demo:' . $a->id, $maA, 'Đơn A phải nhận mã của A');
+        $this->assertSame('demo:' . $b->id, $maB, 'Đơn B phải nhận mã của B');
+        $this->assertNotSame($maA, $maB);
     }
 
     public function test_trang_thai_tien_hoa_theo_thoi_gian(): void
