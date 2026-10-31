@@ -1,6 +1,16 @@
 @extends('layouts.panel')
 @section('title', 'Duyệt nạp tiền')
 @section('content')
+    <div class="page-hero">
+        <div class="page-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        </div>
+        <div class="page-hero-body">
+            <h2 class="page-hero-title">Duyệt nạp tiền</h2>
+            <p class="page-hero-desc">Đối chiếu sao kê trước khi duyệt — mỗi yêu cầu chỉ cộng tiền đúng một lần.</p>
+        </div>
+    </div>
+
     <div class="flex-between mb-2 flex-wrap gap-1">
         <div class="flex gap-1 flex-wrap">
             @foreach (['pending' => 'Chờ duyệt', 'approved' => 'Đã duyệt', 'rejected' => 'Từ chối', 'expired' => 'Hết hạn', '' => 'Tất cả'] as $val => $label)

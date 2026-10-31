@@ -1,6 +1,16 @@
 @extends('layouts.panel')
 @section('title', 'Nhật ký webhook')
 @section('content')
+    <div class="page-hero">
+        <div class="page-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg>
+        </div>
+        <div class="page-hero-body">
+            <h2 class="page-hero-title">Nhật ký webhook</h2>
+            <p class="page-hero-desc">Giao dịch cổng thanh toán không khớp được cộng tay sau khi xác minh sao kê.</p>
+        </div>
+    </div>
+
     <form method="GET" class="mb-2 flex gap-1 flex-wrap">
         <select class="form-select" name="status" style="max-width:220px;" onchange="this.form.submit()">
             <option value="">Tất cả trạng thái</option>

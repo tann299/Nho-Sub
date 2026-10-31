@@ -1,6 +1,17 @@
 @extends('layouts.panel')
 @section('title', 'Đơn hàng của tôi')
 @section('content')
+    <div class="page-hero">
+        <div class="page-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
+        </div>
+        <div class="page-hero-body">
+            <h2 class="page-hero-title">Đơn hàng của tôi</h2>
+            <p class="page-hero-desc">Trạng thái tự cập nhật mỗi 5 phút. Đơn hủy/partial được hoàn tiền tự động.</p>
+        </div>
+        <a href="{{ route('panel.orders.create') }}" class="btn btn-primary page-hero-action">Đặt đơn mới</a>
+    </div>
+
     <form method="GET" class="card mb-3">
         <div class="grid grid-3" style="align-items:end;">
             <div class="form-group mb-0">
@@ -55,7 +66,14 @@
                         <td><a class="btn btn-ghost btn-sm" href="{{ route('panel.orders.show', $order) }}">Chi tiết</a></td>
                     </tr>
                 @empty
-                    <tr><td colspan="9" class="text-center text-muted" style="padding:40px;">Chưa có đơn nào.</td></tr>
+                    <tr><td colspan="9" style="padding:0;border:none;">
+                        <div class="empty-block" style="border:none;border-radius:0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>
+                            <div class="empty-title">Chưa có đơn nào</div>
+                            <p>Đơn đầu tiên chỉ mất 30 giây: chọn dịch vụ, dán link, xác nhận.</p>
+                            <a href="{{ route('panel.orders.create') }}" class="btn btn-primary">Đặt đơn đầu tiên</a>
+                        </div>
+                    </td></tr>
                 @endforelse
                 </tbody>
             </table>

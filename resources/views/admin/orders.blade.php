@@ -1,6 +1,16 @@
 @extends('layouts.panel')
 @section('title', 'Quản lý đơn hàng')
 @section('content')
+    <div class="page-hero">
+        <div class="page-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>
+        </div>
+        <div class="page-hero-body">
+            <h2 class="page-hero-title">Tất cả đơn hàng</h2>
+            <p class="page-hero-desc">Tra cứu theo mã, khách, trạng thái. Đơn kẹt chờ xử lý có cảnh báo riêng.</p>
+        </div>
+    </div>
+
     <form method="GET" class="card mb-3">
         <div class="grid grid-4" style="align-items:end;">
             <div class="form-group mb-0">

@@ -18,6 +18,11 @@
   --warning: #F59E0B;
   --danger: #DC2626;
 
+  /* Surface phụ — biến ánh của xanh chủ đạo, không lạc tone */
+  --surface-tint: #EEF4FE;      /* nền khối phụ: banner, thẻ thông tin */
+  --surface-deep: #0F2A52;      /* khối tối duy nhất: 1 điểm neo mỗi trang */
+  --surface-deep-soft: #16375F; /* lớp trên khối tối: hàng hover trong khối tối */
+
   --radius: 10px;
   --radius-sm: 7px;
   --radius-lg: 14px;
@@ -451,6 +456,122 @@ a { color: var(--primary); text-decoration: none; }
 
 .empty-state { text-align: center; padding: 36px 16px; color: var(--muted); }
 .empty-state svg { width: 40px; height: 40px; color: var(--primary-light); margin-bottom: 10px; }
+
+/* =========================================================
+   Khối trang phụ (page blocks) — thay nền trắng phẳng
+   ========================================================= */
+
+/* Hero-compact: khối neo đầu mỗi trang phụ, mỗi trang 1 màu riêng */
+.page-hero {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--surface-tint);
+  border: 1px solid var(--primary-light);
+  margin-bottom: 16px;
+}
+.page-hero-deep { background: var(--surface-deep); border-color: var(--surface-deep); color: #fff; }
+.page-hero-deep .page-hero-title { color: #fff; }
+.page-hero-deep .page-hero-desc { color: rgba(255,255,255,.78); }
+.page-hero-icon {
+  width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.page-hero-deep .page-hero-icon { background: rgba(255,255,255,.14); }
+.page-hero-icon svg { width: 20px; height: 20px; }
+.page-hero-title { font-size: 16.5px; font-weight: 700; margin: 0; color: var(--text); }
+.page-hero-desc { font-size: 13px; margin: 2px 0 0; color: var(--muted); }
+.page-hero-body { flex: 1; min-width: 0; }
+.page-hero-action { flex-shrink: 0; }
+
+/* Thông tin nhấn mạnh trong trang (khối tint nhỏ) */
+.note-block {
+  background: var(--surface-tint);
+  border: 1px solid var(--primary-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--primary-dark);
+  margin-bottom: 14px;
+}
+.note-block strong { font-weight: 700; }
+
+/* Bước hướng dẫn (dùng cho trang nạp tiền) */
+.step-row {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 0;
+}
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: var(--primary); color: #fff;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.step-text { font-size: 13px; color: var(--text); }
+.step-text strong { font-weight: 600; }
+
+/* Khối tối (deep block): CTA lớn / trạng thái trống đặc biệt */
+.deep-block {
+  background: var(--surface-deep);
+  border-radius: var(--radius);
+  padding: 26px 24px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.deep-block::after {
+  content: ""; position: absolute; inset: auto -40px -60px auto;
+  width: 180px; height: 180px; border-radius: 50%;
+  background: rgba(30, 111, 217, .25);
+}
+.deep-block h3 { color: #fff; font-size: 17px; position: relative; z-index: 1; }
+.deep-block p { color: rgba(255,255,255,.75); font-size: 13px; position: relative; z-index: 1; }
+.deep-block .btn { position: relative; z-index: 1; }
+.deep-block .btn-primary { background: #fff; color: var(--primary-dark); }
+.deep-block .btn-primary:hover:not(:disabled) { background: var(--primary-light); transform: translateY(-1px); }
+.deep-block.dot-pattern { background-image: url("/assets/img/pattern-deep.svg"); }
+
+/* Empty-state có khối: minh hoạ + CTA, không còn chữ mờ trơ trọi */
+.empty-block {
+  text-align: center;
+  padding: 34px 20px;
+  background: var(--surface-tint);
+  border: 1px dashed #B9D3F5;
+  border-radius: var(--radius);
+}
+.empty-block svg { width: 44px; height: 44px; color: var(--primary); opacity: .55; margin-bottom: 10px; }
+.empty-block .empty-title { font-weight: 700; color: var(--text); font-size: 14.5px; margin-bottom: 4px; }
+.empty-block p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+/* Nhãn nhóm nhỏ trong card (section label) */
+.card-label {
+  display: block; font-size: 11px; font-weight: 700;
+  color: var(--muted); text-transform: uppercase; letter-spacing: .05em;
+  margin-bottom: 8px;
+}
+
+/* Hàng info trong card nạp tiền — hover rõ ràng */
+.copy-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #EDF2FA;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  background: #fff;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.copy-row:hover { border-color: var(--primary); background: var(--surface-tint); }
+.copy-row .copy-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.copy-row .copy-value { font-size: 13.5px; font-weight: 700; text-align: right; word-break: break-all; }
+
+/* QR khung */
+.qr-frame {
+  display: inline-block; padding: 10px;
+  background: #fff; border: 1px solid var(--primary-light);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
 
 /* Toast */
 .toast-wrap { position: fixed; right: 16px; bottom: 16px; z-index: 100; display: flex; flex-direction: column; gap: 8px; }

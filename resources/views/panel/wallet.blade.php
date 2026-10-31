@@ -1,9 +1,18 @@
 @extends('layouts.panel')
 @section('title', 'Lịch sử giao dịch')
 @section('content')
-    <div class="stat mb-3" style="max-width:360px;">
-        <div class="stat-label">Số dư hiện tại</div>
-        <div class="stat-value primary">{{ number_format($user->balance, 0, ',', '.') }} ₫</div>
+    <div class="page-hero">
+        <div class="page-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5"/><circle cx="17" cy="14" r="1"/></svg>
+        </div>
+        <div class="page-hero-body">
+            <h2 class="page-hero-title">Lịch sử giao dịch</h2>
+            <p class="page-hero-desc">Mọi dòng cộng/trừ đều có số dư sau giao dịch — đối chiếu được từng đồng.</p>
+        </div>
+        <div class="page-hero-action stat stat-stack" style="padding:8px 16px;text-align:right;">
+            <p class="stat-label">Số dư hiện tại</p>
+            <div class="stat-value primary" style="font-size:17px;">{{ number_format($user->balance, 0, ',', '.') }} ₫</div>
+        </div>
     </div>
 
     <form method="GET" class="mb-2 flex gap-1 flex-wrap">
@@ -41,7 +50,14 @@
                         <td class="num">{{ number_format($tx->balance_after, 0, ',', '.') }} ₫</td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="text-center text-muted" style="padding:40px;">Chưa có giao dịch nào.</td></tr>
+                    <tr><td colspan="5" style="padding:0;border:none;">
+                        <div class="empty-block" style="border:none;border-radius:0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5"/><circle cx="17" cy="14" r="1"/></svg>
+                            <div class="empty-title">Chưa có giao dịch nào</div>
+                            <p>Nạp tiền đầu tiên để bắt đầu đặt đơn.</p>
+                            <a href="{{ route('panel.deposit.create') }}" class="btn btn-primary">Nạp tiền ngay</a>
+                        </div>
+                    </td></tr>
                 @endforelse
                 </tbody>
             </table>

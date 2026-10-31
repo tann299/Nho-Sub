@@ -247,6 +247,8 @@ class AcceptanceTest extends TestCase
         $allowed = [
             '#1E6FD9', '#0A4DB3', '#DCEBFD', '#F5F8FF', '#FFFFFF', '#0F2233',
             '#5B6B80', '#16A34A', '#F59E0B', '#DC2626',
+            // Surface phụ — biến ánh của xanh chủ đạo (page blocks v3)
+            '#EEF4FE', '#0F2A52', '#16375F', '#B9D3F5',
             // Biến thể hợp lệ của trạng thái đơn (badge nền/chữ/viền)
             '#E7F7EE', '#0E7A38', '#BFEACD', '#FFF7E6', '#92580A', '#FCE3B3',
             '#FDECEC', '#A31818', '#F7C9C9', '#C6DDFB', '#EEF2F8', '#DDE5F1',
