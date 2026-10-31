@@ -1,0 +1,22 @@
+# ============================================================
+# NhoSub — rewrite về public/ cho hosting KHÔNG đổi được document root.
+# Nếu hosting cho phép trỏ document root vào public/, file này không cần thiết
+# (nhưng để cũng không sao).
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Nếu thư mục public tồn tại thì chuyển mọi request vào đó.
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Chặn truy cập file nhạy cảm nếu rewrite không chạy.
+<FilesMatch "^\.(env|git|htaccess|htpasswd)">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(env|log|sql|md|json|lock)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes
