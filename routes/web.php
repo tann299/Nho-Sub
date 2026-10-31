@@ -17,6 +17,10 @@ Route::post('/webhook/sepay', [\App\Http\Controllers\Webhook\SePayController::cl
     ->middleware('throttle:120,1')
     ->name('webhook.sepay');
 
+Route::post('/webhook/payos', [\App\Http\Controllers\Webhook\PayOSController::class, 'handle'])
+    ->middleware('throttle:120,1')
+    ->name('webhook.payos');
+
 // ---------- Xác thực ----------
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');

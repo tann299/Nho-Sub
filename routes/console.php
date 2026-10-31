@@ -1,8 +1,14 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+// Đồng bộ trạng thái đơn mỗi 5 phút — SRS yêu cầu.
+Schedule::command('orders:sync')->everyFiveMinutes()->withoutOverlapping();
+
+// Đóng yêu cầu nạp quá hạn.
+Schedule::command('deposits:expire')->everyFiveMinutes()->withoutOverlapping();
+
+// Xử lý job trong queue database (không dùng Redis/Supervisor).
+Schedule::command('queue:work --stop-when-empty --max-time=50')
+    ->everyMinute()
+    ->withoutOverlapping();
