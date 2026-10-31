@@ -19,20 +19,40 @@
 
     <div class="grid grid-4 mb-3">
         <div class="stat">
-            <div class="stat-label">Số dư ví</div>
-            <div class="stat-value primary">{{ number_format($stats['balance'], 0, ',', '.') }} ₫</div>
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5"/><circle cx="17" cy="14" r="1"/></svg>
+            </div>
+            <div class="stat-body">
+                <p class="stat-label">Số dư ví</p>
+                <div class="stat-value primary">{{ number_format($stats['balance'], 0, ',', '.') }} ₫</div>
+            </div>
         </div>
         <div class="stat">
-            <div class="stat-label">Tổng số đơn</div>
-            <div class="stat-value">{{ number_format($stats['total_orders'], 0, ',', '.') }}</div>
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
+            </div>
+            <div class="stat-body">
+                <p class="stat-label">Tổng số đơn</p>
+                <div class="stat-value">{{ number_format($stats['total_orders'], 0, ',', '.') }}</div>
+            </div>
         </div>
         <div class="stat">
-            <div class="stat-label">Đơn đang chạy</div>
-            <div class="stat-value warning">{{ number_format($stats['running_orders'], 0, ',', '.') }}</div>
+            <div class="stat-icon warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+            </div>
+            <div class="stat-body">
+                <p class="stat-label">Đơn đang chạy</p>
+                <div class="stat-value warning">{{ number_format($stats['running_orders'], 0, ',', '.') }}</div>
+            </div>
         </div>
         <div class="stat">
-            <div class="stat-label">Thông báo mới</div>
-            <div class="stat-value">{{ $notifications->whereNull('read_at')->count() }}</div>
+            <div class="stat-icon success">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            </div>
+            <div class="stat-body">
+                <p class="stat-label">Thông báo mới</p>
+                <div class="stat-value">{{ $notifications->whereNull('read_at')->count() }}</div>
+            </div>
         </div>
     </div>
 
