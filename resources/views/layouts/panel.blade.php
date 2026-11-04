@@ -12,11 +12,8 @@
 <div class="layout">
     <aside class="sidebar" id="sidebar">
         <a href="{{ route('panel.dashboard') }}" class="sidebar-brand">
-            <img src="{{ asset('assets/img/logo.svg') }}" alt="NhoSub">
-            <span class="sidebar-brand-text">
-                NhoSub
-                <span class="sidebar-brand-sub">Sub nhỏ, lớn dần cùng bạn</span>
-            </span>
+            <img src="{{ asset('assets/img/logo.png') }}" alt="NhoSub">
+            <span class="sidebar-brand-text">NHOSUB</span>
         </a>
 
         <nav class="sidebar-nav">

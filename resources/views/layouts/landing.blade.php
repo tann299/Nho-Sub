@@ -12,8 +12,8 @@
 <header class="site-header">
     <div class="container site-header-inner">
         <a href="{{ route('landing') }}" class="flex gap-1" style="align-items:center;">
-            <img src="{{ asset('assets/img/logo.svg') }}" alt="NhoSub" width="34" height="34">
-            <strong style="font-size:20px;color:var(--primary-dark);letter-spacing:-.02em;">NhoSub</strong>
+            <img src="{{ asset('assets/img/logo.png') }}" alt="NhoSub" width="34" height="34">
+            <strong style="font-size:20px;color:var(--primary-dark);letter-spacing:.01em;">NHOSUB</strong>
         </a>
 
         <nav class="site-nav">
@@ -41,8 +41,8 @@
         <div class="footer-grid">
             <div>
                 <div class="flex gap-1" style="align-items:center;margin-bottom:12px;">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="NhoSub" width="30" height="30">
-                    <strong style="font-size:18px;color:var(--primary-dark);">NhoSub</strong>
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="NhoSub" width="30" height="30">
+                    <strong style="font-size:19px;color:var(--primary-dark);letter-spacing:.01em;">NHOSUB</strong>
                 </div>
                 <p class="text-muted text-sm">Sub nhỏ, lớn dần cùng bạn. Panel tăng tương tác mạng xã hội cho người Việt.</p>
             </div>

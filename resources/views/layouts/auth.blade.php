@@ -12,8 +12,8 @@
     <aside class="auth-side dot-pattern">
         <div style="position:relative;z-index:1;max-width:420px;">
             <a href="{{ route('landing') }}" class="flex gap-1" style="align-items:center;margin-bottom:28px;color:#fff;">
-                <img src="{{ asset('assets/img/logo.svg') }}" alt="NhoSub" width="40" height="40" style="background:#fff;border-radius:10px;padding:4px;">
-                <strong style="font-size:24px;color:#fff;">NhoSub</strong>
+                <img src="{{ asset('assets/img/logo.png') }}" alt="NhoSub" width="40" height="40" style="border-radius:10px;">
+                <strong style="font-size:24px;color:#fff;letter-spacing:.01em;">NHOSUB</strong>
             </a>
             <h2 style="font-size:30px;">Sub nhỏ,<br>lớn dần cùng bạn</h2>
             <p>Nạp tiền một lần, đặt đơn mọi lúc. Đơn hàng được đẩy đi tự động và cập nhật trạng thái mỗi 5 phút.</p>
@@ -28,8 +28,8 @@
     <main class="auth-main">
         <div class="auth-card">
             <a href="{{ route('landing') }}" class="flex gap-1 mb-3" style="align-items:center;">
-                <img src="{{ asset('assets/img/logo.svg') }}" alt="NhoSub" width="32" height="32">
-                <strong style="font-size:18px;color:var(--primary-dark);">NhoSub</strong>
+                <img src="{{ asset('assets/img/logo.png') }}" alt="NhoSub" width="32" height="32">
+                <strong style="font-size:19px;color:var(--primary-dark);letter-spacing:.01em;">NHOSUB</strong>
             </a>
             @include('partials.flash')
             @yield('content')
