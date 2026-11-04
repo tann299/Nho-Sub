@@ -1,6 +1,16 @@
 @php
-    // Menu theo nhóm. Mỗi mục: [route, nhãn, icon path].
-    $groups = [
+    // Menu theo nhóm: tách rõ ràng trước / sau "Sản phẩm & dịch vụ"
+    // Thứ tự hiển thị:
+    // 1. Tổng quan
+    // 2. Dịch vụ
+    // 3. Sản phẩm & dịch vụ (accordion)
+    // 4. Đơn hàng
+    // 5. Thanh toán
+    // 6. Cài đặt
+    // 7. Hỗ trợ & Thông tin (ở DƯỚI CÙNG theo yêu cầu)
+    // 8. Quản trị (admin)
+
+    $topGroups = [
         'Tổng quan' => [
             ['panel.dashboard', 'Bảng điều khiển', 'M3 12l9-9 9 9M5 10v10h14V10'],
         ],
@@ -8,6 +18,9 @@
             ['panel.services.index', 'Danh sách dịch vụ', 'M4 6h16M4 12h16M4 18h10'],
             ['panel.orders.create', 'Đặt đơn mới', 'M12 5v14M5 12h14'],
         ],
+    ];
+
+    $midGroups = [
         'Đơn hàng' => [
             ['panel.orders.index', 'Đơn hàng của tôi', 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'],
         ],
@@ -15,17 +28,17 @@
             ['panel.deposit.create', 'Nạp tiền', 'M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'],
             ['panel.wallet.index', 'Lịch sử giao dịch', 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z'],
         ],
-        'Thông tin' => [
-            ['content.posts', 'Bài viết & thông báo', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
-            ['content.terms', 'Điều khoản sử dụng', 'M14 3v4a1 1 0 0 0 1 1h4M7 21h10a2 2 0 0 0 2-2V8l-5-5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z'],
-            ['content.faq', 'Câu hỏi thường gặp', 'M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.3-1.7 2.5M12 17h.01'],
-        ],
-        'Hỗ trợ' => [
-            ['panel.support.index', 'Trung tâm hỗ trợ', 'M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.3-1.7 2.5M12 17h.01'],
-        ],
         'Cài đặt' => [
             ['panel.profile.edit', 'Hồ sơ cá nhân', 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'],
             ['panel.profile.password', 'Đổi mật khẩu', 'M7 11V7a5 5 0 0 1 10 0v4M5 11h14v10H5z'],
+        ],
+    ];
+
+    // Hỗ trợ & Thông tin: đặt xuống DƯỚI CÙNG của menu
+    // Gộp Câu hỏi thường gặp và Điều khoản sử dụng vào Trung tâm hỗ trợ
+    $bottomGroups = [
+        'Hỗ trợ & Thông tin' => [
+            ['panel.support.index', 'Trung tâm hỗ trợ', 'M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.3-1.7 2.5M12 17h.01'],
         ],
     ];
 
@@ -35,7 +48,7 @@
             ['admin.users.index', 'Người dùng', 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75'],
             ['admin.orders.index', 'Tất cả đơn hàng', 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2'],
             ['admin.services.index', 'Quản lý dịch vụ', 'M20 7l-8-4-8 4 8 4 8-4zM4 12l8 4 8-4M4 17l8 4 8-4'],
-            ['admin.posts.index', 'Bài viết', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
+            ['admin.posts.index', 'Bài viết thông báo', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
             ['admin.deposits.index', 'Duyệt nạp tiền', 'M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'],
             ['admin.webhooks.index', 'Nhật ký webhook', 'M4 4h16v16H4zM8 8h8M8 12h8M8 16h5'],
             ['admin.apiLogs.index', 'Nhật ký API', 'M4 7h16M4 12h16M4 17h10'],
@@ -43,8 +56,6 @@
         ],
     ];
 
-    // Nhóm nền tảng → danh mục con (điểm giống menu TopSubRe).
-    // Nền tảng chỉ hiện khi có ít nhất một danh mục đang bán.
     $platformLabels = [
         'facebook' => 'Facebook',
         'tiktok' => 'TikTok',
@@ -58,10 +69,9 @@
         : collect();
 @endphp
 
-@foreach ($groups as $groupName => $items)
+{{-- 1. Tổng quan & Dịch vụ --}}
+@foreach ($topGroups as $groupName => $items)
     @php
-        // Chỉ render nhóm nếu có ít nhất một route đã tồn tại (tránh lỗi khi
-        // một số trang chưa được triển khai ở giai đoạn hiện tại).
         $available = array_values(array_filter($items, fn ($i) => Route::has($i[0])));
     @endphp
     @if (! empty($available))
@@ -78,7 +88,7 @@
     @endif
 @endforeach
 
-{{-- Sản phẩm & dịch vụ: nền tảng accordion → danh mục con --}}
+{{-- 2. Sản phẩm & dịch vụ: nền tảng accordion → danh mục con (đặt ngay sau Dịch vụ) --}}
 @if ($byPlatform->isNotEmpty())
     <div class="nav-group">
         <div class="nav-group-title">{{ __('Sản phẩm & dịch vụ') }}</div>
@@ -88,7 +98,6 @@
                 $isPlatformActive = request()->routeIs('panel.services.index')
                     && request()->query('platform') === $platform;
 
-                // Đang xem một danh mục thuộc nền tảng này → tự mở accordion.
                 $activeCatId = (int) request()->query('category_id', 0);
                 $hasActiveCat = request()->routeIs('panel.services.index')
                     && $activeCatId > 0
@@ -132,6 +141,45 @@
     </div>
 @endif
 
+{{-- 3. Đơn hàng, Thanh toán, Cài đặt --}}
+@foreach ($midGroups as $groupName => $items)
+    @php
+        $available = array_values(array_filter($items, fn ($i) => Route::has($i[0])));
+    @endphp
+    @if (! empty($available))
+        <div class="nav-group">
+            <div class="nav-group-title">{{ $groupName }}</div>
+            @foreach ($available as [$routeName, $label, $icon])
+                <a href="{{ route($routeName) }}"
+                   class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon }}"/></svg>
+                    <span>{{ $label }}</span>
+                </a>
+            @endforeach
+        </div>
+    @endif
+@endforeach
+
+{{-- 4. Hỗ trợ & Thông tin: Ở DƯỚI CÙNG theo yêu cầu --}}
+@foreach ($bottomGroups as $groupName => $items)
+    @php
+        $available = array_values(array_filter($items, fn ($i) => Route::has($i[0])));
+    @endphp
+    @if (! empty($available))
+        <div class="nav-group">
+            <div class="nav-group-title">{{ $groupName }}</div>
+            @foreach ($available as [$routeName, $label, $icon])
+                <a href="{{ route($routeName) }}"
+                   class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon }}"/></svg>
+                    <span>{{ $label }}</span>
+                </a>
+            @endforeach
+        </div>
+    @endif
+@endforeach
+
+{{-- 5. Quản trị (chỉ admin) --}}
 @auth
     @if (auth()->user()->isAdmin())
         @php

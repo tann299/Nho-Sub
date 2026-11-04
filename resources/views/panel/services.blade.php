@@ -40,30 +40,24 @@
                 <span class="badge badge-neutral">{{ ucfirst($category->platform) }}</span>
             </div>
 
-            <div class="grid grid-2">
+            <div class="grid grid-services">
                 @foreach ($category->services as $service)
-                    <article class="card card-hover" style="display:flex;flex-direction:column;">
-                        <h3 style="font-size:14.5px;margin-bottom:6px;">{{ $service->name }}</h3>
+                    <article class="card card-hover service-card">
+                        <h3 class="svc-name" title="{{ $service->name }}">{{ $service->name }}</h3>
 
-                        @if ($service->description)
-                            <p class="text-sm text-muted" style="margin-bottom:10px;flex:1;">{{ $service->description }}</p>
-                        @else
-                            <div style="flex:1;"></div>
-                        @endif
+                        <p class="svc-desc" title="{{ $service->description }}">{{ $service->description ?: '—' }}</p>
 
-                        <div class="flex-between" style="background:var(--surface-tint);padding:8px 12px;border-radius:var(--radius-sm);margin-bottom:10px;">
-                            <span class="text-sm text-muted">Giá / 1.000</span>
-                            <strong style="color:var(--primary-dark);font-size:16px;">
-                                {{ number_format($service->sell_price, 0, ',', '.') }} ₫
-                            </strong>
+                        <div class="svc-price">
+                            <span class="svc-price-label">Giá / 1.000</span>
+                            <span class="svc-price-value">{{ number_format($service->sell_price, 0, ',', '.') }} ₫</span>
                         </div>
 
-                        <div class="flex-between text-sm text-muted" style="padding-bottom:8px;">
+                        <div class="svc-meta">
                             <span>{{ number_format($service->min_qty, 0, ',', '.') }} – {{ number_format($service->max_qty, 0, ',', '.') }} lượt</span>
                             <span>{{ $service->speed ?? '—' }}</span>
                         </div>
 
-                        <div class="flex-between text-sm text-muted mb-2">
+                        <div class="svc-meta">
                             <span>Bắt đầu: {{ $service->avg_start_time ?? '—' }}</span>
                         </div>
 

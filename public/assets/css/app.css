@@ -362,6 +362,9 @@ a { color: var(--primary); text-decoration: none; }
 .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
+/* Lưới dịch vụ: cột hẹp, nhiều cột hơn để quét giá nhanh */
+.grid-services { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+
 /* ---------- Thống kê (compact, có icon) ---------- */
 .stat {
   background: var(--card); border: 1px solid var(--primary-light);
@@ -587,6 +590,39 @@ a { color: var(--primary); text-decoration: none; }
 .empty-block svg { width: 44px; height: 44px; color: var(--primary); opacity: .55; margin-bottom: 10px; }
 .empty-block .empty-title { font-weight: 700; color: var(--text); font-size: 14.5px; margin-bottom: 4px; }
 .empty-block p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+/* ---------- Card dịch vụ (compact) ---------- */
+.service-card {
+  display: flex; flex-direction: column;
+  padding: 12px 13px;
+  gap: 8px;
+}
+.service-card .svc-name {
+  font-size: 13px; font-weight: 700; line-height: 1.35;
+  margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 35px;
+}
+.service-card .svc-desc {
+  font-size: 11.5px; color: var(--muted); line-height: 1.4; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 32px;
+}
+.service-card .svc-price {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 6px;
+  background: var(--surface-tint); border-radius: var(--radius-sm);
+  padding: 7px 10px;
+}
+.service-card .svc-price-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+.service-card .svc-price-value { font-size: 15.5px; font-weight: 800; color: var(--primary-dark); font-variant-numeric: tabular-nums; }
+.service-card .svc-meta {
+  display: flex; justify-content: space-between; gap: 6px;
+  font-size: 11.5px; color: var(--muted);
+  padding-bottom: 2px;
+}
+.service-card .btn { min-height: 32px; font-size: 12.5px; padding: 5px 10px; margin-top: auto; }
 
 /* Nhãn nhóm nhỏ trong card (section label) */
 .card-label {

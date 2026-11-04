@@ -1,19 +1,22 @@
 @extends('layouts.panel')
 @section('title', 'Tổng quan')
 @section('content')
-    {{-- Banner thông báo mới nhất --}}
+    {{-- Banner thông báo mới nhất (admin đăng bài → hiện ngay tại đây) --}}
     @if ($latestPosts->isNotEmpty())
-        <div class="card mb-3" style="border-left:4px solid var(--primary);">
-            <div class="flex-between mb-1">
-                <h3 class="card-title mb-0">Thông báo mới</h3>
-                <a href="{{ route('content.posts') }}" class="text-sm link-underline">Xem tất cả</a>
+        <div class="page-hero" style="background:var(--surface-deep);border-color:var(--surface-deep);">
+            <div class="page-hero-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
             </div>
-            @foreach ($latestPosts as $post)
-                <div class="flex-between" style="padding:8px 0;border-bottom:1px solid #EDF2FA;">
-                    <a href="{{ route('content.post', $post->slug) }}" class="link-underline" style="font-weight:500;">{{ $post->title }}</a>
-                    <span class="text-sm text-muted nowrap">{{ $post->published_at?->format('d/m') }}</span>
-                </div>
-            @endforeach
+            <div class="page-hero-body">
+                <h2 class="page-hero-title" style="color:#fff;">Thông báo mới</h2>
+                @foreach ($latestPosts as $post)
+                    <p style="margin:3px 0 0;font-size:13px;">
+                        <a href="{{ route('content.post', $post->slug) }}"
+                           style="color:rgba(255,255,255,.92);text-decoration:underline;">{{ $post->title }}</a>
+                        <span style="color:rgba(255,255,255,.55);font-size:11.5px;"> · {{ $post->published_at?->format('d/m/Y') }}</span>
+                    </p>
+                @endforeach
+            </div>
         </div>
     @endif
 
