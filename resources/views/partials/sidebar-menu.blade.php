@@ -1,43 +1,21 @@
 @php
-    // Menu theo nhóm: tách rõ ràng trước / sau "Sản phẩm & dịch vụ"
-    // Thứ tự hiển thị:
-    // 1. Tổng quan
-    // 2. Dịch vụ
-    // 3. Sản phẩm & dịch vụ (accordion)
-    // 4. Đơn hàng
-    // 5. Thanh toán
-    // 6. Cài đặt
-    // 7. Hỗ trợ & Thông tin (ở DƯỚI CÙNG theo yêu cầu)
-    // 8. Quản trị (admin)
+    // Menu người dùng — gọn nhất có thể:
+    // 1. Tổng quan (dashboard, đổi tên từ "Bảng điều khiển")
+    // 2. Sản phẩm & dịch vụ (accordion nền tảng + app)
+    // 3. Tài khoản (đơn của tôi, nạp tiền, hồ sơ, hỗ trợ — gộp 4 nhóm cũ)
+    // 4. Quản trị (admin)
 
     $topGroups = [
         'Tổng quan' => [
-            ['panel.dashboard', 'Bảng điều khiển', 'M3 12l9-9 9 9M5 10v10h14V10'],
-        ],
-        'Dịch vụ' => [
-            ['panel.services.index', 'Danh sách dịch vụ', 'M4 6h16M4 12h16M4 18h10'],
-            ['panel.orders.create', 'Đặt đơn mới', 'M12 5v14M5 12h14'],
+            ['panel.dashboard', 'Tổng quan', 'M3 12l9-9 9 9M5 10v10h14V10'],
         ],
     ];
 
     $midGroups = [
-        'Đơn hàng' => [
+        'Tài khoản' => [
             ['panel.orders.index', 'Đơn hàng của tôi', 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'],
-        ],
-        'Thanh toán' => [
             ['panel.deposit.create', 'Nạp tiền', 'M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'],
-            ['panel.wallet.index', 'Lịch sử giao dịch', 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z'],
-        ],
-        'Cài đặt' => [
             ['panel.profile.edit', 'Hồ sơ cá nhân', 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'],
-            ['panel.profile.password', 'Đổi mật khẩu', 'M7 11V7a5 5 0 0 1 10 0v4M5 11h14v10H5z'],
-        ],
-    ];
-
-    // Hỗ trợ & Thông tin: đặt xuống DƯỚI CÙNG của menu
-    // Gộp Câu hỏi thường gặp và Điều khoản sử dụng vào Trung tâm hỗ trợ
-    $bottomGroups = [
-        'Hỗ trợ & Thông tin' => [
             ['panel.support.index', 'Trung tâm hỗ trợ', 'M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.3-1.7 2.5M12 17h.01'],
         ],
     ];
@@ -55,6 +33,11 @@
         // - admin.posts.index    → /admin/posts     (bài viết thông báo)
         // - admin.webhooks.index → /admin/webhooks  (nhật ký webhook)
         // - admin.apiLogs.index  → /admin/api-logs  (nhật ký API)
+        // Người dùng (bỏ khỏi menu, URL vẫn chạy):
+        // - panel.services.index → /services         (đặt đơn — vào từ accordion hoặc dashboard)
+        // - panel.orders.create  → /orders/create
+        // - panel.wallet.index   → /wallet
+        // - panel.profile.password → /settings/password
     ];
 
     $platformLabels = [
@@ -204,26 +187,7 @@
     @endif
 @endforeach
 
-{{-- 4. Hỗ trợ & Thông tin: Ở DƯỚI CÙNG theo yêu cầu --}}
-@foreach ($bottomGroups as $groupName => $items)
-    @php
-        $available = array_values(array_filter($items, fn ($i) => Route::has($i[0])));
-    @endphp
-    @if (! empty($available))
-        <div class="nav-group">
-            <div class="nav-group-title">{{ $groupName }}</div>
-            @foreach ($available as [$routeName, $label, $icon])
-                <a href="{{ route($routeName) }}"
-                   class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon }}"/></svg>
-                    <span>{{ $label }}</span>
-                </a>
-            @endforeach
-        </div>
-    @endif
-@endforeach
-
-{{-- 5. Quản trị (chỉ admin) --}}
+{{-- 4. Quản trị (chỉ admin) --}}
 @auth
     @if (auth()->user()->isAdmin())
         @php
