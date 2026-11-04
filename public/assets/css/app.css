@@ -245,16 +245,59 @@ a { color: var(--primary); text-decoration: none; }
 .nav-item.active .nav-badge { background: #fff; color: var(--primary); }
 
 /* Mục submenu (danh mục con trong "Sản phẩm & dịch vụ") */
-.nav-item-sub { padding-left: 30px; font-size: 12.5px; font-weight: 400; }
+.nav-item-sub { padding-left: 34px; font-size: 12.5px; font-weight: 400; }
 .nav-item-sub::before { display: none; }
 .nav-item-sub:hover { background: var(--primary-light); }
 .nav-item-sub.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
 .nav-item-sub.active::before {
-  display: block; content: ""; position: absolute; left: 14px; top: 50%;
+  display: block; content: ""; position: absolute; left: 18px; top: 50%;
   transform: translateY(-50%); width: 3px; height: 14px; border-radius: 2px;
   background: var(--primary);
 }
 .sidebar-collapsed .nav-item-sub { display: none; }
+
+/* ---------- Accordion nền tảng (Sản phẩm & dịch vụ) ---------- */
+.nav-acc { margin-bottom: 1px; }
+.nav-acc-summary {
+  cursor: pointer; list-style: none; margin-bottom: 0;
+  user-select: none;
+}
+.nav-acc-summary::-webkit-details-marker { display: none; }
+.nav-acc-summary::marker { content: ""; }
+
+/* Logo nền tảng thật */
+.platform-logo {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border-radius: 5px; object-fit: contain;
+  transition: transform .2s ease;
+}
+.nav-acc-summary:hover .platform-logo { transform: scale(1.08); }
+
+/* Mũi tên xổ xuống */
+.nav-acc-chevron {
+  width: 14px; height: 14px; margin-left: auto; flex-shrink: 0;
+  color: var(--muted);
+  transition: transform .2s ease, color .2s ease;
+}
+.nav-acc[open] .nav-acc-chevron { transform: rotate(180deg); }
+.nav-acc-summary:hover .nav-acc-chevron { color: var(--primary); }
+
+/* Vùng xổ xuống */
+.nav-acc-body {
+  padding: 2px 0 6px;
+  border-left: 1px solid var(--primary-light);
+  margin-left: 16px;
+  animation: acc-in .2s ease;
+}
+@keyframes acc-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+.nav-acc-body .nav-item-sub { padding-left: 14px; border-radius: var(--radius-sm); }
+.nav-acc-body .nav-item-sub.active::before { left: -1px; }
+
+/* Sidebar thu gọn: ẩn nội dung accordion, chỉ giữ logo nền tảng */
+.sidebar-collapsed .nav-acc-body { display: none; }
+.sidebar-collapsed .nav-acc-chevron { display: none; }
+.sidebar-collapsed .nav-acc-summary { justify-content: center; padding: 9px 0; }
 
 /* Sidebar thu gọn (desktop) */
 .sidebar-collapsed .sidebar { width: var(--sidebar-w-collapsed); }

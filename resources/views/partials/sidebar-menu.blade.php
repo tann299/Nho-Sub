@@ -78,7 +78,7 @@
     @endif
 @endforeach
 
-{{-- Sản phẩm & dịch vụ: nền tảng → danh mục con --}}
+{{-- Sản phẩm & dịch vụ: nền tảng accordion → danh mục con --}}
 @if ($byPlatform->isNotEmpty())
     <div class="nav-group">
         <div class="nav-group-title">{{ __('Sản phẩm & dịch vụ') }}</div>
@@ -87,21 +87,47 @@
                 $platformUrl = route('panel.services.index', ['platform' => $platform]);
                 $isPlatformActive = request()->routeIs('panel.services.index')
                     && request()->query('platform') === $platform;
+
+                // Đang xem một danh mục thuộc nền tảng này → tự mở accordion.
+                $activeCatId = (int) request()->query('category_id', 0);
+                $hasActiveCat = request()->routeIs('panel.services.index')
+                    && $activeCatId > 0
+                    && $categories->contains('id', $activeCatId);
+
+                $logoFile = in_array($platform, ['facebook', 'tiktok', 'instagram', 'youtube'], true)
+                    ? $platform
+                    : 'khac';
             @endphp
-            <a href="{{ $platformUrl }}" class="nav-item {{ $isPlatformActive ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7l-8-4-8 4 8 4 8-4zM4 12l8 4 8-4M4 17l8 4 8-4"/></svg>
-                <span>{{ $platformLabels[$platform] ?? ucfirst($platform) }}</span>
-            </a>
-            @foreach ($categories as $category)
-                @php
-                    $catUrl = route('panel.services.index', ['category_id' => $category->id]);
-                    $isCatActive = request()->routeIs('panel.services.index')
-                        && (int) request()->query('category_id') === (int) $category->id;
-                @endphp
-                <a href="{{ $catUrl }}" class="nav-item nav-item-sub {{ $isCatActive ? 'active' : '' }}">
-                    <span>{{ $category->name }}</span>
-                </a>
-            @endforeach
+
+            <details class="nav-acc" @if ($hasActiveCat) open @endif>
+                <summary class="nav-item nav-acc-summary {{ $isPlatformActive ? 'active' : '' }}">
+                    <img src="{{ asset('assets/img/platform-' . $logoFile . '.svg') }}"
+                         class="platform-logo" data-platform="{{ $platform }}"
+                         alt="{{ $platformLabels[$platform] ?? $platform }}" width="18" height="18" loading="lazy">
+                    <span>{{ $platformLabels[$platform] ?? ucfirst($platform) }}</span>
+                    <svg class="nav-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </summary>
+
+                <div class="nav-acc-body">
+                    <a href="{{ $platformUrl }}"
+                       class="nav-item nav-item-sub {{ $isPlatformActive ? 'active' : '' }}">
+                        <span>Tất cả {{ $platformLabels[$platform] ?? ucfirst($platform) }}</span>
+                    </a>
+                    @foreach ($categories as $category)
+                        @php
+                            $catUrl = route('panel.services.index', ['category_id' => $category->id]);
+                            $isCatActive = request()->routeIs('panel.services.index')
+                                && (int) request()->query('category_id') === (int) $category->id;
+                        @endphp
+                        <a href="{{ $catUrl }}" class="nav-item nav-item-sub {{ $isCatActive ? 'active' : '' }}">
+                            <span>{{ $category->name }}</span>
+                        </a>
+                    @endforeach
+                </div>
+            </details>
         @endforeach
     </div>
 @endif

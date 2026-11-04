@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * S1: Sidebar submenu nền tảng — khách thấy nhóm dịch vụ theo platform với danh mục con.
+ * S1: Sidebar submenu nền tảng — accordion xổ xuống, có logo nền tảng.
  */
 class PlatformMenuTest extends TestCase
 {
@@ -37,9 +37,36 @@ class PlatformMenuTest extends TestCase
             ->assertSee('FB Like bài viết');
     }
 
+    /** Accordion: nền tảng dùng <details>, danh mục con nằm bên trong. */
+    public function test_nen_tang_la_accordion_xo_xuong(): void
+    {
+        $cat = Category::factory()->create(['name' => 'FB Like bài viết', 'platform' => 'facebook']);
+        Service::factory()->create(['category_id' => $cat->id, 'is_active' => true]);
+
+        $html = $this->actingAs($this->user)->get('/dashboard')->getContent();
+
+        // Có thẻ details bọc nền tảng
+        $this->assertMatchesRegularExpression('/<details[^>]*class="[^"]*nav-acc[^"]*"/', $html);
+        // Có summary (phần bấm để xổ)
+        $this->assertStringContainsString('<summary', $html);
+        // Danh mục con nằm sau summary trong cùng details
+        $this->assertMatchesRegularExpression('/<summary.*?<\/summary>.*?FB Like bài viết/s', $html);
+    }
+
+    /** Nền tảng hiện logo SVG thật (không chỉ icon chung). */
+    public function test_nen_tang_co_logo_rieng(): void
+    {
+        $cat = Category::factory()->create(['name' => 'FB Like', 'platform' => 'facebook']);
+        Service::factory()->create(['category_id' => $cat->id, 'is_active' => true]);
+
+        $html = $this->actingAs($this->user)->get('/dashboard')->getContent();
+
+        $this->assertStringContainsString('platform-logo', $html);
+        $this->assertStringContainsString('data-platform="facebook"', $html);
+    }
+
     public function test_submenu_tieu_de_lay_tu_danh_muc_dang_hoat_dong_co_dich_vu(): void
     {
-        // Danh mục ẩn hoặc không có dịch vụ → không hiện trong submenu.
         $an = Category::factory()->create(['name' => 'Danh mục ẩn', 'platform' => 'tiktok', 'is_active' => false]);
         $rong = Category::factory()->create(['name' => 'Danh mục trống', 'platform' => 'tiktok']);
         $cat = Category::factory()->create(['name' => 'TikTok View', 'platform' => 'tiktok']);
