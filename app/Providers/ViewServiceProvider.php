@@ -22,9 +22,15 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('menuCategories', ContentController::menuCategories());
         });
 
-        // Banner thông báo mới nhất trên dashboard (tối đa 3 bài).
+        // Banner thông báo mới nhất trên dashboard (tối đa 3 bài) + thông báo hệ thống.
         View::composer('panel.dashboard', function ($view) {
             $view->with('latestPosts', Post::published()->limit(3)->get(['id', 'title', 'slug', 'published_at']));
+
+            $user = auth()->user();
+
+            $view->with('notifications', $user
+                ? $user->notifications()->limit(4)->get()
+                : collect());
         });
     }
 }
