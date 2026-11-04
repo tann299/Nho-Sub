@@ -27,6 +27,7 @@ class AdminSettingController extends Controller
             'providerAlert' => $this->settings->get('provider_balance_alert', '100'),
             'demoMode' => $this->settings->get('demo_mode', 'auto'),
             'demoScenario' => $this->settings->get('demo_scenario', 'auto'),
+            'pinnedIp' => $this->settings->get('topsubre_pinned_ip', ''),
             'sepayEnabled' => $this->settings->getBool('sepay_enabled', true),
             'payosEnabled' => $this->settings->getBool('payos_enabled', false),
             'masked' => [
@@ -53,6 +54,8 @@ class AdminSettingController extends Controller
             // Không bắt buộc: cho phép lưu một phần mà không xoá cấu hình còn lại.
             'demo_mode' => ['nullable', 'in:auto,on,off'],
             'demo_scenario' => ['nullable', 'in:auto,partial,cancel,fail'],
+            // IP ghim để vượt DNS bị lọc (để trống = dùng DNS thường).
+            'topsubre_pinned_ip' => ['nullable', 'ip'],
             'sepay_enabled' => ['nullable', 'boolean'],
             'payos_enabled' => ['nullable', 'boolean'],
             // Key bí mật: để trống = giữ nguyên key cũ.
@@ -72,7 +75,7 @@ class AdminSettingController extends Controller
         foreach ([
             'exchange_rate', 'default_markup_percent', 'min_deposit', 'bank_name',
             'bank_account', 'bank_owner', 'bank_bin', 'provider_balance_alert',
-            'demo_mode', 'demo_scenario',
+            'demo_mode', 'demo_scenario', 'topsubre_pinned_ip',
         ] as $key) {
             if (array_key_exists($key, $data) && $data[$key] !== null) {
                 $this->settings->set($key, $data[$key]);

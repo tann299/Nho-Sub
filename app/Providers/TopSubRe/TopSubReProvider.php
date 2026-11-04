@@ -112,21 +112,89 @@ class TopSubReProvider implements ProviderInterface
     private function call(string $action, array $params = []): array
     {
         try {
-            $response = Http::timeout(self::TIMEOUT)
+            $request = Http::timeout(self::TIMEOUT)
                 ->acceptJson()
-                ->asJson()
-                ->post($this->endpoint, array_merge([
-                    'key' => $this->apiKey,
-                    'action' => $action,
-                ], $params));
-        } catch (ConnectionException $e) {
-            Log::warning('TopSubRe: không kết nối được', ['action' => $action]);
+                ->asJson();
 
-            throw new ProviderException('Không kết nối được nhà cung cấp. Vui lòng thử lại sau.');
+            // Cho phép ghim IP qua cấu hình khi DNS của hosting bị lọc
+            // (ví dụ Fortinet/ISP trả về trang chặn thay vì IP thật).
+            $pinnedIp = (string) (\App\Models\Setting::query()
+                ->where('key', 'topsubre_pinned_ip')->value('value') ?? '');
+
+            $response = null;
+
+            if ($pinnedIp !== '' && preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $pinnedIp)) {
+                $host = (string) parse_url($this->endpoint, PHP_URL_HOST);
+                $payload = json_encode(array_merge(['key' => $this->apiKey, 'action' => $action], $params));
+
+                // Gọi bằng cURL thuần để ghim IP (Guzzle không nhận CURLOPT_RESOLVE qua options).
+                $ch = curl_init($this->endpoint);
+                curl_setopt_array($ch, [
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => $payload,
+                    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Accept: application/json'],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_TIMEOUT => self::TIMEOUT,
+                    CURLOPT_RESOLVE => ["{$host}:443:{$pinnedIp}"],
+                    CURLOPT_SSL_VERIFYPEER => true,
+                    CURLOPT_SSL_VERIFYHOST => 2,
+                ]);
+                $body = curl_exec($ch);
+                $curlError = curl_error($ch);
+                $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+
+                if ($body === false || $curlError !== '') {
+                    throw new ConnectionException('cURL: ' . $curlError);
+                }
+
+                $data = json_decode((string) $body, true);
+
+                if ($status >= 400) {
+                    if ($status === 403 && str_contains((string) $body, 'Blocked')) {
+                        throw new ProviderException(
+                            'Truy cập bị chặn bởi bộ lọc mạng (IP ghim chưa đúng hoặc hết hiệu lực). '
+                            . 'Lấy IP mới tại dns.google rồi cập nhật Cấu hình.'
+                        );
+                    }
+
+                    throw new ProviderException('Nhà cung cấp trả lỗi HTTP ' . $status . '.');
+                }
+
+                if (! is_array($data)) {
+                    throw new ProviderException('Phản hồi nhà cung cấp không phải JSON hợp lệ.');
+                }
+
+                return $this->assertNoError($data, $action);
+            }
+
+            $response = $request->post($this->endpoint, array_merge([
+                'key' => $this->apiKey,
+                'action' => $action,
+            ], $params));
+        } catch (ConnectionException $e) {
+            Log::warning('TopSubRe: không kết nối được', ['action' => $action, 'reason' => $e->getMessage()]);
+
+            // Phân biệt lỗi DNS bị chặn với lỗi mạng thường — thông điệp hướng dẫn admin.
+            $hint = str_contains($e->getMessage(), 'certificate')
+                || str_contains($e->getMessage(), 'SSL')
+                || str_contains($e->getMessage(), 'resolve')
+                    ? ' DNS của hosting có thể đang bị lọc domain. Vào Cấu hình nhập "IP ghim TopSubRe" (lấy IP thật qua dns.google) hoặc liên hệ nhà cung cấp mở IP.'
+                    : '';
+
+            throw new ProviderException('Không kết nối được nhà cung cấp.' . $hint);
         }
 
         if ($response->failed()) {
             Log::warning('TopSubRe: HTTP lỗi', ['action' => $action, 'status' => $response->status()]);
+
+            // 403 từ trang chặn (Fortinet) không phải lỗi key — hướng dẫn rõ.
+            if ($response->status() === 403 && str_contains((string) $response->body(), 'Blocked')) {
+                throw new ProviderException(
+                    'Truy cập bị chặn bởi bộ lọc mạng của hosting/ISP (không phải lỗi API key). '
+                    . 'Vào Cấu hình nhập "IP ghim TopSubRe" hoặc nhờ nhà cung cấp mạng mở domain likenhanh.pro.'
+                );
+            }
 
             throw new ProviderException('Nhà cung cấp trả lỗi HTTP ' . $response->status() . '.');
         }
@@ -137,7 +205,18 @@ class TopSubReProvider implements ProviderInterface
             throw new ProviderException('Phản hồi nhà cung cấp không phải JSON hợp lệ.');
         }
 
+        return $this->assertNoError($data, $action);
+    }
+
+    /** Kiểm tra trường `error` / `status=error` của phản hồi, ném lỗi kèm thông điệp. */
+    private function assertNoError(array $data, string $action): array
+    {
         $error = $data['error'] ?? false;
+
+        // Một số endpoint trả {status: "error", msg: "..."} thay vì {error: "..."}.
+        if ($error === false && ($data['status'] ?? null) === 'error') {
+            $error = $data['msg'] ?? 'Nhà cung cấp báo lỗi.';
+        }
 
         if ($error !== false && $error !== null && $error !== '' && $error !== 0) {
             // Chỉ lấy thông điệp lỗi; tuyệt đối không đưa key vào.

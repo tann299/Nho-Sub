@@ -168,6 +168,27 @@ Lịch chạy:
 
 Kiểm tra bằng `php artisan schedule:list`.
 
+### Bước 8b — Xử lý DNS bị chặn (nếu có)
+
+Một số mạng/hosting dùng bộ lọc (Fortinet, ISP) chặn domain `likenhanh.pro`, trả về trang
+"Web Page Blocked" thay vì API. Triệu chứng: Admin hiện lỗi
+*"Truy cập bị chặn bởi bộ lọc mạng"* hoặc *"DNS của hosting có thể đang bị lọc domain"*.
+
+**Cách 1 — Ghim IP (không cần liên hệ ai):**
+
+1. Mở `https://dns.google/resolve?name=likenhanh.pro&type=A` trên trình duyệt
+2. Copy một IP trong `"data"` (dạng `104.21.84.21`)
+3. Vào **Quản trị → Cấu hình → IP ghim TopSubRe**, dán IP, lưu
+
+**Cách 2 — Nhờ nhà cung cấp mạng/hosting mở domain** `likenhanh.pro` (nếu cách 1 không được).
+
+**Cách 3 — Kiểm tra IP của bạn có bị nhà cung cấp API chặn không:**
+Gọi `action=balance` — nếu trả `{"balance":...}` là IP **không** bị chặn. Chỉ khi API trả
+lỗi 403 kèm thông báo chặn IP mới cần nhắn admin TopSubRe mở IP.
+
+> **Lưu ý máy Windows dev:** nếu `curl` báo `error setting certificate file`, kiểm tra
+> `php.ini` → `curl.cainfo` phải trỏ đúng file có thật (Laragon: `D:\App\laragon\etc\ssl\cacert.pem`).
+
 ### Bước 9 — Cấu hình thanh toán
 
 Vào **Quản trị → Cấu hình**:

@@ -68,7 +68,7 @@
                         <option value="off" @selected($demoMode === 'off')>Bắt buộc dùng API thật</option>
                     </select>
                 </div>
-                <div class="form-group mb-0">
+                <div class="form-group">
                     <label class="form-label" for="demo_scenario">Kịch bản demo</label>
                     <select class="form-select" id="demo_scenario" name="demo_scenario">
                         <option value="auto" @selected($demoScenario === 'auto')>Tự động (hoàn thành)</option>
@@ -76,6 +76,16 @@
                         <option value="cancel" @selected($demoScenario === 'cancel')>Huỷ đơn</option>
                         <option value="fail" @selected($demoScenario === 'fail')>Nhà cung cấp từ chối</option>
                     </select>
+                </div>
+                <div class="form-group mb-0">
+                    <label class="form-label" for="topsubre_pinned_ip">IP ghim TopSubRe (chỉ khi DNS bị chặn)</label>
+                    <input class="form-input" id="topsubre_pinned_ip" name="topsubre_pinned_ip"
+                           value="{{ $pinnedIp }}" placeholder="Để trống nếu kết nối bình thường">
+                    <div class="form-hint">
+                        Chỉ dùng khi báo lỗi "Truy cập bị chặn bởi bộ lọc mạng".
+                        Lấy IP thật tại <span class="mono">https://dns.google/resolve?name=likenhanh.pro&amp;type=A</span>
+                        rồi nhập một trong các IP trả về.
+                    </div>
                 </div>
             </div>
 
