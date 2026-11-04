@@ -22,10 +22,37 @@ class DepositService
     // \s* cho phép "NHOSUBABC"; \b ở cuối tránh cắt "KHACHVIP" thành "KHACH".
     private const CONTENT_PATTERN = '/\bNHOSUB\s*([A-Za-z0-9_]{3,32})\b/iu';
 
+    // Mã xác thực: 6 ký tự không dễ nhầm (bỏ 0/O, 1/I) — nằm sau username trong nội dung CK.
+    private const CODE_PATTERN = '/\b([A-HJ-NP-Z2-9]{6})\b/u';
+
+    // Bảng ký tự sinh mã — bỏ 0/O, 1/I để khách gõ tay không nhầm.
+    private const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
     public function __construct(
         private readonly WalletService $wallet,
         private readonly SettingService $settings,
     ) {
+    }
+
+    /** Sinh mã xác thực ngẫu nhiên 6 ký tự cho một yêu cầu nạp. */
+    public function generateVerificationCode(): string
+    {
+        $alphabet = self::CODE_ALPHABET;
+        $length = mb_strlen($alphabet);
+        $code = '';
+
+        for ($i = 0; $i < 6; $i++) {
+            $code .= $alphabet[random_int(0, $length - 1)];
+        }
+
+        // Mã đang sống (chưa duyệt/hết hạn) trùng nhau rất hiếm — nhưng vẫn kiểm tra.
+        if (DepositRequest::where('verification_code', $code)
+            ->whereIn('status', [DepositRequest::STATUS_PENDING])
+            ->exists()) {
+            return $this->generateVerificationCode();
+        }
+
+        return $code;
     }
 
     /**
@@ -39,6 +66,75 @@ class DepositService
         }
 
         return mb_strtolower($m[1]);
+    }
+
+    /**
+     * Tách mã xác thực từ nội dung chuyển khoản (nếu có).
+     * "NHOSUB KHACHVIP N7K2P9" → "N7K2P9". Trả null nếu không có.
+     */
+    public function parseVerificationCode(string $content): ?string
+    {
+        if (! preg_match(self::CODE_PATTERN, $content, $m)) {
+            return null;
+        }
+
+        return strtoupper($m[1]);
+    }
+
+    /**
+     * Tìm user theo nội dung chuyển khoản — ưu tiên MÃ XÁC THỰC, fallback username.
+     *
+     * Mã xác thực chính xác 1-1 với yêu cầu nạp nên two khách chuyển cùng lúc
+     * không bao giờ nhầm nhau. Username chỉ dùng khi khách quên không kèm mã.
+     *
+     * @return array{user: ?User, matchedBy: string, expectedCode: ?string, depositRequest: ?DepositRequest}
+     */
+    public function resolveDepositUser(string $content, int $amount): array
+    {
+        $code = $this->parseVerificationCode($content);
+        $expectedCode = null;
+
+        // 1) Ưu tiên mã xác thực — chính xác nhất.
+        if ($code !== null) {
+            $deposit = DepositRequest::where('verification_code', $code)
+                ->whereIn('status', [DepositRequest::STATUS_PENDING])
+                ->first();
+
+            if ($deposit !== null) {
+                // Số tiền phải khớp yêu cầu (không quá lệch 10% cho phí bank).
+                $expected = (int) $deposit->amount;
+                $ok = $amount >= $expected && $amount <= (int) ceil($expected * 1.1);
+
+                if ($ok) {
+                    return [
+                        'user' => $deposit->user,
+                        'matchedBy' => 'code',
+                        'expectedCode' => $code,
+                        'depositRequest' => $deposit,
+                    ];
+                }
+            }
+
+            $expectedCode = $code; // log để admin thấy mã khách chuyển nhưng không khớp
+        }
+
+        // 2) Fallback: username trong nội dung (cách cũ).
+        $username = $this->parseTransferContent($content);
+
+        if ($username !== null) {
+            $user = User::whereRaw('LOWER(username) = ?', [$username])->first();
+
+            if ($user !== null) {
+                return [
+                    'user' => $user,
+                    'matchedBy' => 'username',
+                    'expectedCode' => $expectedCode,
+                    'depositRequest' => null,
+                ];
+            }
+        }
+
+        return ['user' => null, 'matchedBy' => 'none', 'expectedCode' => $expectedCode, 'depositRequest' => null];
     }
 
     /**
@@ -79,34 +175,43 @@ class DepositService
             return ['status' => WebhookLog::STATUS_REJECTED, 'message' => 'Số tiền dưới mức tối thiểu.'];
         }
 
-        $username = $this->parseTransferContent($content);
+        // Đối chiếu: ưu tiên mã xác thực, fallback username.
+        $resolved = $this->resolveDepositUser($content, $amount);
+        $user = $resolved['user'];
 
-        if ($username === null) {
-            $this->markLog($log, WebhookLog::STATUS_UNMATCHED, 'Nội dung không chứa mã NHOSUB <tài khoản>.');
+        if ($user === null) {
+            $this->markLog($log, WebhookLog::STATUS_UNMATCHED,
+                $resolved['expectedCode'] !== null
+                    ? "Mã xác thực '{$resolved['expectedCode']}' không khớp yêu cầu nạp nào (hoặc sai số tiền)."
+                    : 'Nội dung không chứa mã NHOSUB <tài khoản>.',
+                $resolved['expectedCode']);
 
             return ['status' => WebhookLog::STATUS_UNMATCHED, 'message' => 'Không tìm thấy mã chuyển khoản.'];
         }
 
-        $user = User::whereRaw('LOWER(username) = ?', [$username])->first();
-
-        if (! $user) {
-            $this->markLog($log, WebhookLog::STATUS_UNMATCHED, "Không tìm thấy tài khoản '{$username}'.");
-
-            return ['status' => WebhookLog::STATUS_UNMATCHED, 'message' => 'Không tìm thấy tài khoản.'];
-        }
-
         // Ghi nhận nạp tiền + cộng ví trong 1 transaction.
-        DB::transaction(function () use ($user, $amount, $gateway, $gatewayTxnId, $log) {
-            $deposit = DepositRequest::create([
-                'user_id' => $user->id,
-                'amount' => $amount,
-                'method' => $gateway,
-                'transfer_code' => $user->transferContent(),
-                'status' => DepositRequest::STATUS_APPROVED,
-                'gateway_txn_id' => $gatewayTxnId,
-                'created_at' => now(),
-                'reviewed_at' => now(),
-            ]);
+        DB::transaction(function () use ($user, $amount, $gateway, $gatewayTxnId, $log, $resolved) {
+            // Có yêu cầu nạp sẵn (khớp mã xác thực) → duyệt luôn yêu cầu đó.
+            $deposit = $resolved['depositRequest'];
+
+            if ($deposit === null) {
+                $deposit = DepositRequest::create([
+                    'user_id' => $user->id,
+                    'amount' => $amount,
+                    'method' => $gateway,
+                    'transfer_code' => $user->transferContent(),
+                    'status' => DepositRequest::STATUS_APPROVED,
+                    'gateway_txn_id' => $gatewayTxnId,
+                    'created_at' => now(),
+                    'reviewed_at' => now(),
+                ]);
+            } else {
+                $deposit->forceFill([
+                    'status' => DepositRequest::STATUS_APPROVED,
+                    'gateway_txn_id' => $gatewayTxnId,
+                    'reviewed_at' => now(),
+                ])->save();
+            }
 
             $this->wallet->apply(
                 userId: (int) $user->id,
@@ -117,7 +222,7 @@ class DepositService
                 depositId: $deposit->id,
             );
 
-            $this->markLog($log, WebhookLog::STATUS_PROCESSED, null);
+            $this->markLog($log, WebhookLog::STATUS_PROCESSED, null, $resolved['expectedCode']);
         });
 
         return ['status' => WebhookLog::STATUS_PROCESSED, 'message' => 'Đã cộng tiền.'];
@@ -158,9 +263,9 @@ class DepositService
         }
     }
 
-    private function markLog(WebhookLog $log, string $status, ?string $reason): void
+    private function markLog(WebhookLog $log, string $status, ?string $reason, ?string $expectedCode = null): void
     {
-        $log->forceFill(['status' => $status, 'reason' => $reason])->save();
+        $log->forceFill(['status' => $status, 'reason' => $reason, 'expected_code' => $expectedCode])->save();
     }
 
     /** Che mọi trường có tên chứa key/token/secret trước khi lưu nhật ký. */
@@ -209,6 +314,7 @@ class DepositService
             'amount' => $amount,
             'method' => $method,
             'transfer_code' => $user->transferContent(),
+            'verification_code' => $this->generateVerificationCode(),
             'status' => DepositRequest::STATUS_PENDING,
             'admin_note' => $note,
             'created_at' => now(),

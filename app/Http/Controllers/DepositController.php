@@ -23,9 +23,20 @@ class DepositController extends Controller
     {
         $user = $request->user();
 
+        // Lấy yêu cầu nạp đang chờ của khách (duyệt tay) — có mã xác thực.
+        $pendingRequest = DepositRequest::where('user_id', $user->id)
+            ->where('status', DepositRequest::STATUS_PENDING)
+            ->latest('id')
+            ->first();
+
+        // Mã xác thực dùng cho chuyển khoản nhanh (không qua yêu cầu duyệt tay):
+        // sinh theo phiên — khách chỉ cần kèm mã này trong nội dung CK.
+        $transferContent = $user->transferContent();
+
         return view('panel.deposit', [
             'user' => $user,
-            'transferContent' => $user->transferContent(),
+            'transferContent' => $transferContent,
+            'pendingRequest' => $pendingRequest,
             'minDeposit' => $this->settings->getInt('min_deposit', 10000),
             'bankName' => $this->settings->get('bank_name', ''),
             'bankAccount' => $this->settings->get('bank_account', ''),

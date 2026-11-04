@@ -13,7 +13,7 @@ class WebhookLog extends Model
     public const STATUS_PROCESSED_LATE = 'processed_late';
 
     protected $fillable = [
-        'gateway', 'gateway_txn_id', 'amount', 'content', 'status', 'reason', 'payload',
+        'gateway', 'gateway_txn_id', 'amount', 'content', 'expected_code', 'status', 'reason', 'payload',
     ];
 
     protected function casts(): array

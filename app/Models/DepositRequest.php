@@ -21,7 +21,7 @@ class DepositRequest extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id', 'amount', 'method', 'transfer_code', 'status',
+        'user_id', 'amount', 'method', 'transfer_code', 'verification_code', 'status',
         'admin_note', 'gateway_txn_id', 'expires_at', 'created_at', 'reviewed_at',
     ];
 
