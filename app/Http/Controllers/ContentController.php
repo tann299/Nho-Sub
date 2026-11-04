@@ -49,7 +49,8 @@ class ContentController extends Controller
             ->whereHas('services', fn ($q) => $q->where('is_active', true))
             ->with('services:id,category_id')
             ->orderBy('platform')
+            ->orderBy('app')
             ->orderBy('sort_order')
-            ->get(['id', 'name', 'platform']);
+            ->get(['id', 'name', 'platform', 'app']);
     }
 }

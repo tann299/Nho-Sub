@@ -11,7 +11,18 @@ class ProfileController extends Controller
 {
     public function edit(Request $request): View
     {
-        return view('panel.profile', ['user' => $request->user()]);
+        $user = $request->user();
+
+        // Thống kê tài khoản cho trang hồ sơ.
+        $totalDeposited = (int) $user->walletTransactions()
+            ->where('type', \App\Models\WalletTransaction::TYPE_DEPOSIT)
+            ->sum('amount');
+
+        return view('panel.profile', [
+            'user' => $user,
+            'totalDeposited' => $totalDeposited,
+            'orderCount' => $user->orders()->count(),
+        ]);
     }
 
     /** Chỉ cho sửa họ tên, SĐT, email. Username và role bị bỏ qua hoàn toàn. */

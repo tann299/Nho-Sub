@@ -105,7 +105,7 @@ class ServiceSyncService
         ];
     }
 
-    /** Tìm hoặc tạo danh mục theo tên NCC trả về; đoán nền tảng từ tên. */
+    /** Tìm hoặc tạo danh mục theo tên NCC trả về; đoán nền tảng + app từ tên. */
     private function resolveCategory(string $name): Category
     {
         $name = trim($name) !== '' ? mb_substr(trim($name), 0, 160) : 'Khác';
@@ -125,9 +125,25 @@ class ServiceSyncService
             default => 'khac',
         };
 
+        // App cụ thể trong nền tảng "khác" — để menu gắn đúng logo.
+        $app = '';
+        if ($platform === 'khac') {
+            $first = mb_strtolower(explode(' ', trim($name))[0]);
+            $app = match (true) {
+                str_starts_with($first, 'x'), str_starts_with($first, 'twitter') => 'twitter',
+                str_starts_with($first, 'shopee'), str_starts_with($first, 'lazada') => 'shopee',
+                str_starts_with($first, 'threads') => 'threads',
+                str_starts_with($first, 'kwai') => 'kwai',
+                str_starts_with($first, 'soundcloud') => 'soundcloud',
+                str_starts_with($first, 'traffic'), str_starts_with($first, 'google') => 'traffic',
+                default => '',
+            };
+        }
+
         return Category::create([
             'name' => $name,
             'platform' => $platform,
+            'app' => $app,
             'sort_order' => 100,
             'is_active' => true,
         ]);
