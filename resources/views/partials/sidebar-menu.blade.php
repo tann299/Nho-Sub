@@ -53,6 +53,30 @@
         : collect();
 @endphp
 
+{{-- 0. Quản trị (chỉ admin) — ĐẦU TIÊN theo yêu cầu --}}
+@auth
+    @if (auth()->user()->isAdmin())
+        @php
+            $adminAvailable = array_values(array_filter(
+                $adminGroups['Quản trị'],
+                fn ($i) => Route::has($i[0])
+            ));
+        @endphp
+        @if (! empty($adminAvailable))
+            <div class="nav-group">
+                <div class="nav-group-title">Quản trị</div>
+                @foreach ($adminAvailable as [$routeName, $label, $icon])
+                    <a href="{{ route($routeName) }}"
+                       class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon }}"/></svg>
+                        <span>{{ $label }}</span>
+                    </a>
+                @endforeach
+            </div>
+        @endif
+    @endif
+@endauth
+
 {{-- 1. Tổng quan & Dịch vụ --}}
 @foreach ($topGroups as $groupName => $items)
     @php
@@ -186,27 +210,3 @@
         </div>
     @endif
 @endforeach
-
-{{-- 4. Quản trị (chỉ admin) --}}
-@auth
-    @if (auth()->user()->isAdmin())
-        @php
-            $adminAvailable = array_values(array_filter(
-                $adminGroups['Quản trị'],
-                fn ($i) => Route::has($i[0])
-            ));
-        @endphp
-        @if (! empty($adminAvailable))
-            <div class="nav-group">
-                <div class="nav-group-title">Quản trị</div>
-                @foreach ($adminAvailable as [$routeName, $label, $icon])
-                    <a href="{{ route($routeName) }}"
-                       class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon }}"/></svg>
-                        <span>{{ $label }}</span>
-                    </a>
-                @endforeach
-            </div>
-        @endif
-    @endif
-@endauth
