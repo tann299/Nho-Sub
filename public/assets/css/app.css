@@ -852,3 +852,36 @@ a.dash-notify:hover .dash-notify-title { color: var(--primary-dark); }
 .stat-link:hover { color: var(--primary-dark); }
 .stat-link-plain { color: var(--muted); cursor: default; }
 
+/* =========================================================
+   ADMIN DASHBOARD — việc cần xử lý + lưới trạng thái
+   ========================================================= */
+
+/* Ô "việc cần xử lý": số to + nhãn, viền đỏ khi có việc */
+.admin-todo-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.admin-todo {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 14px 10px; border: 1px solid #E3ECFB; border-radius: var(--radius-sm);
+  text-decoration: none; color: inherit; background: var(--bg);
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+.admin-todo:hover { border-color: var(--primary); background: var(--surface-tint); transform: translateY(-1px); }
+.admin-todo-hot { border-color: #F7C9C9; background: #FDECEC; }
+.admin-todo-hot:hover { border-color: var(--danger); background: #FDECEC; }
+.admin-todo-count { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--primary-dark); }
+.admin-todo-hot .admin-todo-count { color: var(--danger); }
+.admin-todo-label { font-size: 12.5px; color: var(--muted); font-weight: 600; text-align: center; }
+
+/* Lưới trạng thái đơn — ô bấm được, đếm số */
+.admin-status-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0; padding: 6px 0;
+}
+.admin-status-cell {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 9px 16px; text-decoration: none; color: inherit;
+  border-bottom: 1px solid #EDF2FA;
+  transition: background-color .2s ease;
+}
+.admin-status-cell:hover { background: var(--surface-tint); }
+.admin-status-num { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--primary-dark); }
+

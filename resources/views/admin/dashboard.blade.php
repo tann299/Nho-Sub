@@ -76,23 +76,42 @@
         </div>
     </div>
 
+    {{-- Việc cần xử lý — chỉ hiện khi có, bấm thẳng vào đúng nơi xử lý --}}
+    @php
+        $todo = [
+            ['Nạp tiền chờ duyệt', $pendingDeposits, route('admin.deposits.index'), $pendingDeposits > 0],
+            ['Đơn kẹt cần xử lý tay', $stuckCount, route('admin.orders.index', ['status' => 'stuck_review']), $stuckCount > 0],
+        ];
+    @endphp
     <div class="card">
-        <h3 class="card-title">Đơn theo trạng thái</h3>
-        <div class="table-wrap">
-            <table class="table">
-                <thead><tr><th>Trạng thái</th><th class="num">Số đơn</th></tr></thead>
-                <tbody>
-                @foreach ($byStatus as $status => $count)
-                    <tr>
-                        <td>@include('partials.order-status', ['status' => $status])</td>
-                        <td class="num">{{ number_format($count) }}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+        <h3 class="card-title">Việc cần xử lý</h3>
+        <div class="admin-todo-row">
+            @foreach ($todo as [$label, $count, $url, $hot])
+                <a href="{{ $url }}" class="admin-todo {{ $hot ? 'admin-todo-hot' : '' }}">
+                    <span class="admin-todo-count">{{ $count }}</span>
+                    <span class="admin-todo-label">{{ $label }}</span>
+                </a>
+            @endforeach
         </div>
-        <p class="text-sm text-muted mt-2 mb-0">
+        <p class="text-sm text-muted mt-2 mb-0" style="margin-top:10px;">
             Lợi nhuận gộp chưa trừ chi phí hosting, tên miền và chi phí vận hành khác.
         </p>
+    </div>
+
+    <div class="card mt-3" style="padding:0;overflow:hidden;">
+        <div class="flex-between" style="padding:12px 16px;border-bottom:1px solid var(--primary-light);">
+            <span class="card-label" style="margin:0;">Đơn theo trạng thái</span>
+            <a href="{{ route('admin.orders.index') }}" class="text-sm link-underline">Tất cả đơn</a>
+        </div>
+        <div class="admin-status-grid">
+            @forelse (($byStatus ?? []) as $status => $count)
+                <a class="admin-status-cell" href="{{ route('admin.orders.index', ['status' => $status]) }}">
+                    @include('partials.order-status', ['status' => $status])
+                    <span class="admin-status-num">{{ number_format($count) }}</span>
+                </a>
+            @empty
+                <p class="text-sm text-muted" style="padding:10px 16px;">Chưa có đơn nào — lưới trạng thái sẽ hiện khi có đơn đầu tiên.</p>
+            @endforelse
+        </div>
     </div>
 @endsection
