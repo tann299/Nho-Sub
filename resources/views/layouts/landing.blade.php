@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'NhoSub — Sub nhỏ, lớn dần cùng bạn')</title>
     <meta name="description" content="@yield('meta_description', 'NhoSub — panel tăng tương tác mạng xã hội: like, follow, view, comment, share cho Facebook, TikTok, Instagram, YouTube. Giá tốt, chạy nhanh, hỗ trợ 24/7.')">
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/img/favicon-48.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 </head>
 <body>

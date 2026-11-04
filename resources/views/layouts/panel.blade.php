@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Bảng điều khiển') — {{ config('app.name') }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/img/favicon-48.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v={{ file_exists(public_path('assets/css/app.css')) ? filemtime(public_path('assets/css/app.css')) : '1' }}">
 </head>
 <body>

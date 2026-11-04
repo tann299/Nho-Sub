@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Đăng nhập') — {{ config('app.name') }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/img/favicon-48.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 </head>
 <body>
