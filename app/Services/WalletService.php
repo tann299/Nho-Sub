@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\WalletTransaction;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Sổ cái ví — CỬA DUY NHẤT thay đổi số dư.
@@ -71,6 +72,18 @@ class WalletService
                     'note' => $note,
                     'created_at' => now(),
                 ]);
+
+                // Giám sát: giao dịch lớn (>= 2 triệu ₫) được ghi log riêng để
+                // phát hiện biến động số dư bất thường (tiêu chí bảo mật 7).
+                if (abs($amount) >= 2_000_000) {
+                    Log::channel('admin')->warning('wallet.large_transaction', [
+                        'user_id' => $userId,
+                        'type' => $type,
+                        'amount' => $amount,
+                        'balance_after' => $newBalance,
+                        'idempotency_key' => $idempotencyKey,
+                    ]);
+                }
             });
         } catch (QueryException $e) {
             // Trường hợp hiếm: hai request cùng key lọt qua bước kiểm tra đầu tiên.

@@ -16,11 +16,15 @@ class User extends Authenticatable
     public const STATUS_ACTIVE = 'active';
     public const STATUS_LOCKED = 'locked';
 
+    // BẢO MẬT: không đặt role/balance/status vào fillable — chúng chỉ được
+    // thay đổi qua code paths có kiểm soát (register hard-code customer,
+    // admin adjust qua route riêng có CSRF + confirm). Chống mass assignment.
     protected $fillable = [
         'username', 'email', 'password_hash', 'full_name', 'phone',
-        'role', 'balance', 'status', 'last_login_at',
-        'failed_login_attempts', 'locked_until',
+        'last_login_at',
     ];
+
+    protected $guarded = ['id', 'role', 'balance', 'status', 'failed_login_attempts', 'locked_until', 'email_verified_at', 'created_at', 'updated_at'];
 
     protected $hidden = ['password_hash', 'remember_token'];
 

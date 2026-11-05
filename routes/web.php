@@ -36,12 +36,13 @@ Route::get('/terms', [ContentController::class, 'terms'])->name('content.terms')
 Route::get('/faq', [ContentController::class, 'faq'])->name('content.faq');
 
 // ---------- Webhook cổng thanh toán (ngoại lệ CSRF đã khai ở bootstrap) ----------
+// Throttle 30/phút: SePay chỉ gửi khi có giao dịch thật; chặn flood spam request.
 Route::post('/webhook/sepay', [\App\Http\Controllers\Webhook\SePayController::class, 'handle'])
-    ->middleware('throttle:120,1')
+    ->middleware('throttle:30,1')
     ->name('webhook.sepay');
 
 Route::post('/webhook/payos', [\App\Http\Controllers\Webhook\PayOSController::class, 'handle'])
-    ->middleware('throttle:120,1')
+    ->middleware('throttle:30,1')
     ->name('webhook.payos');
 
 // ---------- Xác thực ----------
@@ -87,7 +88,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // ---------- Khu vực quản trị ----------
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin', 'admin.log'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');

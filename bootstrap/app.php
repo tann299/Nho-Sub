@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
+            'admin.log' => \App\Http\Middleware\AdminActionLogger::class,
         ]);
 
         // Webhook cổng thanh toán xác thực bằng chữ ký riêng, không dùng CSRF.
