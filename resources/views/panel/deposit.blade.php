@@ -160,10 +160,10 @@
             var qrImg = document.getElementById('qr-img');
             var contentEl = document.getElementById('transfer-content-dyn');
             var copyBtn = document.getElementById('btn-copy-dyn');
-            var base = {{ json_encode($transferContent) }};
-            var bin = {{ json_encode($bankBin) }};
-            var account = {{ json_encode($bankAccount) }};
-            var owner = {{ json_encode($bankOwner) }};
+            var base = @json($transferContent);
+            var bin = @json($bankBin);
+            var account = @json($bankAccount);
+            var owner = @json($bankOwner);
 
             function fmt(n) { return n.toLocaleString('vi-VN'); }
 
