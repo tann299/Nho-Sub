@@ -724,18 +724,46 @@ a { color: var(--primary); text-decoration: none; }
 @media (max-width: 640px) {
   .section { padding: 44px 0; }
   .hero { padding: 52px 0 44px; }
-  .content { padding: 14px 12px 32px; }
+  .content { padding: 14px 12px 84px; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
-  .table { min-width: 700px; }
+  .table { min-width: 620px; }
   .hero-stats { gap: 18px; }
   .card { padding: 13px; }
-  .topbar { padding: 0 12px; gap: 6px; }
-  .topbar-title { font-size: 14px; }
   .btn { min-height: 42px; }
 
   .dash-hero { padding: 20px 18px; }
   .dash-hero-art { max-width: 240px; }
+
+  /* Chống tràn ngang toàn trang */
+  body { overflow-x: hidden; }
+
+  /* Nút hành động trong hero xếp dọc, full chiều rộng */
+  .dash-hero-actions { flex-direction: column; align-items: stretch; width: 100%; }
+  .dash-hero-actions .btn { width: 100%; }
+
+  /* Nút trong card xếp dọc thay vì chen nhau */
+  .flex-between.flex-wrap { flex-direction: column; align-items: stretch; gap: 10px; }
+  .flex-between.flex-wrap .btn { width: 100%; }
+
+  /* Bảng cuộn ngang trong khung, không đẩy cả trang */
+  .table-wrap { margin: 0 -13px; padding: 0 13px; }
+
+  /* Form: input full chiều rộng, chữ đủ to để iOS không zoom */
+  .form-input, .form-select, .form-textarea { font-size: 16px; }
+
+  /* Hàng copy (nội dung CK, số TK) xuống dòng thay vì tràn */
+  .copy-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .copy-row .copy-value { text-align: left; }
+
+  /* QR không vượt khung */
+  .qr-frame img { max-width: 100% !important; height: auto; }
+
+  /* Thẻ hồ sơ mini full chiều rộng */
+  .dash-profile { width: 100%; }
+
+  /* Modal / dropdown không tràn màn hình */
+  [data-dropdown-menu] { right: 0 !important; left: auto !important; max-width: calc(100vw - 24px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -851,6 +879,50 @@ a.dash-notify:hover .dash-notify-title { color: var(--primary-dark); }
 .stat-link { font-size: 12px; color: var(--primary); font-weight: 600; display: inline-block; margin-top: 2px; }
 .stat-link:hover { color: var(--primary-dark); }
 .stat-link-plain { color: var(--muted); cursor: default; }
+
+/* =========================================================
+   MOBILE NAV — thanh điều hướng dưới cùng (chỉ < 1024px)
+   ========================================================= */
+.mobile-nav { display: none; }
+
+@media (max-width: 1023px) {
+  .mobile-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    background: var(--card);
+    border-top: 1px solid var(--primary-light);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -1px 2px rgba(15, 34, 51, .05), 0 -4px 14px rgba(15, 34, 51, .06);
+  }
+  .mobile-nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    padding: 8px 2px 7px; min-height: 56px;
+    border: 0; background: none; cursor: pointer; font: inherit;
+    color: var(--muted); text-decoration: none;
+    transition: color .2s ease, background-color .2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-nav-item svg { width: 21px; height: 21px; }
+  .mobile-nav-item span { font-size: 10.5px; font-weight: 600; line-height: 1.1; letter-spacing: -.01em; }
+  .mobile-nav-item.active { color: var(--primary); }
+  .mobile-nav-item.active svg { stroke-width: 2.4; }
+  .mobile-nav-item:active { background: var(--primary-light); }
+
+  /* Chừa chỗ cho thanh dưới, không che nội dung */
+  .content { padding-bottom: 78px; }
+  .toast-wrap { bottom: 74px; }
+
+  /* Topbar: gọn lại, không tràn nút */
+  .topbar { padding: 0 10px; gap: 6px; }
+  .topbar-title {
+    font-size: 14px; font-weight: 700;
+    max-width: 34vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .icon-btn { width: 34px; height: 34px; }
+  .icon-btn svg { width: 17px; height: 17px; }
+  .topbar-balance { padding: 5px 10px; font-size: 12px; gap: 4px; }
+  .topbar-balance svg { width: 14px; height: 14px; }
+}
 
 /* =========================================================
    ADMIN DASHBOARD — việc cần xử lý + lưới trạng thái

@@ -40,11 +40,12 @@
   /* Sidebar mobile + thu gọn desktop */
   function initSidebar() {
     var body = document.body;
-    var toggle = document.querySelector('[data-sidebar-toggle]');
+    var toggles = document.querySelectorAll('[data-sidebar-toggle]');
     var overlay = document.querySelector('.sidebar-overlay');
     var collapseBtn = document.querySelector('[data-sidebar-collapse]');
 
-    if (toggle) {
+    // Nhiều nút cùng mở menu: nút trên topbar (desktop/mobile) + nút "Menu" ở thanh dưới.
+    Array.prototype.forEach.call(toggles, function (toggle) {
       toggle.addEventListener('click', function () {
         if (window.innerWidth < 1024) {
           body.classList.toggle('sidebar-open');
@@ -55,7 +56,7 @@
           } catch (e) { /* chế độ riêng tư: bỏ qua */ }
         }
       });
-    }
+    });
 
     if (collapseBtn) {
       collapseBtn.addEventListener('click', function () {

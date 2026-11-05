@@ -82,6 +82,8 @@
     </div>
 </div>
 
+@include('partials.mobile-nav')
+
 <div class="toast-wrap"></div>
 <script src="{{ asset('assets/js/app.js') }}" defer></script>
 @stack('scripts')
