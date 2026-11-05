@@ -90,10 +90,8 @@ class DesignTokensTest extends TestCase
 
     public function test_logo_ton_tai_va_dung_mau_xanh(): void
     {
-        $svg = file_get_contents(__DIR__ . '/../../public/assets/img/logo.svg');
-
-        $this->assertStringContainsString('#1E6FD9', $svg);
-        $this->assertStringContainsString('#DCEBFD', $svg);
-        $this->assertStringNotContainsString('gradient', $svg, 'Logo không được dùng gradient');
+        // Logo mới là PNG (ảnh vẽ tay) — kiểm file tồn tại + favicon PNG
+        $this->assertFileExists(__DIR__ . '/../../public/assets/img/logo.png');
+        $this->assertFileExists(__DIR__ . '/../../public/assets/img/favicon-48.png');
     }
 }
