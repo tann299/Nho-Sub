@@ -490,6 +490,14 @@ a { color: var(--primary); text-decoration: none; }
 }
 .auth-side h2 { color: #fff; }
 .auth-side p { color: rgba(255,255,255,.86); }
+
+/* Minh hoạ SVG trong khối xanh — đặt trên cùng, nội dung đẩy xuống dưới */
+.auth-side-art {
+  position: absolute; top: 0; left: 0; right: 0;
+  opacity: .9; pointer-events: none;
+}
+.auth-side-art svg { display: block; width: 100%; height: auto; }
+.auth-side-body { position: relative; z-index: 1; }
 .auth-main { display: flex; align-items: center; justify-content: center; padding: 32px 20px; }
 .auth-card { width: 100%; max-width: 400px; background: #fff; border: 1px solid var(--primary-light); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 26px; }
 .auth-title { font-size: 22px; margin-bottom: 4px; }

@@ -1,11 +1,11 @@
 @php
     // Menu người dùng — gọn nhất có thể:
-    // 0. Trang chủ (landing) — lên đầu theo yêu cầu
+    // 0. Trang chủ (dashboard) — lên đầu theo yêu cầu
     // 1. Sản phẩm & dịch vụ (accordion nền tảng + app)
     // 2. Tài khoản (đơn của tôi, nạp tiền, hồ sơ, hỗ trợ)
     // 3. Quản trị (admin)
 
-    $homeLink = ['landing', 'Trang chủ', 'M3 12l9-9 9 9M5 10v10h14V10'];
+    $homeLink = ['panel.dashboard', 'Trang chủ', 'M3 12l9-9 9 9M5 10v10h14V10'];
 
     $midGroups = [
         'Tài khoản' => [
@@ -49,10 +49,10 @@
         : collect();
 @endphp
 
-{{-- 0. Trang chủ — lên đầu thanh menu --}}
-@if (Route::has('landing'))
+{{-- 0. Trang chủ (dashboard) — lên đầu thanh menu --}}
+@if (Route::has($homeLink[0]))
     <div class="nav-group">
-        <a href="{{ route('landing') }}" class="nav-item {{ request()->routeIs('landing') ? 'active' : '' }}">
+        <a href="{{ route($homeLink[0]) }}" class="nav-item {{ request()->routeIs('panel.dashboard') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $homeLink[2] }}"/></svg>
             <span>{{ $homeLink[1] }}</span>
         </a>
