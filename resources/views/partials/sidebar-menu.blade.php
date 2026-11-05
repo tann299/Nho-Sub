@@ -83,8 +83,8 @@
     @endif
 @endauth
 
-{{-- 2. Sản phẩm & dịch vụ: nền tảng accordion → danh mục con (đặt ngay sau Dịch vụ) --}}
-@if ($byPlatform->isNotEmpty())
+{{-- 2. Sản phẩm & dịch vụ: nền tảng accordion → danh mục con (KHÔNG hiện cho admin) --}}
+@if ($byPlatform->isNotEmpty() && ! auth()->user()?->isAdmin())
     <div class="nav-group">
         <div class="nav-group-title">{{ __('Sản phẩm & dịch vụ') }}</div>
         @foreach ($byPlatform as $platform => $categories)
@@ -179,7 +179,8 @@
     </div>
 @endif
 
-{{-- 3. Đơn hàng, Thanh toán, Cài đặt --}}
+{{-- 3. Đơn hàng, Thanh toán, Cài đặt — KHÔNG hiện cho admin (admin chỉ dùng Quản trị) --}}
+@unless (auth()->user()?->isAdmin())
 @foreach ($midGroups as $groupName => $items)
     @php
         $available = array_values(array_filter($items, fn ($i) => Route::has($i[0])));
@@ -197,3 +198,4 @@
         </div>
     @endif
 @endforeach
+@endunless
