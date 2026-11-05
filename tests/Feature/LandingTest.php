@@ -31,7 +31,7 @@ class LandingTest extends TestCase
             ->assertSee('Đánh giá')
             ->assertSee('Câu hỏi thường gặp')
             ->assertSee('Like bài viết Facebook')
-            ->assertSee('Đăng ký miễn phí');
+            ->assertSee('Đăng ký');
     }
 
     public function test_landing_khong_lo_gia_goc(): void
@@ -50,7 +50,8 @@ class LandingTest extends TestCase
 
         $this->actingAs($user)->get('/')
             ->assertSee('Vào bảng điều khiển')
-            ->assertDontSee('Đăng ký miễn phí');
+            ->assertDontSee('Đăng ký miễn phí')
+            ->assertDontSee('>Đăng ký<');
     }
 
     public function test_trang_404_hien_tieng_viet(): void

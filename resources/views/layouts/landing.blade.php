@@ -29,7 +29,7 @@
             <a href="{{ route('panel.dashboard') }}" class="btn btn-primary">Vào bảng điều khiển</a>
         @else
             <a href="{{ route('login') }}" class="btn btn-ghost">Đăng nhập</a>
-            <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký miễn phí</a>
+            <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký</a>
         @endauth
     </div>
 </header>

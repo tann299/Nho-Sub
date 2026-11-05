@@ -20,7 +20,7 @@
                         @auth
                             <a href="{{ route('panel.dashboard') }}" class="btn btn-primary">Vào bảng điều khiển</a>
                         @else
-                            <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký miễn phí</a>
+                            <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký ngay</a>
                             <a href="{{ route('login') }}" class="btn btn-outline">Đăng nhập</a>
                         @endauth
                     </div>
