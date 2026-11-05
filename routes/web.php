@@ -116,6 +116,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/posts', [AdminPostController::class, 'store'])->name('posts.store');
     Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('posts.edit');
     Route::post('/posts/{post}', [AdminPostController::class, 'update'])->name('posts.update');
+    Route::post('/posts/{post}/pin', [AdminPostController::class, 'pin'])->name('posts.pin');
     Route::post('/posts/{post}/delete', [AdminPostController::class, 'destroy'])->name('posts.destroy');
 
     Route::get('/api-logs', [AdminApiLogController::class, 'index'])->name('apiLogs.index');

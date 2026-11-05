@@ -17,17 +17,28 @@
                     <tr>
                         <td>{{ $post->id }}</td>
                         <td>
-                            <strong>{{ $post->title }}</strong>
+                            <strong>{{ $post->is_pinned ? '📌 ' : '' }}{{ $post->title }}</strong>
                             <div class="text-sm text-muted mono">{{ $post->slug }}</div>
                         </td>
                         <td>
                             <span class="badge {{ $post->is_published ? 'badge-completed' : 'badge-neutral' }}">
                                 {{ $post->is_published ? 'Đã đăng' : 'Nháp' }}
                             </span>
+                            @if ($post->is_pinned)
+                                <span class="badge badge-review">Ghim</span>
+                            @endif
                         </td>
                         <td class="text-sm text-muted">{{ $post->published_at?->format('d/m/Y H:i') ?? '—' }}</td>
                         <td class="nowrap">
                             <a class="btn btn-ghost btn-sm" href="{{ route('admin.posts.edit', $post) }}">Sửa</a>
+                            @if ($post->is_published)
+                                <form method="POST" action="{{ route('admin.posts.pin', $post) }}" style="display:inline;">
+                                    @csrf
+                                    <button class="btn btn-sm {{ $post->is_pinned ? 'btn-outline' : 'btn-primary' }}" type="submit">
+                                        {{ $post->is_pinned ? 'Bỏ ghim' : 'Ghim' }}
+                                    </button>
+                                </form>
+                            @endif
                             <form method="POST" action="{{ route('admin.posts.destroy', $post) }}" style="display:inline;"
                                   data-confirm="Xoá bài viết này?">
                                 @csrf

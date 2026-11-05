@@ -42,6 +42,16 @@
                 </label>
             </div>
 
+            {{-- Ghim lên đầu trang chủ --}}
+            <div class="form-group">
+                <label class="text-sm flex gap-1" style="align-items:center;">
+                    <input type="hidden" name="is_pinned" value="0">
+                    <input type="checkbox" name="is_pinned" value="1" @checked(old('is_pinned', $post->is_pinned ?? false))>
+                    🔔 Ghim lên đầu trang chủ (hiển thị nổi bật trước các thông báo khác)
+                </label>
+            </div>
+            </div>
+
             <div class="flex gap-1">
                 <button class="btn btn-primary" type="submit">Lưu</button>
                 <a href="{{ route('admin.posts.index') }}" class="btn btn-ghost">Huỷ</a>

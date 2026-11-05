@@ -39,6 +39,20 @@ class AdminPostController extends Controller
         return view('admin.post-form', ['post' => $post]);
     }
 
+    /** Ghim / bỏ ghim bài viết lên đầu trang chủ. Chỉ tác động bài đã đăng. */
+    public function pin(Request $request, Post $post): RedirectResponse
+    {
+        if (! $post->is_published) {
+            return back()->with('error', 'Chỉ ghim được bài đã đăng. Vui lòng đăng bài trước.');
+        }
+
+        $post->update(['is_pinned' => ! $post->is_pinned]);
+
+        return back()->with('success', $post->is_pinned
+            ? 'Đã ghim bài viết lên đầu trang chủ.'
+            : 'Đã bỏ ghim bài viết.');
+    }
+
     public function update(Request $request, Post $post): RedirectResponse
     {
         $data = $this->validatePost($request);
@@ -64,6 +78,7 @@ class AdminPostController extends Controller
             'summary' => ['nullable', 'string', 'max:500'],
             'body' => ['required', 'string', 'max:50000'],
             'is_published' => ['nullable', 'boolean'],
+            'is_pinned' => ['nullable', 'boolean'],
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề.',
             'body.required' => 'Vui lòng nhập nội dung.',
@@ -95,6 +110,8 @@ class AdminPostController extends Controller
             'summary' => $data['summary'] ?? null,
             'body' => $data['body'],
             'is_published' => $isPublished,
+            // Ghim chỉ có nghĩa khi bài đã đăng
+            'is_pinned' => $isPublished && (bool) ($data['is_pinned'] ?? false),
             // Bật đăng lần đầu → gắn thời điểm; đã đăng rồi thì giữ nguyên.
             'published_at' => $isPublished
                 ? ($existing?->published_at ?? now())
