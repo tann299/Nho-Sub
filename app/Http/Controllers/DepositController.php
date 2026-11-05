@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepositRequest;
+use App\Models\User;
 use App\Models\WebhookLog;
 use App\Services\DepositService;
 use App\Services\PayOS\PayOSClient;
@@ -45,8 +46,70 @@ class DepositController extends Controller
             'bankOwner' => $this->settings->get('bank_owner', ''),
             'bankBin' => $this->settings->get('bank_bin', ''),
             'payosEnabled' => $this->payos->isEnabled(),
-            'requests' => DepositRequest::where('user_id', $user->id)->latest('id')->limit(20)->get(),
+            // Lịch sử ĐẦY ĐỦ: gộp yêu cầu nạp (mọi loại) + giao dịch SePay tự động
+            // theo wallet_transactions — sắp theo thời gian mới nhất trước.
+            'requests' => $this->fullHistory($user->id),
         ]);
+    }
+
+    /**
+     * Lịch sử nạp tiền đầy đủ của một khách: mọi nguồn, không giới hạn 20 dòng.
+     *
+     * Nguồn 1 — deposit_requests: yêu cầu duyệt tay + nạp SePay được ghi thành request.
+     * Nguồn 2 — webhook_logs: mọi giao dịch SePay (kể cả rejected/unmatched) cùng user
+     *           (nhận diện qua mã username trong nội dung CK).
+     * Nguồn 3 — wallet_transactions: dòng deposit đã cộng ví (luôn chính xác).
+     *
+     * @return array<int, array{time: string, amount: int, method: string, status: string, note: string}>
+     */
+    private function fullHistory(int $userId): array
+    {
+        $rows = [];
+
+        // 1) Yêu cầu nạp (duyệt tay + SePay tạo request)
+        foreach (DepositRequest::where('user_id', $userId)->latest('id')->get() as $d) {
+            $rows[] = [
+                'time' => $d->created_at,
+                'amount' => (int) $d->amount,
+                'method' => $d->method === DepositRequest::METHOD_PAYOS ? 'PayOS' : ($d->method === 'sepay' ? 'SePay (tự động)' : 'Chuyển khoản'),
+                'status' => $d->status,
+                'note' => $d->admin_note ?: ($d->verification_code ? 'Mã xác thực ' . $d->verification_code : ''),
+            ];
+        }
+
+        // 2) Giao dịch SePay qua webhook — mọi trạng thái, khớp user qua nội dung CK
+        $username = optional(User::find($userId))->username;
+        $codes = DepositRequest::where('user_id', $userId)->pluck('verification_code')->filter()->all();
+
+        foreach (
+            WebhookLog::where('gateway', 'sepay')
+                ->whereIn('status', [WebhookLog::STATUS_PROCESSED, WebhookLog::STATUS_REJECTED, WebhookLog::STATUS_UNMATCHED])
+                ->orderByDesc('id')->get() as $w
+        ) {
+            $content = (string) $w->content;
+            $isMine = $username !== null && stripos($content, 'NHOSUB ' . $username) !== false;
+            if (! $isMine) {
+                foreach ($codes as $c) {
+                    if ($c !== null && str_contains($content, $c)) { $isMine = true; break; }
+                }
+            }
+            if (! $isMine) {
+                continue;
+            }
+
+            $rows[] = [
+                'time' => $w->created_at,
+                'amount' => (int) $w->amount,
+                'method' => 'SePay (tự động)',
+                'status' => $w->status, // processed | rejected | unmatched
+                'note' => $w->reason ?: mb_substr($content, 0, 60),
+            ];
+        }
+
+        // Sắp mới nhất trước, bỏ trùng (cùng thời điểm cùng số tiền cùng trạng thái)
+        usort($rows, fn ($a, $b) => $b['time'] <=> $a['time']);
+
+        return $rows;
     }
 
     /**

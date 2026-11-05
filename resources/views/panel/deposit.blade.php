@@ -137,24 +137,24 @@
         <div class="table-wrap">
             <table class="table">
                 <thead>
-                    <tr><th>Số tiền</th><th>Mã xác thực</th><th>Phương thức</th><th>Trạng thái</th><th>Thời gian</th></tr>
+                    <tr><th>Số tiền</th><th>Phương thức</th><th>Trạng thái</th><th>Ghi chú</th><th>Thời gian</th></tr>
                 </thead>
                 <tbody>
                 @forelse ($requests as $r)
                     <tr>
-                        <td class="num"><strong>{{ number_format($r->amount, 0, ',', '.') }} ₫</strong></td>
-                        <td class="mono">{{ $r->verification_code ?: '—' }}</td>
-                        <td>{{ $r->method === 'payos' ? 'PayOS' : 'Chuyển khoản' }}</td>
-                        <td>@include('partials.order-status', ['status' => $r->status])</td>
-                        <td class="text-sm text-muted">{{ $r->created_at?->format('d/m/Y H:i') }}</td>
+                        <td class="num"><strong>{{ number_format($r['amount'], 0, ',', '.') }} ₫</strong></td>
+                        <td>{{ $r['method'] }}</td>
+                        <td>@include('partials.order-status', ['status' => $r['status']])</td>
+                        <td class="text-sm text-muted">{{ $r['note'] ?: '—' }}</td>
+                        <td class="text-sm text-muted">{{ $r['time']?->format('d/m/Y H:i') }}</td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="5" style="padding:0;border:none;">
                             <div class="empty-block" style="border:none;border-radius:0;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-                                <div class="empty-title">Chưa có yêu cầu nạp nào</div>
-                                <p>Lịch sử các lần nạp sẽ hiện ở đây sau giao dịch đầu tiên.</p>
+                                <div class="empty-title">Chưa có giao dịch nạp nào</div>
+                                <p>Lịch sử nạp (tự động + duyệt tay) sẽ hiện đầy đủ ở đây sau giao dịch đầu tiên.</p>
                             </div>
                         </td>
                     </tr>

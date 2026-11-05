@@ -13,6 +13,9 @@
         'rejected'     => ['Từ chối', 'badge-canceled'],
         'expired'      => ['Hết hạn', 'badge-neutral'],
         'paid'         => ['Đã thanh toán', 'badge-completed'],
+        // Trạng thái webhook (lịch sử nạp SePay)
+        'processed'    => ['Đã cộng ví', 'badge-completed'],
+        'unmatched'    => ['Không khớp', 'badge-review'],
     ];
     $entry = $map[$status] ?? [$status, 'badge-neutral'];
 @endphp
