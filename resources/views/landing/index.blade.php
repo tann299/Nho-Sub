@@ -77,15 +77,20 @@
 
             <div class="grid grid-4">
                 @foreach ([
-                    ['Facebook', 'Like, follow, share, comment, member'],
-                    ['TikTok', 'View, like, follow, share'],
-                    ['Instagram', 'Follow, like, view story'],
-                    ['YouTube', 'Subscriber, view, like'],
-                ] as [$name, $desc])
-                    <div class="card card-hover text-center">
-                        <div style="width:48px;height:48px;margin:0 auto 12px;border-radius:12px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E6FD9" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
-                        </div>
+                    ['Facebook', 'platform-facebook.svg', 'Like, follow, share, comment, member'],
+                    ['TikTok', 'platform-tiktok.svg', 'View, like, follow, share'],
+                    ['Instagram', 'platform-instagram.svg', 'Follow, like, view story'],
+                    ['YouTube', 'platform-youtube.svg', 'Subscriber, view, like'],
+                    ['X (Twitter)', 'platform-twitter.svg', 'Follow, retweet, like'],
+                    ['Shopee', 'platform-shopee.svg', 'Follow, like, share gian hàng'],
+                    ['Threads', 'platform-threads.svg', 'Follow, like bài viết'],
+                    ['Kwai', 'platform-kwai.svg', 'View, like, follow'],
+                    ['SoundCloud', 'platform-soundcloud.svg', 'Play, like, follow'],
+                    ['Traffic Web', 'platform-traffic.svg', 'Traffic website, Alexa rank'],
+                    ['Khác', 'platform-khac.svg', 'Dịch vụ đặc biệt theo yêu cầu'],
+                ] as [$name, $logo, $desc])
+                    <div class="card card-hover text-center platform-card">
+                        <img class="platform-logo-lg" src="{{ asset('assets/img/' . $logo) }}" alt="{{ $name }}" loading="lazy">
                         <h3 style="font-size:16px;">{{ $name }}</h3>
                         <p class="text-sm text-muted mb-0">{{ $desc }}</p>
                     </div>

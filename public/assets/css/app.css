@@ -708,10 +708,12 @@ a { color: var(--primary); text-decoration: none; }
   .sidebar-collapsed .nav-item { justify-content: flex-start; padding: 7px 10px; }
   .sidebar-collapsed .nav-item-sub { display: flex; }
 
-  /* Header landing: logo + 1 nút duy nhất, không tràn */
-  .site-header-inner { gap: 10px; padding: 0 4px; }
-  .site-header-inner .btn-ghost { display: none; } /* Ẩn "Đăng nhập" — vào bằng nút trong hero hoặc /login */
-  .site-header-inner .btn { min-height: 38px; padding: 6px 14px; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
+  /* Header landing: logo + 2 nút Đăng nhập/Đăng ký gọn vừa khung */
+  .site-header-inner { gap: 8px; padding: 0 4px; }
+  .site-header-inner .site-nav { display: none; }
+  .site-header-inner .btn { min-height: 36px; padding: 6px 12px; font-size: 12.5px; white-space: nowrap; flex-shrink: 0; }
+  .site-header-inner .topbar-spacer { display: none; }
+  .site-header-inner { margin-left: auto; }
 
   .hero-grid { grid-template-columns: 1fr; gap: 28px; }
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -731,11 +733,11 @@ a { color: var(--primary); text-decoration: none; }
   .hero { padding: 52px 0 44px; }
   .content { padding: 14px 12px 32px; }
 
-  /* Header landing: logo nhỏ lại, nút Đăng ký giữ vừa khung */
+  /* Header landing: logo nhỏ lại, 2 nút gọn vừa khung */
   .site-header-inner { height: 56px; }
   .site-header-inner strong { font-size: 19px !important; }
   .site-header-inner img { width: 28px !important; height: 28px !important; }
-  .site-header-inner .btn { min-height: 36px; padding: 5px 12px; font-size: 12.5px; }
+  .site-header-inner .btn { min-height: 34px; padding: 5px 10px; font-size: 12px; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .table { min-width: 620px; }
@@ -896,6 +898,18 @@ a.dash-notify:hover .dash-notify-title { color: var(--primary-dark); }
 /* =========================================================
    MOBILE — topbar gọn, không tràn nút (menu dùng ngăn kéo)
    ========================================================= */
+
+/* Thẻ nền tảng trên landing — logo app thật to rõ */
+.platform-card { padding: 18px 12px; }
+.platform-logo-lg {
+  width: 46px; height: 46px; margin: 0 auto 12px;
+  border-radius: 12px; object-fit: contain; display: block;
+  background: var(--primary-light);
+  padding: 7px;
+  transition: transform .2s ease;
+}
+.platform-card:hover .platform-logo-lg { transform: scale(1.08); }
+
 @media (max-width: 1023px) {
   /* Topbar: gọn lại, không tràn nút */
   .topbar { padding: 0 10px; gap: 6px; }
