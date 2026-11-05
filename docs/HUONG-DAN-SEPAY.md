@@ -30,51 +30,88 @@ Webhook URL của bạn: **`https://tna.id.vn/webhook/sepay`**
 
 ---
 
-## Bước 3 — Lấy API Key
+## Bước 3 — Tạo Webhook (form 4 bước)
 
-1. Dashboard SePay → **Cài đặt** (Settings) → **Tuỳ chọn nhà phát triển** (Developer Options)
-2. Tìm mục **API Key** → bấm **Copy** hoặc **Tạo mới**
-3. Key dạng chuỗi dài, ví dụ: `SP-LIVE-xxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-4. **Lưu key này** — sẽ dán vào NhoSub ở Bước 5
+Vào **Dashboard SePay → menu trái → Tích hợp → Webhooks**
 
----
+Bấm nút **+ Thêm webhook** ở góc trên bên phải. Form trượt ra từ bên phải, đi qua **4 bước**.
 
-## Bước 4 — Cấu hình Webhook trên SePay
+### Bước 1/4 — Cơ bản
 
-Vẫn ở trang **Cài đặt → Tuỳ chọn nhà phát triển**, tìm mục **Webhook**:
-
-1. Bấm **Thêm webhook** (hoặc **Tạo webhook**)
-2. Điền chính xác:
-
-| Trường | Giá trị |
+| Trường | Điền gì |
 |---|---|
+| **Tên webhook** | `NhoSub - Nạp tiền` (tuỳ ý, tối đa 300 ký tự) |
 | **URL nhận webhook** | `https://tna.id.vn/webhook/sepay` |
-| **Kiểu xác thực** | **Apikey** (hoặc "API Key") |
-| **Token / Giá trị xác thực** | *(dán API Key ở Bước 3)* |
-| **Sự kiện** | Chọn **Tiền vào** (Money In) — hoặc chọn tất cả |
-| **Tự động xác nhận** | **BẬT** |
-| **Trạng thái** | **Hoạt động** |
+| **Loại sự kiện** | **Tiền vào** ← chọn đúng cái này, không chọn "Cả hai" |
+| **Định dạng dữ liệu** | **JSON** (`application/json`) — giữ mặc định |
+| **Tự động gửi lại khi server trả lỗi** | **BẬT** (tick) |
 
-3. Bấm **Lưu**
+### Bước 2/4 — Tài khoản
 
-> **Quan trọng:** Token ở đây phải **giống hệt** key sẽ dán vào NhoSub ở Bước 5. SePay gửi header `Authorization: Apikey <token>`, NhoSub so sánh với key đã lưu.
+| Trường | Điền gì |
+|---|---|
+| **Tài khoản ngân hàng** | **Tất cả tài khoản** (hoặc tick đúng tài khoản bạn đã kết nối) |
+| **Dùng để xác thực thanh toán** | **TẮT** (để trống) — NhoSub tự đối chiếu mã, không cần SePay lọc |
+
+> Nếu bật "Dùng để xác thực thanh toán", SePay sẽ đòi cấu hình "Cấu trúc mã thanh toán" ở Công ty → Cấu hình chung, rồi mới lọc được. Không cần thiết cho NhoSub — để tắt cho đơn giản.
+
+### Bước 3/4 — Bảo mật ⚠️ QUAN TRỌNG NHẤT
+
+Chọn phương thức xác thực: **API Key**
+
+| Trường | Điền gì |
+|---|---|
+| **Phương thức** | **API Key** (KHÔNG chọn "Không xác thực") |
+| **API Key** | Tự đặt một chuỗi bí mật, ví dụ: `nhosub-tna-2026-a7k2p9x4` |
+
+> **Đây là điểm dễ sai nhất.** Cái key bạn gõ ở ô này **chính là** key phải dán vào NhoSub ở Bước 4. Không phải key nào lấy từ chỗ khác — bạn tự đặt, miễn 2 bên giống nhau.
+>
+> SePay sẽ gửi header `Authorization: Apikey <key bạn đặt>`. NhoSub so sánh bằng `hash_equals` — phải khớp từng ký tự, không có khoảng trắng thừa.
+>
+> **Ghi lại key này ngay** (copy ra Notepad) — SePay không hiện lại đầy đủ sau khi lưu.
+
+### Bước 4/4 — Cảnh báo (tuỳ chọn)
+
+| Trường | Điền gì |
+|---|---|
+| **Bật cảnh báo** | Tuỳ bạn — bật thì SePay báo qua Telegram/Slack khi webhook lỗi |
+| **Ngưỡng lỗi liên tiếp** | `3` (mặc định) |
+| **Kênh nhận** | Telegram / Slack / Discord (nếu có) |
+
+Bấm **Thêm** ở cuối form để lưu.
+
+### Kiểm tra ngay bằng nút "Gửi thử"
+
+Trong danh sách webhook, bấm **⋮** (ba chấm) trên dòng vừa tạo → **Gửi thử**.
+
+SePay gửi payload mẫu tới `https://tna.id.vn/webhook/sepay` và hiện ngay kết quả:
+
+| Kết quả | Nghĩa |
+|---|---|
+| **Thành công** + HTTP 200 + body `{"success":true,...}` | ✅ Đúng — key khớp, endpoint chạy |
+| **Thất bại** + HTTP 401 | ❌ Key chưa nhập vào NhoSub, hoặc nhập sai → làm Bước 4 |
+| **Thất bại** + HTTP 503 | ❌ NhoSub chưa bật SePay / chưa có key → làm Bước 4 |
+| **Thất bại** + timeout / không kết nối | ❌ URL sai, hoặc SSL lỗi |
+
+> Payload "Gửi thử" có `id` là số mock (thường `0`) — nên nó sẽ bị NhoSub xử lý như giao dịch thật nếu key đúng. Xem Nhật ký webhook rồi xoá dòng test đó nếu cần.
 
 ---
 
-## Bước 5 — Nhập key vào NhoSub
+## Bước 4 — Nhập key vào NhoSub
 
 1. Đăng nhập **https://tna.id.vn/login** bằng `admin` / `NhoSub@2026!`
 2. Vào **Quản trị → Cấu hình** (menu trái, nhóm Quản trị)
 3. Kéo xuống mục **Cổng thanh toán**:
    - **SePay đang bật**: ✓ tick
-   - **SePay webhook key**: dán API Key ở Bước 3
+   - **SePay webhook key**: dán **đúng key bạn tự đặt ở Bước 3/4 — ô "API Key"**
 4. Bấm **Lưu cấu hình**
+5. Quay lại SePay → **⋮ → Gửi thử** → phải ra **Thành công**
 
-Key được mã hoá AES-256 bằng `APP_KEY` trước khi lưu vào database — không ai đọc được, kể cả bạn (chỉ hiện dạng `••••••••d314`).
+Key được mã hoá AES-256 bằng `APP_KEY` trước khi lưu vào database — không ai đọc được, kể cả bạn (chỉ hiện dạng `••••••••x4`).
 
 ---
 
-## Bước 6 — Cấu hình thông tin nhận tiền
+## Bước 5 — Cấu hình thông tin nhận tiền
 
 Cùng trang **Quản trị → Cấu hình**, mục **Thông tin ngân hàng**:
 
@@ -104,7 +141,7 @@ Sau khi lưu, vào **Nạp tiền** — mã QR VietQR sẽ hiện đúng số t�
 
 ---
 
-## Bước 7 — Test thật
+## Bước 6 — Test thật
 
 1. Đăng nhập tài khoản khách (hoặc tạo tài khoản mới)
 2. Vào **Nạp tiền**
@@ -154,7 +191,7 @@ Cộng tiền vào ví + ghi wallet_transactions
 | **Log có nhưng `unmatched`** | Nội dung CK không có mã/username đúng | Admin vào Nhật ký webhook → bấm **Cộng tay** sau khi xác minh sao kê |
 | **Log `rejected` "dưới mức tối thiểu"** | Chuyển < 10.000 ₫ | Tăng `min_deposit` hoặc chuyển đủ |
 | **401 Unauthorized** | Key NhoSub ≠ Token SePay | So sánh lại, dán chính xác (không có khoảng trắng) |
-| **503 "Cổng chưa cấu hình"** | Chưa nhập key vào NhoSub | Làm Bước 5 |
+| **503 "Cổng chưa cấu hình"** | Chưa nhập key vào NhoSub | Làm Bước 4 |
 | **SePay báo webhook lỗi timeout** | Server chậm | Kiểm tra log NhoSub, đảm bảo cron chạy |
 | **Cộng trùng 2 lần** | Không thể — đã chặn bằng UNIQUE `(gateway, gateway_txn_id)` | — |
 
