@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepositRequest;
+use App\Models\WebhookLog;
 use App\Services\DepositService;
 use App\Services\PayOS\PayOSClient;
 use App\Services\SettingService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -45,6 +47,68 @@ class DepositController extends Controller
             'payosEnabled' => $this->payos->isEnabled(),
             'requests' => DepositRequest::where('user_id', $user->id)->latest('id')->limit(20)->get(),
         ]);
+    }
+
+    /**
+     * Trạng thái nạp tiền realtime — đối chiếu mã xác thực của khách.
+     *
+     * Webhook mới nhất khớp mã đang sống của khách → đã có tiền về.
+     * Trả JSON cho trang nạp tiền poll mỗi 5 giây.
+     */
+    public function status(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        // Yêu cầu nạp có mã xác thực đang sống (pending) của khách này
+        $pending = DepositRequest::where('user_id', $user->id)
+            ->where('status', DepositRequest::STATUS_PENDING)
+            ->whereNotNull('verification_code')
+            ->latest('id')
+            ->first();
+
+        $liveCodes = DepositRequest::query()
+            ->where('user_id', $user->id)
+            ->whereNotNull('verification_code')
+            ->whereIn('status', [DepositRequest::STATUS_PENDING])
+            ->pluck('verification_code');
+
+        // Giao dịch mới nhất khớp mã xác thực của khách (dựa trên nội dung CK)
+        $latest = WebhookLog::where('gateway', 'sepay')
+            ->whereIn('status', [
+                WebhookLog::STATUS_PROCESSED,
+                WebhookLog::STATUS_UNMATCHED,
+                WebhookLog::STATUS_REJECTED,
+            ])
+            ->where('created_at', '>=', now()->subMinutes(30))
+            ->orderByDesc('id')
+            ->first();
+
+        if ($latest !== null && $latest->status === WebhookLog::STATUS_PROCESSED) {
+            $content = (string) $latest->content;
+
+            foreach ($liveCodes as $code) {
+                if ($code !== null && str_contains($content, $code)) {
+                    return response()->json([
+                        'status' => 'processed',
+                        'amount' => (int) $latest->amount,
+                    ]);
+                }
+            }
+        }
+
+        if ($latest !== null && in_array($latest->status, [WebhookLog::STATUS_UNMATCHED, WebhookLog::STATUS_REJECTED], true)) {
+            $expected = $latest->expected_code;
+
+            // Unmatched kèm mã khách sắp chuyển (đúng mã phiên) → báo thất bại rõ
+            if ($expected !== null && $liveCodes->contains($expected)) {
+                return response()->json([
+                    'status' => 'unmatched',
+                    'reason' => $latest->reason,
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'waiting']);
     }
 
     /** Gửi yêu cầu nạp duyệt tay. */

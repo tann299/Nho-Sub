@@ -23,6 +23,17 @@
                 <input class="form-input" id="qr-amount" type="number" min="{{ $minDeposit }}"
                        value="{{ max($minDeposit, 50000) }}" inputmode="numeric">
                 <div class="form-hint">Tối thiểu {{ number_format($minDeposit, 0, ',', '.') }} ₫. QR và nội dung CK tự cập nhật theo số tiền.</div>
+                {{-- Cảnh báo realtime khi nhập dưới mức tối thiểu --}}
+                <div class="deposit-warn" id="deposit-warn" hidden>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+                    <span id="deposit-warn-text"></span>
+                </div>
+            </div>
+
+            {{-- Trạng thái nạp tiền realtime: chờ / thành công / thất bại --}}
+            <div class="deposit-status" id="deposit-status" hidden>
+                <span class="deposit-status-dot" id="deposit-status-dot"></span>
+                <span id="deposit-status-text">Đang chờ giao dịch...</span>
             </div>
 
             @if ($bankBin && $bankAccount)
@@ -195,6 +206,9 @@
                 contentEl.textContent = content;
                 copyBtn.setAttribute('data-copy', content);
 
+                // Cảnh báo ngay khi nhập dưới mức tối thiểu
+                updateWarning(amount);
+
                 if (qrImg && bin && account && amount > 0) {
                     var url = 'https://img.vietqr.io/image/' + bin + '-' + account
                         + '-compact2.png?amount=' + amount
@@ -203,6 +217,71 @@
                     qrImg.src = url;
                 }
             }
+
+            // ---------- Cảnh báo dưới mức tối thiểu ----------
+            var warnBox = document.getElementById('deposit-warn');
+            var warnText = document.getElementById('deposit-warn-text');
+            var minDeposit = @json($minDeposit);
+
+            function updateWarning(amount) {
+                if (!warnBox) return;
+                if (amount > 0 && amount < minDeposit) {
+                    warnText.textContent = 'Số tiền dưới mức tối thiểu '
+                        + fmt(minDeposit) + ' ₫ — chuyển khoản số tiền này sẽ KHÔNG được cộng vào ví.';
+                    warnBox.hidden = false;
+                } else {
+                    warnBox.hidden = true;
+                }
+            }
+
+            // ---------- Trạng thái nạp tiền realtime ----------
+            // Poll webhook log mới nhất mỗi 5 giây khi trang đang mở:
+            // nếu giao dịch khớp mã xác thực của phiên này → hiện thành công/thất bại.
+            var statusBox = document.getElementById('deposit-status');
+            var statusDot = document.getElementById('deposit-status-dot');
+            var statusText = document.getElementById('deposit-status-text');
+            var pollTimer = null;
+
+            function setStatus(kind, text) {
+                if (!statusBox) return;
+                statusBox.hidden = false;
+                statusBox.className = 'deposit-status deposit-status-' + kind;
+                statusText.textContent = text;
+            }
+
+            function startPolling() {
+                if (!statusBox || pollTimer) return;
+                statusBox.hidden = false;
+                statusDot.className = 'deposit-status-dot pulse';
+                setStatus('waiting', 'Đang chờ giao dịch — quét QR hoặc chuyển khoản theo nội dung trên. Trang tự kiểm tra mỗi 5 giây.');
+
+                pollTimer = setInterval(function () {
+                    fetch('{{ route('panel.deposit.status') }}', {headers: {'Accept': 'application/json'}})
+                        .then(function (r) { return r.ok ? r.json() : null; })
+                        .then(function (data) {
+                            if (!data) return;
+                            if (data.status === 'processed') {
+                                setStatus('success', '✓ Nạp thành công ' + fmt(data.amount) + ' ₫ — ví đã được cộng tiền.');
+                                stopPolling();
+                            } else if (data.status === 'rejected' || data.status === 'unmatched') {
+                                setStatus('fail', data.status === 'rejected'
+                                    ? '✗ Giao dịch bị từ chối: ' + (data.reason || 'sai thông tin.') + ' Liên hệ hỗ trợ nếu cần.'
+                                    : '✗ Chưa khớp giao dịch nào với mã xác thực của bạn. Kiểm tra nội dung CK hoặc liên hệ hỗ trợ.');
+                                stopPolling();
+                            }
+                        })
+                        .catch(function () { /* lỗi mạng: thử lần sau */ });
+                }, 5000);
+            }
+
+            function stopPolling() {
+                if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+            }
+
+            // Bắt đầu theo dõi ngay khi vào trang nạp tiền
+            startPolling();
+            // Dừng khi rời trang
+            window.addEventListener('beforeunload', stopPolling);
 
             amountInput.addEventListener('input', refresh);
             refresh();

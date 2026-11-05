@@ -77,6 +77,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/deposit', [DepositController::class, 'create'])->name('panel.deposit.create');
     Route::post('/deposit', [DepositController::class, 'store'])->name('panel.deposit.store');
+    Route::get('/deposit/status', [DepositController::class, 'status'])->name('panel.deposit.status');
     Route::get('/wallet', [WalletController::class, 'index'])->name('panel.wallet.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('panel.profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('panel.profile.update');

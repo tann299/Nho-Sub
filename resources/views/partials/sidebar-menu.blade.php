@@ -1,9 +1,11 @@
 @php
     // Menu người dùng — gọn nhất có thể:
-    // 1. Tổng quan (dashboard, đổi tên từ "Bảng điều khiển")
-    // 2. Sản phẩm & dịch vụ (accordion nền tảng + app)
-    // 3. Tài khoản (đơn của tôi, nạp tiền, hồ sơ, hỗ trợ — gộp 4 nhóm cũ)
-    // 4. Quản trị (admin)
+    // 0. Trang chủ (landing) — lên đầu theo yêu cầu
+    // 1. Sản phẩm & dịch vụ (accordion nền tảng + app)
+    // 2. Tài khoản (đơn của tôi, nạp tiền, hồ sơ, hỗ trợ)
+    // 3. Quản trị (admin)
+
+    $homeLink = ['landing', 'Trang chủ', 'M3 12l9-9 9 9M5 10v10h14V10'];
 
     $midGroups = [
         'Tài khoản' => [
@@ -47,7 +49,17 @@
         : collect();
 @endphp
 
-{{-- 0. Quản trị (chỉ admin) — ĐẦU TIÊN theo yêu cầu --}}
+{{-- 0. Trang chủ — lên đầu thanh menu --}}
+@if (Route::has('landing'))
+    <div class="nav-group">
+        <a href="{{ route('landing') }}" class="nav-item {{ request()->routeIs('landing') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $homeLink[2] }}"/></svg>
+            <span>{{ $homeLink[1] }}</span>
+        </a>
+    </div>
+@endif
+
+{{-- 1. Quản trị (chỉ admin) --}}
 @auth
     @if (auth()->user()->isAdmin())
         @php
