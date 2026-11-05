@@ -5,12 +5,6 @@
     // 3. Tài khoản (đơn của tôi, nạp tiền, hồ sơ, hỗ trợ — gộp 4 nhóm cũ)
     // 4. Quản trị (admin)
 
-    $topGroups = [
-        'Tổng quan' => [
-            ['panel.dashboard', 'Tổng quan', 'M3 12l9-9 9 9M5 10v10h14V10'],
-        ],
-    ];
-
     $midGroups = [
         'Tài khoản' => [
             ['panel.orders.index', 'Đơn hàng của tôi', 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'],
@@ -76,25 +70,6 @@
         @endif
     @endif
 @endauth
-
-{{-- 1. Tổng quan & Dịch vụ --}}
-@foreach ($topGroups as $groupName => $items)
-    @php
-        $available = array_values(array_filter($items, fn ($i) => Route::has($i[0])));
-    @endphp
-    @if (! empty($available))
-        <div class="nav-group">
-            <div class="nav-group-title">{{ $groupName }}</div>
-            @foreach ($available as [$routeName, $label, $icon])
-                <a href="{{ route($routeName) }}"
-                   class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon }}"/></svg>
-                    <span>{{ $label }}</span>
-                </a>
-            @endforeach
-        </div>
-    @endif
-@endforeach
 
 {{-- 2. Sản phẩm & dịch vụ: nền tảng accordion → danh mục con (đặt ngay sau Dịch vụ) --}}
 @if ($byPlatform->isNotEmpty())
