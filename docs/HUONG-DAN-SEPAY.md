@@ -99,7 +99,7 @@ SePay gửi payload mẫu tới `https://tna.id.vn/webhook/sepay` và hiện nga
 
 ## Bước 4 — Nhập key vào NhoSub
 
-1. Đăng nhập **https://tna.id.vn/login** bằng `admin` / `NhoSub@2026!`
+1. Đăng nhập **https://tna.id.vn/login** bằng `admin` / `<MAT_KHAU_ADMIN>` *(mật khẩu bạn tự đặt lúc deploy — KHÔNG commit mật khẩu thật)*
 2. Vào **Quản trị → Cấu hình** (menu trái, nhóm Quản trị)
 3. Kéo xuống mục **Cổng thanh toán**:
    - **SePay đang bật**: ✓ tick

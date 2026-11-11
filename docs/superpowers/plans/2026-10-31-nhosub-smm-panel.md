@@ -266,7 +266,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 ADMIN_SEED_ENABLED=true
 ADMIN_USERNAME=admin
 ADMIN_EMAIL=admin@nhosub.vn
-ADMIN_PASSWORD=Admin@123456
+ADMIN_PASSWORD=<MAT_KHAU_ADMIN_MANH>
 ```
 
 Chạy `php artisan key:generate`.

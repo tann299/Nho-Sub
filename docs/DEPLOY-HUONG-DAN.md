@@ -25,7 +25,7 @@ Trong DirectAdmin:
 2. Điền:
    - Tên database: `nhosub`
    - Tên người dùng: `nhosub`
-   - Mật khẩu: *(tự đặt, ví dụ `NhoSub@2026Db` — ghi lại)*
+   - Mật khẩu: *(tự đặt một mật khẩu mạnh — ghi ngoài, KHÔNG commit lên repo)*
 3. Bấm **Tạo**. DirectAdmin sẽ đặt tiền tố tài khoản, ví dụ:
    - Database đầy đủ: `befdgfnt_nhosub`
    - User đầy đủ: `befdgfnt_nhosub`
@@ -144,7 +144,7 @@ SESSION_SAME_SITE=lax
 ADMIN_SEED_ENABLED=true
 ADMIN_USERNAME=admin
 ADMIN_EMAIL=admin@domain-cua-ban
-ADMIN_PASSWORD=<mật khẩu admin mạnh, ví dụ NhoSub@2026!>
+ADMIN_PASSWORD=<MAT_KHAU_ADMIN_MANH> *(tự đặt)*
 
 TOPSUBRE_ENDPOINT=https://likenhanh.pro/api/v2
 ```
@@ -307,7 +307,7 @@ DirectAdmin → **Domain Setup** → chọn domain → tick **Force SSL** / **Re
 
 NhoSub → **Quản trị → Cấu hình**:
 - **TopSubRe endpoint**: `https://likenhanh.pro/api/v2`
-- **TopSubRe API key**: `86ebe9e77b67026b4694fb0e892f7ebe34a38196e9b99b5e7f753218c03dd314`
+- **TopSubRe API key**: `<YOUR_TOPSUBRE_API_KEY>` *(lấy từ trang API của likenhanh.pro — KHÔNG commit key thật lên repo)*
 - **IP ghim**: `203.205.52.111` *(chỉ cần nếu hosting bị chặn DNS)*
 
 Sau đó **Quản trị → Dịch vụ → Đồng bộ ngay**.
