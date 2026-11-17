@@ -27,11 +27,13 @@ class AdminSettingController extends Controller
             'providerAlert' => $this->settings->get('provider_balance_alert', '100'),
             'demoMode' => $this->settings->get('demo_mode', 'auto'),
             'demoScenario' => $this->settings->get('demo_scenario', 'auto'),
+            'providerDriver' => $this->settings->get('provider_driver', 'topsubre'),
             'pinnedIp' => $this->settings->get('topsubre_pinned_ip', ''),
             'sepayEnabled' => $this->settings->getBool('sepay_enabled', true),
             'payosEnabled' => $this->settings->getBool('payos_enabled', false),
             'masked' => [
                 'topsubre_api_key' => $this->settings->maskedSecret('topsubre_api_key'),
+                'napxu_api_key' => $this->settings->maskedSecret('napxu_api_key'),
                 'sepay_api_key' => $this->settings->maskedSecret('sepay_api_key'),
                 'payos_client_id' => $this->settings->maskedSecret('payos_client_id'),
                 'payos_api_key' => $this->settings->maskedSecret('payos_api_key'),
@@ -54,12 +56,15 @@ class AdminSettingController extends Controller
             // Không bắt buộc: cho phép lưu một phần mà không xoá cấu hình còn lại.
             'demo_mode' => ['nullable', 'in:auto,on,off'],
             'demo_scenario' => ['nullable', 'in:auto,partial,cancel,fail'],
+            // Nhà cung cấp đang dùng cho đặt đơn.
+            'provider_driver' => ['nullable', 'in:topsubre,napxu'],
             // IP ghim để vượt DNS bị lọc (để trống = dùng DNS thường).
             'topsubre_pinned_ip' => ['nullable', 'ip'],
             'sepay_enabled' => ['nullable', 'boolean'],
             'payos_enabled' => ['nullable', 'boolean'],
             // Key bí mật: để trống = giữ nguyên key cũ.
             'topsubre_api_key' => ['nullable', 'string', 'max:255'],
+            'napxu_api_key' => ['nullable', 'string', 'max:255'],
             'sepay_api_key' => ['nullable', 'string', 'max:255'],
             'payos_client_id' => ['nullable', 'string', 'max:255'],
             'payos_api_key' => ['nullable', 'string', 'max:255'],
@@ -75,7 +80,7 @@ class AdminSettingController extends Controller
         foreach ([
             'exchange_rate', 'default_markup_percent', 'min_deposit', 'bank_name',
             'bank_account', 'bank_owner', 'bank_bin', 'provider_balance_alert',
-            'demo_mode', 'demo_scenario', 'topsubre_pinned_ip',
+            'demo_mode', 'demo_scenario', 'provider_driver', 'topsubre_pinned_ip',
         ] as $key) {
             if (array_key_exists($key, $data) && $data[$key] !== null) {
                 $this->settings->set($key, $data[$key]);
@@ -86,7 +91,7 @@ class AdminSettingController extends Controller
         $this->settings->set('payos_enabled', $request->boolean('payos_enabled') ? '1' : '0');
 
         // Key bí mật: chỉ ghi khi có giá trị mới.
-        foreach (['topsubre_api_key', 'sepay_api_key', 'payos_client_id', 'payos_api_key', 'payos_checksum_key'] as $key) {
+        foreach (['topsubre_api_key', 'napxu_api_key', 'sepay_api_key', 'payos_client_id', 'payos_api_key', 'payos_checksum_key'] as $key) {
             $value = trim((string) ($data[$key] ?? ''));
             if ($value !== '') {
                 $this->settings->setSecret($key, $value);

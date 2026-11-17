@@ -261,6 +261,7 @@ class AdminTest extends TestCase
             'bank_account' => '0123456789',
             'bank_owner' => 'NGUYEN VAN A',
             'topsubre_api_key' => 'new-secret-key-9999',
+            'napxu_api_key' => 'napx_new-napxu-key-8888',
         ])->assertRedirect();
 
         $s = app(SettingService::class);
@@ -269,12 +270,40 @@ class AdminTest extends TestCase
         $this->assertSame(26500, $s->getInt('exchange_rate'));
         $this->assertSame('35', $s->getDecimal('default_markup_percent'));
         $this->assertSame('new-secret-key-9999', $s->getSecret('topsubre_api_key'));
+        $this->assertSame('napx_new-napxu-key-8888', $s->getSecret('napxu_api_key'));
 
         // Trang cấu hình không được hiển thị key nguyên văn.
         $this->actingAs($this->admin)->get('/admin/settings')
             ->assertOk()
             ->assertDontSee('new-secret-key-9999')
-            ->assertSee('9999');
+            ->assertSee('9999')
+            ->assertDontSee('napx_new-napxu-key-8888')
+            ->assertSee('8888');
+    }
+
+    public function test_admin_chon_ncc_napxu_va_provider_manager_dung_napxu(): void
+    {
+        $s = app(SettingService::class);
+        // AdminTest bật demo toàn cục trong setUp — tắt để ProviderManager chọn NCC thật.
+        $s->set('demo_mode', 'off');
+        $s->set('provider_driver', 'napxu');
+        $s->setSecret('napxu_api_key', 'napx_test-key-7777');
+        $s->forgetCache();
+
+        // ProviderManager là singleton — xoá instance để nó đọc lại setting vừa đổi.
+        app()->forgetInstance(\App\Providers\ProviderManager::class);
+
+        $manager = app(\App\Providers\ProviderManager::class);
+
+        $this->assertInstanceOf(\App\Providers\Napxu\NapxuProvider::class, $manager->driver());
+
+        // Không chọn NCC → mặc định TopSubRe.
+        $s->set('provider_driver', 'topsubre');
+        $s->setSecret('topsubre_api_key', 'topsubre-test-key');
+        $s->forgetCache();
+        app()->forgetInstance(\App\Providers\ProviderManager::class);
+
+        $this->assertInstanceOf(\App\Providers\TopSubRe\TopSubReProvider::class, app(\App\Providers\ProviderManager::class)->driver());
     }
 
     public function test_khong_nhap_key_moi_thi_key_cu_duoc_giu(): void

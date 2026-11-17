@@ -53,6 +53,20 @@
 
         <div class="grid grid-2 mt-3">
             <div class="card">
+                <h3 class="card-title">Nhà cung cấp dịch vụ</h3>
+                <div class="form-group">
+                    <label class="form-label" for="provider_driver">NCC dùng cho đặt đơn</label>
+                    <select class="form-select" id="provider_driver" name="provider_driver">
+                        <option value="topsubre" @selected($providerDriver === 'topsubre')>TopSubRe (likenhanh.pro)</option>
+                        <option value="napxu" @selected($providerDriver === 'napxu')>Napxu (napxu.vn)</option>
+                    </select>
+                    <div class="form-hint">Chế độ "Tự động" bên dưới chọn NCC này khi key của nó đã nhập.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-2 mt-3">
+            <div class="card">
                 <h3 class="card-title">TopSubRe</h3>
                 <div class="form-group">
                     <label class="form-label" for="topsubre_api_key">API key</label>
@@ -77,7 +91,7 @@
                         <option value="fail" @selected($demoScenario === 'fail')>Nhà cung cấp từ chối</option>
                     </select>
                 </div>
-                <div class="form-group mb-0">
+                <div class="form-group">
                     <label class="form-label" for="topsubre_pinned_ip">IP ghim TopSubRe (chỉ khi DNS bị chặn)</label>
                     <input class="form-input" id="topsubre_pinned_ip" name="topsubre_pinned_ip"
                            value="{{ $pinnedIp }}" placeholder="Để trống nếu kết nối bình thường">
@@ -85,6 +99,25 @@
                         Chỉ dùng khi báo lỗi "Truy cập bị chặn bởi bộ lọc mạng".
                         Lấy IP thật tại <span class="mono">https://dns.google/resolve?name=likenhanh.pro&amp;type=A</span>
                         rồi nhập một trong các IP trả về.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Napxu (napxu.vn)</h3>
+                <div class="form-group">
+                    <label class="form-label" for="napxu_api_key">API key</label>
+                    <input class="form-input" id="napxu_api_key" name="napxu_api_key" type="password"
+                           placeholder="{{ $masked['napxu_api_key'] ?? 'Chưa cấu hình' }}">
+                    <div class="form-hint">
+                        Key dạng <span class="mono">napx_...</span>, lấy tại napxu.vn → Tài Liệu API.
+                        Để trống để giữ key hiện tại. Key được mã hoá khi lưu.
+                    </div>
+                </div>
+                <div class="form-group mb-0">
+                    <div class="form-hint">
+                        Dịch vụ napxu tính giá theo đơn vị (VND/lượt) — hệ thống quy về USD/1000 lượt
+                        bằng tỉ giá ở trên khi đồng bộ. Trạng thái đơn tra qua danh sách 100 đơn mới nhất.
                     </div>
                 </div>
             </div>

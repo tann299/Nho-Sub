@@ -21,6 +21,7 @@ class SettingService
     /** Các key được coi là bí mật — dùng setSecret/getSecret. */
     public const SECRET_KEYS = [
         'topsubre_api_key',
+        'napxu_api_key',
         'sepay_api_key',
         'payos_client_id',
         'payos_api_key',
