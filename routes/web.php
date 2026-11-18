@@ -67,6 +67,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/password', [ChangePasswordController::class, 'edit'])->name('panel.profile.password');
     Route::post('/settings/password', [ChangePasswordController::class, 'update'])->name('panel.profile.password.update');
 
+    Route::get('/tiktok-accounts', [\App\Http\Controllers\TikTokAccountController::class, 'index'])->name('panel.tiktok.index');
+    Route::post('/tiktok-accounts/qr', [\App\Http\Controllers\TikTokAccountController::class, 'qr'])->middleware('throttle:6,1')->name('panel.tiktok.qr');
+    Route::get('/tiktok-accounts/qr/{sessionId}', [\App\Http\Controllers\TikTokAccountController::class, 'poll'])->where('sessionId', '[a-zA-Z0-9_-]{16,128}')->middleware('throttle:40,1')->name('panel.tiktok.poll');
+    Route::post('/tiktok-accounts/cookie', [\App\Http\Controllers\TikTokAccountController::class, 'cookie'])->middleware('throttle:6,1')->name('panel.tiktok.cookie');
+    Route::post('/tiktok-accounts/{id}/refresh', [\App\Http\Controllers\TikTokAccountController::class, 'refresh'])->whereNumber('id')->middleware('throttle:10,1')->name('panel.tiktok.refresh');
+    Route::post('/tiktok-accounts/{id}/delete', [\App\Http\Controllers\TikTokAccountController::class, 'destroy'])->whereNumber('id')->name('panel.tiktok.delete');
+    Route::get('/topup', [\App\Http\Controllers\TopupController::class, 'create'])->name('panel.topup.create');
+    Route::post('/topup', [\App\Http\Controllers\TopupController::class, 'store'])->middleware('throttle:10,1')->name('panel.topup.store');
+    Route::get('/topup/orders', [\App\Http\Controllers\TopupController::class, 'index'])->name('panel.topup.orders');
+    Route::post('/topup/orders/{id}/refresh', [\App\Http\Controllers\TopupController::class, 'refresh'])->whereNumber('id')->middleware('throttle:10,1')->name('panel.topup.refresh');
+    Route::post('/topup/orders/{id}/cancel', [\App\Http\Controllers\TopupController::class, 'cancel'])->whereNumber('id')->middleware('throttle:6,1')->name('panel.topup.cancel');
+
     Route::get('/services', [ServiceCatalogController::class, 'index'])->name('panel.services.index');
 
     Route::get('/orders/create', [OrderController::class, 'create'])->name('panel.orders.create');
@@ -121,6 +133,15 @@ Route::middleware(['auth', 'admin', 'admin.log'])->prefix('admin')->name('admin.
     Route::post('/posts/{post}/delete', [AdminPostController::class, 'destroy'])->name('posts.destroy');
 
     Route::get('/api-logs', [AdminApiLogController::class, 'index'])->name('apiLogs.index');
+
+    Route::get('/topup-packages', [\App\Http\Controllers\Admin\AdminTopupPackageController::class, 'index'])->name('topupPackages.index');
+    Route::post('/topup-packages', [\App\Http\Controllers\Admin\AdminTopupPackageController::class, 'store'])->name('topupPackages.store');
+    Route::post('/topup-packages/{package}', [\App\Http\Controllers\Admin\AdminTopupPackageController::class, 'update'])->name('topupPackages.update');
+    Route::post('/topup-packages/{package}/toggle', [\App\Http\Controllers\Admin\AdminTopupPackageController::class, 'toggle'])->name('topupPackages.toggle');
+    Route::get('/topup-orders', [\App\Http\Controllers\Admin\AdminTopupOrderController::class, 'index'])->name('topupOrders.index');
+    Route::post('/topup-orders/{order}/refund', [\App\Http\Controllers\Admin\AdminTopupOrderController::class, 'refund'])->name('topupOrders.refund');
+    Route::post('/topup-orders/{order}/reconcile', [\App\Http\Controllers\Admin\AdminTopupOrderController::class, 'reconcile'])->name('topupOrders.reconcile');
+    Route::post('/topup-orders/{order}/refresh', [\App\Http\Controllers\Admin\AdminTopupOrderController::class, 'refresh'])->middleware('throttle:20,1')->name('topupOrders.refresh');
 
     Route::get('/settings', [AdminSettingController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');

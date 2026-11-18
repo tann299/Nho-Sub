@@ -57,6 +57,10 @@ class AdminDashboardController extends Controller
             'providerBalance' => $providerBalance,
             'lowBalance' => $lowBalance,
             'stuckCount' => Order::where('status', Order::STATUS_STUCK_REVIEW)->count(),
+            'topupStuckCount' => \App\Models\TopupOrder::whereIn('status', [\App\Models\TopupOrder::STATUS_STUCK_REVIEW, \App\Models\TopupOrder::STATUS_CHARGED])->count(),
+            'topupToday' => (int) \App\Models\TopupOrder::where('created_at', '>=', $today)
+                ->whereIn('status', [\App\Models\TopupOrder::STATUS_PENDING, \App\Models\TopupOrder::STATUS_PROCESSING, \App\Models\TopupOrder::STATUS_SUCCESS])
+                ->sum('sell_price'),
         ]);
     }
 }

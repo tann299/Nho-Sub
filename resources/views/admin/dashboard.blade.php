@@ -81,6 +81,7 @@
         $todo = [
             ['Nạp tiền chờ duyệt', $pendingDeposits, route('admin.deposits.index'), $pendingDeposits > 0],
             ['Đơn kẹt cần xử lý tay', $stuckCount, route('admin.orders.index', ['status' => 'stuck_review']), $stuckCount > 0],
+            ['Nạp xu chờ đối soát', $topupStuckCount, route('admin.topupOrders.index', ['status' => 'stuck_review']), $topupStuckCount > 0],
         ];
     @endphp
     <div class="card">

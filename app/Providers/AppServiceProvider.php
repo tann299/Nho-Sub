@@ -12,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(\App\Services\Napxu\NapxuClient::class, fn ($app) => new \App\Services\Napxu\NapxuClient(
+            $app->make(\App\Services\SettingService::class)->getSecret('napxu_api_key') ?? '',
+        ));
     }
 
     /**

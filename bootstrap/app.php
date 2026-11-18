@@ -32,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn () => route('panel.dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->dontFlash(['cookie', 'pin', 'napxu_api_key', 'topsubre_api_key']);
         // Chặn dò mật khẩu: trả 429 kèm lỗi hiển thị ở ô login.
         $exceptions->render(function (TooManyLoginAttemptsException $e, Request $request) {
             if ($request->expectsJson()) {
