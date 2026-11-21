@@ -2,7 +2,7 @@
 
 Gói cần dùng: `D:\NhoSub-deploy\nhosub-deploy.zip` (đã gồm vendor production, không cần chạy composer trên hosting).
 
-> Đã kiểm tra: tài khoản `<TEN_USER_FTP>` hiện **không đăng nhập được** cả FTP (lỗi 530) và DirectAdmin (lỗi 401) — tức là mật khẩu chưa đúng, không phải bị chặn IP. Cần lấy lại mật khẩu trước khi bắt đầu.
+> Đã kiểm tra: tài khoản `<TÊN_USER_FTP>` hiện **không đăng nhập được** cả FTP (lỗi 530) và DirectAdmin (lỗi 401) — tức là mật khẩu chưa đúng, không phải bị chặn IP. Cần lấy lại mật khẩu trước khi bắt đầu.
 
 ---
 
@@ -10,7 +10,7 @@ Gói cần dùng: `D:\NhoSub-deploy\nhosub-deploy.zip` (đã gồm vendor produc
 
 1. Vào https://123host.vn → **Đăng nhập khách hàng** (bằng email bạn đăng ký dịch vụ)
 2. **Dịch vụ của tôi** → chọn hosting `<HOST_PREFIX>` → **Đăng nhập DirectAdmin** (nút này đăng nhập 1 lần, không cần gõ mật khẩu)
-3. Trong DirectAdmin: **Tài khoản FTP** (`/evo/user/ftp-accounts`) → **Đặt lại mật khẩu** cho `<TEN_USER_FTP>`, hoặc tạo tài khoản FTP mới
+3. Trong DirectAdmin: **Tài khoản FTP** (`/evo/user/ftp-accounts`) → **Đặt lại mật khẩu** cho `<TÊN_USER_FTP>`, hoặc tạo tài khoản FTP mới
 4. Ghi lại: *user FTP*, *mật khẩu*, và **mật khẩu DirectAdmin** (menu **Sửa mật khẩu** góc phải)
 
 Nếu quên mật khẩu DirectAdmin: ở bước 2 bấm **Đăng nhập DirectAdmin** rồi đổi mật khẩu mới luôn.
@@ -27,8 +27,8 @@ Trong DirectAdmin:
    - Tên người dùng: `nhosub`
    - Mật khẩu: *(tự đặt một mật khẩu mạnh — ghi ngoài, KHÔNG commit lên repo)*
 3. Bấm **Tạo**. DirectAdmin sẽ đặt tiền tố tài khoản, ví dụ:
-   - Database đầy đủ: `<TEN_USER_FTP>_nhosub`
-   - User đầy đủ: `<TEN_USER_FTP>_nhosub`
+   - Database đầy đủ: `<TÊN_USER_FTP>_nhosub`
+   - User đầy đủ: `<TÊN_USER_FTP>_nhosub`
 4. **Ghi lại chính xác 3 giá trị này** — sẽ dán vào `.env`
 
 ---
@@ -38,10 +38,10 @@ Trong DirectAdmin:
 ### Cách A: File Manager của DirectAdmin (khuyên dùng)
 
 1. DirectAdmin → **Trình quản lý tệp** (File Manager)
-2. Vào thư mục gốc `/home/<TEN_USER_FTP>/`
+2. Vào thư mục gốc `/home/<TÊN_USER_FTP>/`
 3. **Tải lên** file `nhosub-deploy.zip` (8 MB)
-4. Chuột phải file vừa upload → **Giải nén** (Extract) → giải nén ngay tại `/home/<TEN_USER_FTP>/`
-5. Sau khi giải nén, trong `/home/<TEN_USER_FTP>/` phải thấy: `app/`, `bootstrap/`, `config/`, `database/`, `public/`, `resources/`, `routes/`, `storage/`, `vendor/`, `artisan`, `composer.json`, `.htaccess`
+4. Chuột phải file vừa upload → **Giải nén** (Extract) → giải nén ngay tại `/home/<TÊN_USER_FTP>/`
+5. Sau khi giải nén, trong `/home/<TÊN_USER_FTP>/` phải thấy: `app/`, `bootstrap/`, `config/`, `database/`, `public/`, `resources/`, `routes/`, `storage/`, `vendor/`, `artisan`, `composer.json`, `.htaccess`
 6. **Xoá file zip** sau khi giải nén xong
 
 > ⚠️ Nếu hosting đã có sẵn `public_html` với file cũ: xoá các file mặc định (index.html, default.php…) trước.
@@ -49,11 +49,11 @@ Trong DirectAdmin:
 ### Cách B: FileZilla (nếu thích kéo thả)
 
 1. FileZilla → **File → Site Manager → New site**
-   - Host: `<FTP_HOST>`
+   - Host: *(địa chỉ FTP từ nhà cung cấp hosting)*
    - Protocol: **FTP**
    - Encryption: **Require explicit FTP over TLS**
    - Logon Type: Normal
-   - User: `<TEN_USER_FTP>`
+   - User: *(tài khoản FTP của bạn — xem email từ nhà cung cấp)*
    - Password: *(mật khẩu FTP ở Bước 0)*
 2. Kết nối → upload `nhosub-deploy.zip` vào `/`
 3. Quay lại DirectAdmin File Manager để **giải nén** (FileZilla không giải nén được)
@@ -64,20 +64,20 @@ Trong DirectAdmin:
 
 Đây là bước **quan trọng nhất** để bảo mật (`.env` không bị tải về được).
 
-### Nếu domain trỏ thẳng vào `/home/<TEN_USER_FTP>/`
+### Nếu domain trỏ thẳng vào `/home/<TÊN_USER_FTP>/`
 
 File `.htaccess` trong gói đã tự rewrite mọi request vào `public/`. Kiểm tra: mở `https://domain-cua-ban/.env` → phải ra **403 hoặc 404**, không tải được file.
 
 ### Nếu domain có `public_html` riêng
 
-DirectAdmin thường đặt: `/home/<TEN_USER_FTP>/domains/<domain>/public_html`
+DirectAdmin thường đặt: `/home/<TÊN_USER_FTP>/domains/<domain>/public_html`
 
 Làm như sau:
-1. Upload + giải nén zip vào `/home/<TEN_USER_FTP>/` (như Bước 2)
-2. Trong File Manager, vào `/home/<TEN_USER_FTP>/domains/<domain>/`
+1. Upload + giải nén zip vào `/home/<TÊN_USER_FTP>/` (như Bước 2)
+2. Trong File Manager, vào `/home/<TÊN_USER_FTP>/domains/<domain>/`
 3. Xoá thư mục `public_html` (hoặc đổi tên thành `public_html_old`)
 4. Tạo **symlink** hoặc **trỏ document root**:
-   - **Cách 1 (khuyên dùng)**: DirectAdmin → **Domain Setup** → chọn domain → **Document Root** sửa thành `/home/<TEN_USER_FTP>/public`
+   - **Cách 1 (khuyên dùng)**: DirectAdmin → **Domain Setup** → chọn domain → **Document Root** sửa thành `/home/<TÊN_USER_FTP>/public`
    - **Cách 2**: Xoá `public_html`, rồi tạo lại bằng File Manager với **đường dẫn đích** trỏ về `../public` (tuỳ DA có hỗ trợ)
    - **Cách 3**: Copy toàn bộ nội dung `public/` vào `public_html/`, rồi sửa `public_html/index.php`:
      ```php
@@ -90,7 +90,7 @@ Làm như sau:
 
 ## Bước 4 — Tạo file `.env`
 
-1. File Manager → `/home/<TEN_USER_FTP>/` → **Tạo file mới** tên `.env`
+1. File Manager → `/home/<TÊN_USER_FTP>/` → **Tạo file mới** tên `.env`
 2. Chuột phải → **Sửa** → dán nội dung dưới, **thay các chỗ `<...>`**:
 
 ```env
@@ -114,8 +114,8 @@ LOG_LEVEL=warning
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=<TEN_USER_FTP>_nhosub
-DB_USERNAME=<TEN_USER_FTP>_nhosub
+DB_DATABASE=<TÊN_USER_FTP>_nhosub
+DB_USERNAME=<TÊN_USER_FTP>_nhosub
 DB_PASSWORD=<mật khẩu DB ở Bước 1>
 
 SESSION_DRIVER=database
@@ -160,7 +160,7 @@ TOPSUBRE_ENDPOINT=https://likenhanh.pro/api/v2
 DirectAdmin → **Terminal** (hoặc **SSH**), chạy lần lượt:
 
 ```bash
-cd /home/<TEN_USER_FTP>
+cd /home/<TÊN_USER_FTP>
 
 # 1. Sinh APP_KEY (copy kết quả vào .env nếu lệnh không tự ghi)
 php artisan key:generate --force
@@ -185,7 +185,7 @@ php artisan view:cache
 1. DirectAdmin → **Cron Jobs** → **Tạo Cron Job**
 2. Command:
    ```
-   cd /home/<TEN_USER_FTP> && php artisan key:generate --force && php artisan migrate --force && php artisan db:seed --force && php artisan config:cache && php artisan route:cache && php artisan view:cache
+   cd /home/<TÊN_USER_FTP> && php artisan key:generate --force && php artisan migrate --force && php artisan db:seed --force && php artisan config:cache && php artisan route:cache && php artisan view:cache
    ```
 3. Chọn **Once** / chạy 1 lần, lưu lại
 4. Chờ 2–3 phút, vào **Nhật ký cron** xem kết quả
@@ -193,7 +193,7 @@ php artisan view:cache
 
 ### Cách C: Tạo file tạm `install.php` (nếu cả 2 cách trên không được)
 
-Tạo `/home/<TEN_USER_FTP>/install.php`:
+Tạo `/home/<TÊN_USER_FTP>/install.php`:
 
 ```php
 <?php
@@ -229,8 +229,8 @@ Mở `https://domain-cua-ban/install.php` → chờ chạy xong → **xoá file 
 
 Trong File Manager, chuột phải 2 thư mục sau → **Đặt quyền** (Permissions) = **775**:
 
-- `/home/<TEN_USER_FTP>/storage`
-- `/home/<TEN_USER_FTP>/bootstrap/cache`
+- `/home/<TÊN_USER_FTP>/storage`
+- `/home/<TÊN_USER_FTP>/bootstrap/cache`
 
 Áp dụng **đệ quy** (Recursive / "Áp dụng cho thư mục con").
 
@@ -244,10 +244,10 @@ DirectAdmin → **Cron Jobs** → **Tạo Cron Job**:
 - **Giờ / Ngày / Tháng / Thứ**: `*`
 - **Command**:
   ```
-  cd /home/<TEN_USER_FTP> && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1
+  cd /home/<TÊN_USER_FTP> && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1
   ```
 
-Nếu `/usr/local/bin/php` không đúng, thử `php` hoặc `/usr/bin/php`. Kiểm tra bằng cách tạo cron `php -v > /home/<TEN_USER_FTP>/php-version.txt` rồi xem file.
+Nếu `/usr/local/bin/php` không đúng, thử `php` hoặc `/usr/bin/php`. Kiểm tra bằng cách tạo cron `php -v > /home/<TÊN_USER_FTP>/php-version.txt` rồi xem file.
 
 Cron này chạy 3 việc:
 - Đồng bộ trạng thái đơn mỗi 5 phút
@@ -320,7 +320,7 @@ Sau đó **Quản trị → Dịch vụ → Đồng bộ ngay**.
 |---|---|---|
 | **500 Internal Server Error** | Thiếu `APP_KEY` hoặc `storage/` không ghi được | Chạy `php artisan key:generate --force`; đặt quyền `storage` = 775 |
 | **Trang trắng** | PHP < 8.2 | DirectAdmin → **Chọn phiên bản PHP** → đặt **8.2** hoặc **8.3** |
-| **Không kết nối DB** | Sai user/pass DB hoặc thiếu tiền tố `<TEN_USER_FTP>_` | Kiểm tra lại Bước 1, dùng đúng tên đầy đủ |
+| **Không kết nối DB** | Sai user/pass DB hoặc thiếu tiền tố `<TÊN_USER_FTP>_` | Kiểm tra lại Bước 1, dùng đúng tên đầy đủ |
 | **CSS/ảnh không tải** | Document root chưa trỏ `public/` | Làm lại Bước 3 |
 | **`.env` tải được về máy** | Document root sai → **NGUY HIỂM** | Sửa ngay Bước 3, đổi lại toàn bộ mật khẩu |
 | **Webhook SePay không về** | Chưa bật Force SSL hoặc chưa nhập key | Kiểm tra Bước 8 + mục SePay |
