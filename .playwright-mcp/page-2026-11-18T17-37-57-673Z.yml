@@ -1,0 +1,83 @@
+- generic [ref=f2e2]:
+  - complementary [ref=f2e3]:
+    - link "NhoSub NHOSUB" [ref=f2e4] [cursor=pointer]:
+      - /url: http://localhost:8000/dashboard
+      - img "NhoSub" [ref=f2e5]
+      - generic [ref=f2e6]: NHOSUB
+    - navigation [ref=f2e7]:
+      - link "Trang chủ" [ref=f2e9] [cursor=pointer]:
+        - /url: http://localhost:8000/dashboard
+      - generic [ref=f2e13]:
+        - generic [ref=f2e14]: Quản trị
+        - link "Tổng quan" [ref=f2e15] [cursor=pointer]:
+          - /url: http://localhost:8000/admin
+        - link "Đơn hàng" [ref=f2e19] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/orders
+        - link "Đơn nạp xu" [ref=f2e23] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/topup-orders
+        - link "Nạp tiền" [ref=f2e27] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/deposits
+        - link "Người dùng" [ref=f2e31] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/users
+        - link "Dịch vụ" [ref=f2e35] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/services
+        - link "Gói nạp xu" [ref=f2e39] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/topup-packages
+        - link "Cấu hình" [ref=f2e43] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/settings
+        - link "Thông báo & ghim" [ref=f2e47] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/posts
+  - generic [ref=f2e51]:
+    - banner [ref=f2e52]:
+      - button "Mở menu" [ref=f2e53] [cursor=pointer]
+      - heading "Gói nạp xu TikTok" [level=1] [ref=f2e56]
+      - link "0 ₫" [ref=f2e57] [cursor=pointer]:
+        - /url: http://localhost:8000/wallet
+      - link "Thông báo" [ref=f2e62] [cursor=pointer]:
+        - /url: http://localhost:8000/notifications
+      - button "Tài khoản" [ref=f2e67] [cursor=pointer]
+    - main [ref=f2e71]:
+      - generic [ref=f2e73]:
+        - heading "Gói nạp xu TikTok" [level=2] [ref=f2e74]
+        - paragraph [ref=f2e75]: Nhập mã gói, máy chủ và giá theo napxu.vn. Giá được chốt vào đơn khi khách đặt — sửa giá không đổi đơn cũ.
+      - generic [ref=f2e76]:
+        - heading "Thêm gói mới" [level=3] [ref=f2e77]
+        - generic [ref=f2e78]:
+          - generic [ref=f2e79]:
+            - generic [ref=f2e80]:
+              - generic [ref=f2e81]: Tên gói
+              - textbox "Tên gói" [ref=f2e82]
+            - generic [ref=f2e83]:
+              - generic [ref=f2e84]: Số xu
+              - spinbutton "Số xu" [ref=f2e85]
+            - generic [ref=f2e86]:
+              - generic [ref=f2e87]: Giá gốc Napxu (₫)
+              - spinbutton "Giá gốc Napxu (₫)" [ref=f2e88]
+            - generic [ref=f2e89]:
+              - generic [ref=f2e90]: Giá bán (₫)
+              - spinbutton "Giá bán (₫)" [ref=f2e91]
+          - generic [ref=f2e92]:
+            - generic [ref=f2e93]:
+              - generic [ref=f2e94]: Máy chủ (vd server6)
+              - textbox "Máy chủ (vd server6)" [ref=f2e95]: server1
+            - generic [ref=f2e96]:
+              - generic [ref=f2e97]: Mã gói trên Napxu
+              - spinbutton "Mã gói trên Napxu" [ref=f2e98]
+            - generic [ref=f2e99]:
+              - checkbox "Mở bán ngay" [checked] [ref=f2e100]
+              - text: Mở bán ngay
+            - button "Thêm gói" [ref=f2e101] [cursor=pointer]
+      - table [ref=f2e104]:
+        - rowgroup [ref=f2e105]:
+          - row [ref=f2e106]:
+            - columnheader "Gói" [ref=f2e107]
+            - columnheader "Xu" [ref=f2e108]
+            - columnheader "Giá gốc" [ref=f2e109]
+            - columnheader "Giá bán" [ref=f2e110]
+            - columnheader "Máy chủ" [ref=f2e111]
+            - columnheader "Mã Napxu" [ref=f2e112]
+            - columnheader "Bán" [ref=f2e113]
+            - columnheader [ref=f2e114]
+        - rowgroup [ref=f2e115]:
+          - row [ref=f2e116]:
+            - cell "Chưa có gói nào. Thêm gói đầu tiên theo giá napxu.vn đang bán." [ref=f2e117]

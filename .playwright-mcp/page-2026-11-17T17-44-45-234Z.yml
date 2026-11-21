@@ -1,0 +1,872 @@
+- generic [ref=f2e2]:
+  - complementary [ref=f2e3]:
+    - link "NhoSub NHOSUB" [ref=f2e4] [cursor=pointer]:
+      - /url: http://localhost:8000/dashboard
+      - img "NhoSub" [ref=f2e5]
+      - generic [ref=f2e6]: NHOSUB
+    - navigation [ref=f2e7]:
+      - link "Trang chủ" [ref=f2e9] [cursor=pointer]:
+        - /url: http://localhost:8000/dashboard
+      - generic [ref=f2e13]:
+        - generic [ref=f2e14]: Quản trị
+        - link "Tổng quan" [ref=f2e15] [cursor=pointer]:
+          - /url: http://localhost:8000/admin
+        - link "Đơn hàng" [ref=f2e19] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/orders
+        - link "Nạp tiền" [ref=f2e23] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/deposits
+        - link "Người dùng" [ref=f2e27] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/users
+        - link "Dịch vụ" [ref=f2e31] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/services
+        - link "Cấu hình" [ref=f2e35] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/settings
+        - link "Thông báo & ghim" [ref=f2e39] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/posts
+  - generic [ref=f2e43]:
+    - banner [ref=f2e44]:
+      - button "Mở menu" [ref=f2e45] [cursor=pointer]
+      - heading "Quản lý dịch vụ" [level=1] [ref=f2e48]
+      - link "0 ₫" [ref=f2e49] [cursor=pointer]:
+        - /url: http://localhost:8000/wallet
+      - link "Thông báo" [ref=f2e54] [cursor=pointer]:
+        - /url: http://localhost:8000/notifications
+      - button "Tài khoản" [ref=f2e59] [cursor=pointer]
+    - main [ref=f2e63]:
+      - generic [ref=f2e65]:
+        - generic [ref=f2e66]:
+          - textbox "Tìm theo tên…" [ref=f2e67]
+          - combobox [ref=f2e68]:
+            - option "Tất cả danh mục" [selected]
+            - option "Facebook"
+            - option "TikTok"
+            - option "Instagram"
+            - option "YouTube"
+            - option "Khác"
+            - option "FB Like bài viết"
+            - option "Facebook Tăng Like Facebook"
+            - option "Facebook Tăng Like Facebook New 2"
+            - option "Facebook Tăng Like , Cảm Xúc Bình Luận"
+            - option "Facebook Tăng Bình Luận"
+            - option "Facebook Tăng Theo Dõi Facebook Và Fanpage"
+            - option "Facebook Tăng Like Fanpage"
+            - option "Facebook Tăng Thành Viên Nhóm"
+            - option "Facebook Tăng Share Facebook"
+            - option "Facebook Tăng Mắt Livestream"
+            - option "Facebook Tăng Mắt Live Facebook New 2"
+            - option "Facebook Tăng View Video"
+            - option "Facebook Tăng View Story"
+            - option "Facebook Tăng Cảm Xúc Story"
+            - option "Facebook Tăng Share Kèm Comment"
+            - option "Facebook Tăng Lời Mời Kết Bạn"
+            - option "TikTok Tăng View Tik Tok"
+            - option "TikTok Tăng Tym Video"
+            - option "TikTok Tăng Sub"
+            - option "TikTok Tăng Chia Sẻ"
+            - option "TikTok Tăng Mắt Live"
+            - option "TikTok Tăng Mắt Live TikTok New 2"
+            - option "TikTok Tăng SaveTok"
+            - option "TikTok Tăng Like Kèm View"
+            - option "TikTok Thả Tym Live TikTok"
+            - option "Instagram Tăng Lượt Thích"
+            - option "Instagram Tăng Like Comment"
+            - option "Instagram Tăng Bình Luận"
+            - option "Instagram Tăng Theo Dõi"
+            - option "Instagram Tăng View Video"
+            - option "Instagram Tăng Mắt Live Instagram"
+            - option "Instagram Tăng View Story"
+            - option "Instagram Tăng Share"
+            - option "Youtube Tăng View Video"
+            - option "Youtube View Short"
+            - option "Youtube Tăng Like"
+            - option "Youtube Tăng Comment"
+            - option "Youtube Like Short"
+            - option "Youtube Tăng Like Comment"
+            - option "Youtube Tăng Comment AI"
+            - option "Youtube Tăng Share"
+            - option "Youtube Tăng Mắt Live"
+            - option "X - Twitter Tăng Like"
+            - option "X - Twitter Tăng Comment"
+            - option "X - Twitter Tăng Theo Dõi"
+            - option "X - Twitter Tăng View"
+            - option "X - Twitter Tăng Retweets"
+            - option "X - Twitter Tăng View Video"
+            - option "Shopee Tăng Tim Sản Phẩm"
+            - option "Shopee Tăng Sub"
+            - option "Shopee Tăng Mắt Live"
+            - option "Lazada Tăng Sub"
+            - option "Threads Tăng Like Threads"
+            - option "Threads Tăng Comment"
+            - option "Threads Tăng Reshare"
+            - option "Traffic Web Tăng Traffic"
+            - option "Google Map Đánh Giá Google Map"
+            - option "Kwai Tăng Tym Video"
+            - option "Kwai Tăng Theo Dõi"
+            - option "Soundcloud Tăng Lượt Play"
+            - option "Soundcloud Tăng Lượt Đăng Lại"
+          - button "Lọc" [ref=f2e69] [cursor=pointer]
+        - button "Đồng bộ từ nhà cung cấp" [ref=f2e71] [cursor=pointer]
+      - table [ref=f2e74]:
+        - rowgroup [ref=f2e75]:
+          - row [ref=f2e76]:
+            - columnheader "ID NCC" [ref=f2e77]
+            - columnheader "Tên dịch vụ" [ref=f2e78]
+            - columnheader "Giá gốc" [ref=f2e79]
+            - columnheader "Giá bán" [ref=f2e80]
+            - columnheader "Min/Max" [ref=f2e81]
+            - columnheader "Bán" [ref=f2e82]
+            - columnheader [ref=f2e83]
+        - rowgroup [ref=f2e84]:
+          - row [ref=f2e85]:
+            - cell "655" [ref=f2e86]
+            - cell "Sv7 - Like Comment Facebook- [ Có Chọn Cảm Xúc ] Facebook Tăng Like , Cảm Xúc Bình Luận" [ref=f2e87]:
+              - generic [ref=f2e88]:
+                - textbox [ref=f2e89]: Sv7 - Like Comment Facebook- [ Có Chọn Cảm Xúc ]
+                - generic [ref=f2e90]: Facebook Tăng Like , Cảm Xúc Bình Luận
+            - cell "16.499 0.634615 USD" [ref=f2e91]:
+              - text: "16.499"
+              - generic [ref=f2e92]: 0.634615 USD
+            - cell [ref=f2e93]:
+              - spinbutton [ref=f2e94]: "22274"
+            - cell "30 / 50,000" [ref=f2e95]
+            - cell [ref=f2e96]:
+              - generic [ref=f2e97]:
+                - checkbox "Hiện" [checked] [ref=f2e98]
+                - text: Hiện
+            - cell [ref=f2e99]:
+              - button "Lưu" [ref=f2e100] [cursor=pointer]
+          - row [ref=f2e101]:
+            - cell "377" [ref=f2e102]
+            - cell "Sv8 - Like Comment Facebook Giá Rẻ Facebook Tăng Like , Cảm Xúc Bình Luận" [ref=f2e103]:
+              - generic [ref=f2e104]:
+                - textbox [ref=f2e105]: Sv8 - Like Comment Facebook Giá Rẻ
+                - generic [ref=f2e106]: Facebook Tăng Like , Cảm Xúc Bình Luận
+            - cell "6.400 0.246154 USD" [ref=f2e107]:
+              - text: "6.400"
+              - generic [ref=f2e108]: 0.246154 USD
+            - cell [ref=f2e109]:
+              - spinbutton [ref=f2e110]: "8640"
+            - cell "100 / 50,000" [ref=f2e111]
+            - cell [ref=f2e112]:
+              - generic [ref=f2e113]:
+                - checkbox "Hiện" [checked] [ref=f2e114]
+                - text: Hiện
+            - cell [ref=f2e115]:
+              - button "Lưu" [ref=f2e116] [cursor=pointer]
+          - row [ref=f2e117]:
+            - cell "4" [ref=f2e118]
+            - cell "Sv26 - Comment Facebook Việt - [ Ổn Định ] Facebook Tăng Bình Luận" [ref=f2e119]:
+              - generic [ref=f2e120]:
+                - textbox [ref=f2e121]: Sv26 - Comment Facebook Việt - [ Ổn Định ]
+                - generic [ref=f2e122]: Facebook Tăng Bình Luận
+            - cell "241.500 9.288462 USD" [ref=f2e123]:
+              - text: "241.500"
+              - generic [ref=f2e124]: 9.288462 USD
+            - cell [ref=f2e125]:
+              - spinbutton [ref=f2e126]: "326025"
+            - cell "10 / 50,000" [ref=f2e127]
+            - cell [ref=f2e128]:
+              - generic [ref=f2e129]:
+                - checkbox "Hiện" [checked] [ref=f2e130]
+                - text: Hiện
+            - cell [ref=f2e131]:
+              - button "Lưu" [ref=f2e132] [cursor=pointer]
+          - row [ref=f2e133]:
+            - cell "7" [ref=f2e134]
+            - cell "Sv6 - Comment Facebook Việt - [ Chất Lượng ] Facebook Tăng Bình Luận" [ref=f2e135]:
+              - generic [ref=f2e136]:
+                - textbox [ref=f2e137]: Sv6 - Comment Facebook Việt - [ Chất Lượng ]
+                - generic [ref=f2e138]: Facebook Tăng Bình Luận
+            - cell "219.999 8.461538 USD" [ref=f2e139]:
+              - text: "219.999"
+              - generic [ref=f2e140]: 8.461538 USD
+            - cell [ref=f2e141]:
+              - spinbutton [ref=f2e142]: "296999"
+            - cell "10 / 10,000" [ref=f2e143]
+            - cell [ref=f2e144]:
+              - generic [ref=f2e145]:
+                - checkbox "Hiện" [checked] [ref=f2e146]
+                - text: Hiện
+            - cell [ref=f2e147]:
+              - button "Lưu" [ref=f2e148] [cursor=pointer]
+          - row [ref=f2e149]:
+            - cell "698" [ref=f2e150]
+            - cell "Sv7 - Comment Facebook Việt - [ XỊN ] Facebook Tăng Bình Luận" [ref=f2e151]:
+              - generic [ref=f2e152]:
+                - textbox [ref=f2e153]: Sv7 - Comment Facebook Việt - [ XỊN ]
+                - generic [ref=f2e154]: Facebook Tăng Bình Luận
+            - cell "247.500 9.519231 USD" [ref=f2e155]:
+              - text: "247.500"
+              - generic [ref=f2e156]: 9.519231 USD
+            - cell [ref=f2e157]:
+              - spinbutton [ref=f2e158]: "334125"
+            - cell "10 / 10,000" [ref=f2e159]
+            - cell [ref=f2e160]:
+              - generic [ref=f2e161]:
+                - checkbox "Hiện" [checked] [ref=f2e162]
+                - text: Hiện
+            - cell [ref=f2e163]:
+              - button "Lưu" [ref=f2e164] [cursor=pointer]
+          - row [ref=f2e165]:
+            - cell "699" [ref=f2e166]
+            - cell "Sv8 - Comment Facebook Việt Sale - [ Độc Quyền ] Facebook Tăng Bình Luận" [ref=f2e167]:
+              - generic [ref=f2e168]:
+                - textbox [ref=f2e169]: Sv8 - Comment Facebook Việt Sale - [ Độc Quyền ]
+                - generic [ref=f2e170]: Facebook Tăng Bình Luận
+            - cell "192.499 7.403846 USD" [ref=f2e171]:
+              - text: "192.499"
+              - generic [ref=f2e172]: 7.403846 USD
+            - cell [ref=f2e173]:
+              - spinbutton [ref=f2e174]: "259874"
+            - cell "10 / 10,000" [ref=f2e175]
+            - cell [ref=f2e176]:
+              - generic [ref=f2e177]:
+                - checkbox "Hiện" [checked] [ref=f2e178]
+                - text: Hiện
+            - cell [ref=f2e179]:
+              - button "Lưu" [ref=f2e180] [cursor=pointer]
+          - row [ref=f2e181]:
+            - cell "700" [ref=f2e182]
+            - cell "Sv9 - Comment Facebook Việt Chất Lượng - [ Sale ] Facebook Tăng Bình Luận" [ref=f2e183]:
+              - generic [ref=f2e184]:
+                - textbox [ref=f2e185]: Sv9 - Comment Facebook Việt Chất Lượng - [ Sale ]
+                - generic [ref=f2e186]: Facebook Tăng Bình Luận
+            - cell "241.500 9.288462 USD" [ref=f2e187]:
+              - text: "241.500"
+              - generic [ref=f2e188]: 9.288462 USD
+            - cell [ref=f2e189]:
+              - spinbutton [ref=f2e190]: "326025"
+            - cell "10 / 10,000" [ref=f2e191]
+            - cell [ref=f2e192]:
+              - generic [ref=f2e193]:
+                - checkbox "Hiện" [checked] [ref=f2e194]
+                - text: Hiện
+            - cell [ref=f2e195]:
+              - button "Lưu" [ref=f2e196] [cursor=pointer]
+          - row [ref=f2e197]:
+            - cell "130" [ref=f2e198]
+            - cell "Sv16 - Sub Facebook Mới - [ NEW ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e199]:
+              - generic [ref=f2e200]:
+                - textbox [ref=f2e201]: Sv16 - Sub Facebook Mới - [ NEW ]
+                - generic [ref=f2e202]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "4.900 0.188462 USD" [ref=f2e203]:
+              - text: "4.900"
+              - generic [ref=f2e204]: 0.188462 USD
+            - cell [ref=f2e205]:
+              - spinbutton [ref=f2e206]: "6615"
+            - cell "100 / 20,000" [ref=f2e207]
+            - cell [ref=f2e208]:
+              - generic [ref=f2e209]:
+                - checkbox "Hiện" [checked] [ref=f2e210]
+                - text: Hiện
+            - cell [ref=f2e211]:
+              - button "Lưu" [ref=f2e212] [cursor=pointer]
+          - row [ref=f2e213]:
+            - cell "810" [ref=f2e214]
+            - cell "Sv34 - Sub Facebook Việt - [ XỊN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e215]:
+              - generic [ref=f2e216]:
+                - textbox [ref=f2e217]: Sv34 - Sub Facebook Việt - [ XỊN ]
+                - generic [ref=f2e218]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "38.300 1.473077 USD" [ref=f2e219]:
+              - text: "38.300"
+              - generic [ref=f2e220]: 1.473077 USD
+            - cell [ref=f2e221]:
+              - spinbutton [ref=f2e222]: "51705"
+            - cell "500 / 100,000" [ref=f2e223]
+            - cell [ref=f2e224]:
+              - generic [ref=f2e225]:
+                - checkbox "Hiện" [checked] [ref=f2e226]
+                - text: Hiện
+            - cell [ref=f2e227]:
+              - button "Lưu" [ref=f2e228] [cursor=pointer]
+          - row [ref=f2e229]:
+            - cell "120" [ref=f2e230]
+            - cell "Sv35 - Sub Facebook Việt - [ XỊN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e231]:
+              - generic [ref=f2e232]:
+                - textbox [ref=f2e233]: Sv35 - Sub Facebook Việt - [ XỊN ]
+                - generic [ref=f2e234]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "18.499 0.711538 USD" [ref=f2e235]:
+              - text: "18.499"
+              - generic [ref=f2e236]: 0.711538 USD
+            - cell [ref=f2e237]:
+              - spinbutton [ref=f2e238]: "24974"
+            - cell "500 / 2,000" [ref=f2e239]
+            - cell [ref=f2e240]:
+              - generic [ref=f2e241]:
+                - checkbox "Hiện" [checked] [ref=f2e242]
+                - text: Hiện
+            - cell [ref=f2e243]:
+              - button "Lưu" [ref=f2e244] [cursor=pointer]
+          - row [ref=f2e245]:
+            - cell "11" [ref=f2e246]
+            - cell "Sv36 - Sub Facebook Việt Nam Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e247]:
+              - generic [ref=f2e248]:
+                - textbox [ref=f2e249]: Sv36 - Sub Facebook Việt Nam
+                - generic [ref=f2e250]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "27.200 1.046154 USD" [ref=f2e251]:
+              - text: "27.200"
+              - generic [ref=f2e252]: 1.046154 USD
+            - cell [ref=f2e253]:
+              - spinbutton [ref=f2e254]: "36720"
+            - cell "200 / 2,000" [ref=f2e255]
+            - cell [ref=f2e256]:
+              - generic [ref=f2e257]:
+                - checkbox "Hiện" [checked] [ref=f2e258]
+                - text: Hiện
+            - cell [ref=f2e259]:
+              - button "Lưu" [ref=f2e260] [cursor=pointer]
+          - row [ref=f2e261]:
+            - cell "129" [ref=f2e262]
+            - cell "SV4 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e263]:
+              - generic [ref=f2e264]:
+                - textbox [ref=f2e265]: SV4 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ]
+                - generic [ref=f2e266]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "7.899 0.303846 USD" [ref=f2e267]:
+              - text: "7.899"
+              - generic [ref=f2e268]: 0.303846 USD
+            - cell [ref=f2e269]:
+              - spinbutton [ref=f2e270]: "10664"
+            - cell "100 / 30,000" [ref=f2e271]
+            - cell [ref=f2e272]:
+              - generic [ref=f2e273]:
+                - checkbox "Hiện" [checked] [ref=f2e274]
+                - text: Hiện
+            - cell [ref=f2e275]:
+              - button "Lưu" [ref=f2e276] [cursor=pointer]
+          - row [ref=f2e277]:
+            - cell "533" [ref=f2e278]
+            - cell "SV5 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e279]:
+              - generic [ref=f2e280]:
+                - textbox [ref=f2e281]: SV5 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ]
+                - generic [ref=f2e282]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "10.300 0.396154 USD" [ref=f2e283]:
+              - text: "10.300"
+              - generic [ref=f2e284]: 0.396154 USD
+            - cell [ref=f2e285]:
+              - spinbutton [ref=f2e286]: "13905"
+            - cell "100 / 30,000" [ref=f2e287]
+            - cell [ref=f2e288]:
+              - generic [ref=f2e289]:
+                - checkbox "Hiện" [checked] [ref=f2e290]
+                - text: Hiện
+            - cell [ref=f2e291]:
+              - button "Lưu" [ref=f2e292] [cursor=pointer]
+          - row [ref=f2e293]:
+            - cell "462" [ref=f2e294]
+            - cell "SV6 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e295]:
+              - generic [ref=f2e296]:
+                - textbox [ref=f2e297]: SV6 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ]
+                - generic [ref=f2e298]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "5.399 0.207692 USD" [ref=f2e299]:
+              - text: "5.399"
+              - generic [ref=f2e300]: 0.207692 USD
+            - cell [ref=f2e301]:
+              - spinbutton [ref=f2e302]: "7289"
+            - cell "500 / 10,000" [ref=f2e303]
+            - cell [ref=f2e304]:
+              - generic [ref=f2e305]:
+                - checkbox "Hiện" [checked] [ref=f2e306]
+                - text: Hiện
+            - cell [ref=f2e307]:
+              - button "Lưu" [ref=f2e308] [cursor=pointer]
+          - row [ref=f2e309]:
+            - cell "665" [ref=f2e310]
+            - cell "Sv75 - Sub Facebook Giá Rẻ Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e311]:
+              - generic [ref=f2e312]:
+                - textbox [ref=f2e313]: Sv75 - Sub Facebook Giá Rẻ
+                - generic [ref=f2e314]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "3.000 0.115385 USD" [ref=f2e315]:
+              - text: "3.000"
+              - generic [ref=f2e316]: 0.115385 USD
+            - cell [ref=f2e317]:
+              - spinbutton [ref=f2e318]: "4050"
+            - cell "100 / 10,000" [ref=f2e319]
+            - cell [ref=f2e320]:
+              - generic [ref=f2e321]:
+                - checkbox "Hiện" [checked] [ref=f2e322]
+                - text: Hiện
+            - cell [ref=f2e323]:
+              - button "Lưu" [ref=f2e324] [cursor=pointer]
+          - row [ref=f2e325]:
+            - cell "10" [ref=f2e326]
+            - cell "Sv76 - Sub Facebook Giá Rẻ Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e327]:
+              - generic [ref=f2e328]:
+                - textbox [ref=f2e329]: Sv76 - Sub Facebook Giá Rẻ
+                - generic [ref=f2e330]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "3.800 0.146154 USD" [ref=f2e331]:
+              - text: "3.800"
+              - generic [ref=f2e332]: 0.146154 USD
+            - cell [ref=f2e333]:
+              - spinbutton [ref=f2e334]: "5130"
+            - cell "100 / 20,000" [ref=f2e335]
+            - cell [ref=f2e336]:
+              - generic [ref=f2e337]:
+                - checkbox "Hiện" [checked] [ref=f2e338]
+                - text: Hiện
+            - cell [ref=f2e339]:
+              - button "Lưu" [ref=f2e340] [cursor=pointer]
+          - row [ref=f2e341]:
+            - cell "806" [ref=f2e342]
+            - cell "SV8 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e343]:
+              - generic [ref=f2e344]:
+                - textbox [ref=f2e345]: SV8 - SUB VIP DẠNG MỚI - [ ĐỘC QUYỀN ]
+                - generic [ref=f2e346]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "3.200 0.123077 USD" [ref=f2e347]:
+              - text: "3.200"
+              - generic [ref=f2e348]: 0.123077 USD
+            - cell [ref=f2e349]:
+              - spinbutton [ref=f2e350]: "4320"
+            - cell "500 / 20,000" [ref=f2e351]
+            - cell [ref=f2e352]:
+              - generic [ref=f2e353]:
+                - checkbox "Hiện" [checked] [ref=f2e354]
+                - text: Hiện
+            - cell [ref=f2e355]:
+              - button "Lưu" [ref=f2e356] [cursor=pointer]
+          - row [ref=f2e357]:
+            - cell "325" [ref=f2e358]
+            - cell "SV9 - SUB VIP SIÊU TỐC - [ ĐỘC QUYỀN ] Facebook Tăng Theo Dõi Facebook Và Fanpage" [ref=f2e359]:
+              - generic [ref=f2e360]:
+                - textbox [ref=f2e361]: SV9 - SUB VIP SIÊU TỐC - [ ĐỘC QUYỀN ]
+                - generic [ref=f2e362]: Facebook Tăng Theo Dõi Facebook Và Fanpage
+            - cell "3.299 0.126923 USD" [ref=f2e363]:
+              - text: "3.299"
+              - generic [ref=f2e364]: 0.126923 USD
+            - cell [ref=f2e365]:
+              - spinbutton [ref=f2e366]: "4454"
+            - cell "500 / 20,000" [ref=f2e367]
+            - cell [ref=f2e368]:
+              - generic [ref=f2e369]:
+                - checkbox "Hiện" [checked] [ref=f2e370]
+                - text: Hiện
+            - cell [ref=f2e371]:
+              - button "Lưu" [ref=f2e372] [cursor=pointer]
+          - row [ref=f2e373]:
+            - cell "17" [ref=f2e374]
+            - cell "Sv1 - Like Page Dạng Mới - HOT Facebook Tăng Like Fanpage" [ref=f2e375]:
+              - generic [ref=f2e376]:
+                - textbox [ref=f2e377]: Sv1 - Like Page Dạng Mới - HOT
+                - generic [ref=f2e378]: Facebook Tăng Like Fanpage
+            - cell "8.200 0.315385 USD" [ref=f2e379]:
+              - text: "8.200"
+              - generic [ref=f2e380]: 0.315385 USD
+            - cell [ref=f2e381]:
+              - spinbutton [ref=f2e382]: "11070"
+            - cell "100 / 30,000" [ref=f2e383]
+            - cell [ref=f2e384]:
+              - generic [ref=f2e385]:
+                - checkbox "Hiện" [checked] [ref=f2e386]
+                - text: Hiện
+            - cell [ref=f2e387]:
+              - button "Lưu" [ref=f2e388] [cursor=pointer]
+          - row [ref=f2e389]:
+            - cell "31" [ref=f2e390]
+            - cell "Sv2 - Like Page Dạng Mới - [ Siêu HOT ] Facebook Tăng Like Fanpage" [ref=f2e391]:
+              - generic [ref=f2e392]:
+                - textbox [ref=f2e393]: Sv2 - Like Page Dạng Mới - [ Siêu HOT ]
+                - generic [ref=f2e394]: Facebook Tăng Like Fanpage
+            - cell "10.300 0.396154 USD" [ref=f2e395]:
+              - text: "10.300"
+              - generic [ref=f2e396]: 0.396154 USD
+            - cell [ref=f2e397]:
+              - spinbutton [ref=f2e398]: "13905"
+            - cell "100 / 200,000" [ref=f2e399]
+            - cell [ref=f2e400]:
+              - generic [ref=f2e401]:
+                - checkbox "Hiện" [checked] [ref=f2e402]
+                - text: Hiện
+            - cell [ref=f2e403]:
+              - button "Lưu" [ref=f2e404] [cursor=pointer]
+          - row [ref=f2e405]:
+            - cell "91" [ref=f2e406]
+            - cell "Sv3 - Like Page Dạng Mới - [ New 1 ] Facebook Tăng Like Fanpage" [ref=f2e407]:
+              - generic [ref=f2e408]:
+                - textbox [ref=f2e409]: Sv3 - Like Page Dạng Mới - [ New 1 ]
+                - generic [ref=f2e410]: Facebook Tăng Like Fanpage
+            - cell "19.599 0.753846 USD" [ref=f2e411]:
+              - text: "19.599"
+              - generic [ref=f2e412]: 0.753846 USD
+            - cell [ref=f2e413]:
+              - spinbutton [ref=f2e414]: "26459"
+            - cell "100 / 500,000" [ref=f2e415]
+            - cell [ref=f2e416]:
+              - generic [ref=f2e417]:
+                - checkbox "Hiện" [checked] [ref=f2e418]
+                - text: Hiện
+            - cell [ref=f2e419]:
+              - button "Lưu" [ref=f2e420] [cursor=pointer]
+          - row [ref=f2e421]:
+            - cell "92" [ref=f2e422]
+            - cell "Sv4 - Like Page Dạng Mới - [ XỊN ] Facebook Tăng Like Fanpage" [ref=f2e423]:
+              - generic [ref=f2e424]:
+                - textbox [ref=f2e425]: Sv4 - Like Page Dạng Mới - [ XỊN ]
+                - generic [ref=f2e426]: Facebook Tăng Like Fanpage
+            - cell "26.699 1.026923 USD" [ref=f2e427]:
+              - text: "26.699"
+              - generic [ref=f2e428]: 1.026923 USD
+            - cell [ref=f2e429]:
+              - spinbutton [ref=f2e430]: "36044"
+            - cell "100 / 500,000" [ref=f2e431]
+            - cell [ref=f2e432]:
+              - generic [ref=f2e433]:
+                - checkbox "Hiện" [checked] [ref=f2e434]
+                - text: Hiện
+            - cell [ref=f2e435]:
+              - button "Lưu" [ref=f2e436] [cursor=pointer]
+          - row [ref=f2e437]:
+            - cell "277" [ref=f2e438]
+            - cell "Sv5 - Like Page Facebook Dạng Mới - [ SIÊU XỊN ] Facebook Tăng Like Fanpage" [ref=f2e439]:
+              - generic [ref=f2e440]:
+                - textbox [ref=f2e441]: Sv5 - Like Page Facebook Dạng Mới - [ SIÊU XỊN ]
+                - generic [ref=f2e442]: Facebook Tăng Like Fanpage
+            - cell "35.899 1.380769 USD" [ref=f2e443]:
+              - text: "35.899"
+              - generic [ref=f2e444]: 1.380769 USD
+            - cell [ref=f2e445]:
+              - spinbutton [ref=f2e446]: "48464"
+            - cell "100 / 500,000" [ref=f2e447]
+            - cell [ref=f2e448]:
+              - generic [ref=f2e449]:
+                - checkbox "Hiện" [checked] [ref=f2e450]
+                - text: Hiện
+            - cell [ref=f2e451]:
+              - button "Lưu" [ref=f2e452] [cursor=pointer]
+          - row [ref=f2e453]:
+            - cell "552" [ref=f2e454]
+            - cell "Sv10 - Member Group Mới Facebook Tăng Thành Viên Nhóm" [ref=f2e455]:
+              - generic [ref=f2e456]:
+                - textbox [ref=f2e457]: Sv10 - Member Group Mới
+                - generic [ref=f2e458]: Facebook Tăng Thành Viên Nhóm
+            - cell "20.999 0.807692 USD" [ref=f2e459]:
+              - text: "20.999"
+              - generic [ref=f2e460]: 0.807692 USD
+            - cell [ref=f2e461]:
+              - spinbutton [ref=f2e462]: "28349"
+            - cell "200 / 20,000" [ref=f2e463]
+            - cell [ref=f2e464]:
+              - generic [ref=f2e465]:
+                - checkbox "Hiện" [checked] [ref=f2e466]
+                - text: Hiện
+            - cell [ref=f2e467]:
+              - button "Lưu" [ref=f2e468] [cursor=pointer]
+          - row [ref=f2e469]:
+            - cell "26" [ref=f2e470]
+            - cell "Sv5 - Member Group Việt - [ XỊN ] Facebook Tăng Thành Viên Nhóm" [ref=f2e471]:
+              - generic [ref=f2e472]:
+                - textbox [ref=f2e473]: Sv5 - Member Group Việt - [ XỊN ]
+                - generic [ref=f2e474]: Facebook Tăng Thành Viên Nhóm
+            - cell "37.400 1.438462 USD" [ref=f2e475]:
+              - text: "37.400"
+              - generic [ref=f2e476]: 1.438462 USD
+            - cell [ref=f2e477]:
+              - spinbutton [ref=f2e478]: "50490"
+            - cell "500 / 30,000" [ref=f2e479]
+            - cell [ref=f2e480]:
+              - generic [ref=f2e481]:
+                - checkbox "Hiện" [checked] [ref=f2e482]
+                - text: Hiện
+            - cell [ref=f2e483]:
+              - button "Lưu" [ref=f2e484] [cursor=pointer]
+          - row [ref=f2e485]:
+            - cell "661" [ref=f2e486]
+            - cell "Sv7 - Member Group Dạng Mới Facebook Tăng Thành Viên Nhóm" [ref=f2e487]:
+              - generic [ref=f2e488]:
+                - textbox [ref=f2e489]: Sv7 - Member Group Dạng Mới
+                - generic [ref=f2e490]: Facebook Tăng Thành Viên Nhóm
+            - cell "7.299 0.280769 USD" [ref=f2e491]:
+              - text: "7.299"
+              - generic [ref=f2e492]: 0.280769 USD
+            - cell [ref=f2e493]:
+              - spinbutton [ref=f2e494]: "9854"
+            - cell "100 / 10,000" [ref=f2e495]
+            - cell [ref=f2e496]:
+              - generic [ref=f2e497]:
+                - checkbox "Hiện" [checked] [ref=f2e498]
+                - text: Hiện
+            - cell [ref=f2e499]:
+              - button "Lưu" [ref=f2e500] [cursor=pointer]
+          - row [ref=f2e501]:
+            - cell "298" [ref=f2e502]
+            - cell "Sv8 - Member Group Dạng Mới Facebook Tăng Thành Viên Nhóm" [ref=f2e503]:
+              - generic [ref=f2e504]:
+                - textbox [ref=f2e505]: Sv8 - Member Group Dạng Mới
+                - generic [ref=f2e506]: Facebook Tăng Thành Viên Nhóm
+            - cell "7.800 0.300000 USD" [ref=f2e507]:
+              - text: "7.800"
+              - generic [ref=f2e508]: 0.300000 USD
+            - cell [ref=f2e509]:
+              - spinbutton [ref=f2e510]: "10530"
+            - cell "100 / 10,000" [ref=f2e511]
+            - cell [ref=f2e512]:
+              - generic [ref=f2e513]:
+                - checkbox "Hiện" [checked] [ref=f2e514]
+                - text: Hiện
+            - cell [ref=f2e515]:
+              - button "Lưu" [ref=f2e516] [cursor=pointer]
+          - row [ref=f2e517]:
+            - cell "25" [ref=f2e518]
+            - cell "Sv9 - Member Group Dạng Mới Facebook Tăng Thành Viên Nhóm" [ref=f2e519]:
+              - generic [ref=f2e520]:
+                - textbox [ref=f2e521]: Sv9 - Member Group Dạng Mới
+                - generic [ref=f2e522]: Facebook Tăng Thành Viên Nhóm
+            - cell "5.700 0.219231 USD" [ref=f2e523]:
+              - text: "5.700"
+              - generic [ref=f2e524]: 0.219231 USD
+            - cell [ref=f2e525]:
+              - spinbutton [ref=f2e526]: "7695"
+            - cell "100 / 10,000" [ref=f2e527]
+            - cell [ref=f2e528]:
+              - generic [ref=f2e529]:
+                - checkbox "Hiện" [checked] [ref=f2e530]
+                - text: Hiện
+            - cell [ref=f2e531]:
+              - button "Lưu" [ref=f2e532] [cursor=pointer]
+          - row [ref=f2e533]:
+            - cell "437" [ref=f2e534]
+            - cell "Sv9 - Member Group Dạng Mới Facebook Tăng Thành Viên Nhóm" [ref=f2e535]:
+              - generic [ref=f2e536]:
+                - textbox [ref=f2e537]: Sv9 - Member Group Dạng Mới
+                - generic [ref=f2e538]: Facebook Tăng Thành Viên Nhóm
+            - cell "17.900 0.688462 USD" [ref=f2e539]:
+              - text: "17.900"
+              - generic [ref=f2e540]: 0.688462 USD
+            - cell [ref=f2e541]:
+              - spinbutton [ref=f2e542]: "24165"
+            - cell "200 / 3,000" [ref=f2e543]
+            - cell [ref=f2e544]:
+              - generic [ref=f2e545]:
+                - checkbox "Hiện" [checked] [ref=f2e546]
+                - text: Hiện
+            - cell [ref=f2e547]:
+              - button "Lưu" [ref=f2e548] [cursor=pointer]
+          - row [ref=f2e549]:
+            - cell "440" [ref=f2e550]
+            - cell "Sv1 - Share Facebook Giá Rẻ - [ Mới ] Facebook Tăng Share Facebook" [ref=f2e551]:
+              - generic [ref=f2e552]:
+                - textbox [ref=f2e553]: Sv1 - Share Facebook Giá Rẻ - [ Mới ]
+                - generic [ref=f2e554]: Facebook Tăng Share Facebook
+            - cell "26.899 1.034615 USD" [ref=f2e555]:
+              - text: "26.899"
+              - generic [ref=f2e556]: 1.034615 USD
+            - cell [ref=f2e557]:
+              - spinbutton [ref=f2e558]: "36314"
+            - cell "1,000 / 100,000" [ref=f2e559]
+            - cell [ref=f2e560]:
+              - generic [ref=f2e561]:
+                - checkbox "Hiện" [checked] [ref=f2e562]
+                - text: Hiện
+            - cell [ref=f2e563]:
+              - button "Lưu" [ref=f2e564] [cursor=pointer]
+          - row [ref=f2e565]:
+            - cell "240" [ref=f2e566]
+            - cell "Sv20 - Share Facebook Chất Lượng - [ XỊN ] Facebook Tăng Share Facebook" [ref=f2e567]:
+              - generic [ref=f2e568]:
+                - textbox [ref=f2e569]: Sv20 - Share Facebook Chất Lượng - [ XỊN ]
+                - generic [ref=f2e570]: Facebook Tăng Share Facebook
+            - cell "209.999 8.076923 USD" [ref=f2e571]:
+              - text: "209.999"
+              - generic [ref=f2e572]: 8.076923 USD
+            - cell [ref=f2e573]:
+              - spinbutton [ref=f2e574]: "283499"
+            - cell "50 / 50,000" [ref=f2e575]
+            - cell [ref=f2e576]:
+              - generic [ref=f2e577]:
+                - checkbox "Hiện" [checked] [ref=f2e578]
+                - text: Hiện
+            - cell [ref=f2e579]:
+              - button "Lưu" [ref=f2e580] [cursor=pointer]
+          - row [ref=f2e581]:
+            - cell "429" [ref=f2e582]
+            - cell "Sv21 - Share Facebook - [ CLONE VIỆT ] Facebook Tăng Share Facebook" [ref=f2e583]:
+              - generic [ref=f2e584]:
+                - textbox [ref=f2e585]: Sv21 - Share Facebook - [ CLONE VIỆT ]
+                - generic [ref=f2e586]: Facebook Tăng Share Facebook
+            - cell "315.000 12.115385 USD" [ref=f2e587]:
+              - text: "315.000"
+              - generic [ref=f2e588]: 12.115385 USD
+            - cell [ref=f2e589]:
+              - spinbutton [ref=f2e590]: "425250"
+            - cell "50 / 50,000" [ref=f2e591]
+            - cell [ref=f2e592]:
+              - generic [ref=f2e593]:
+                - checkbox "Hiện" [checked] [ref=f2e594]
+                - text: Hiện
+            - cell [ref=f2e595]:
+              - button "Lưu" [ref=f2e596] [cursor=pointer]
+          - row [ref=f2e597]:
+            - cell "743" [ref=f2e598]
+            - cell "Sv3- Share Facebook Giá Rẻ - [ HÀNG XỊN ] Facebook Tăng Share Facebook" [ref=f2e599]:
+              - generic [ref=f2e600]:
+                - textbox [ref=f2e601]: Sv3- Share Facebook Giá Rẻ - [ HÀNG XỊN ]
+                - generic [ref=f2e602]: Facebook Tăng Share Facebook
+            - cell "30.400 1.169231 USD" [ref=f2e603]:
+              - text: "30.400"
+              - generic [ref=f2e604]: 1.169231 USD
+            - cell [ref=f2e605]:
+              - spinbutton [ref=f2e606]: "41040"
+            - cell "100 / 10,000,000" [ref=f2e607]
+            - cell [ref=f2e608]:
+              - generic [ref=f2e609]:
+                - checkbox "Hiện" [checked] [ref=f2e610]
+                - text: Hiện
+            - cell [ref=f2e611]:
+              - button "Lưu" [ref=f2e612] [cursor=pointer]
+          - row [ref=f2e613]:
+            - cell "710" [ref=f2e614]
+            - cell "Sv4 - Share Facebook Giá Rẻ - [ SALE ] Facebook Tăng Share Facebook" [ref=f2e615]:
+              - generic [ref=f2e616]:
+                - textbox [ref=f2e617]: Sv4 - Share Facebook Giá Rẻ - [ SALE ]
+                - generic [ref=f2e618]: Facebook Tăng Share Facebook
+            - cell "25.100 0.965385 USD" [ref=f2e619]:
+              - text: "25.100"
+              - generic [ref=f2e620]: 0.965385 USD
+            - cell [ref=f2e621]:
+              - spinbutton [ref=f2e622]: "33885"
+            - cell "100 / 500,000" [ref=f2e623]
+            - cell [ref=f2e624]:
+              - generic [ref=f2e625]:
+                - checkbox "Hiện" [checked] [ref=f2e626]
+                - text: Hiện
+            - cell [ref=f2e627]:
+              - button "Lưu" [ref=f2e628] [cursor=pointer]
+          - row [ref=f2e629]:
+            - cell "649" [ref=f2e630]
+            - cell "Sv6 - Share Facebook Giá Rẻ Facebook Tăng Share Facebook" [ref=f2e631]:
+              - generic [ref=f2e632]:
+                - textbox [ref=f2e633]: Sv6 - Share Facebook Giá Rẻ
+                - generic [ref=f2e634]: Facebook Tăng Share Facebook
+            - cell "6.300 0.242308 USD" [ref=f2e635]:
+              - text: "6.300"
+              - generic [ref=f2e636]: 0.242308 USD
+            - cell [ref=f2e637]:
+              - spinbutton [ref=f2e638]: "8505"
+            - cell "100 / 200,000" [ref=f2e639]
+            - cell [ref=f2e640]:
+              - generic [ref=f2e641]:
+                - checkbox "Hiện" [checked] [ref=f2e642]
+                - text: Hiện
+            - cell [ref=f2e643]:
+              - button "Lưu" [ref=f2e644] [cursor=pointer]
+          - row [ref=f2e645]:
+            - cell "80" [ref=f2e646]
+            - cell "Sv8 - Share Facebook Giá Rẻ Facebook Tăng Share Facebook" [ref=f2e647]:
+              - generic [ref=f2e648]:
+                - textbox [ref=f2e649]: Sv8 - Share Facebook Giá Rẻ
+                - generic [ref=f2e650]: Facebook Tăng Share Facebook
+            - cell "8.499 0.326923 USD" [ref=f2e651]:
+              - text: "8.499"
+              - generic [ref=f2e652]: 0.326923 USD
+            - cell [ref=f2e653]:
+              - spinbutton [ref=f2e654]: "11474"
+            - cell "100 / 1,000,000" [ref=f2e655]
+            - cell [ref=f2e656]:
+              - generic [ref=f2e657]:
+                - checkbox "Hiện" [checked] [ref=f2e658]
+                - text: Hiện
+            - cell [ref=f2e659]:
+              - button "Lưu" [ref=f2e660] [cursor=pointer]
+          - row [ref=f2e661]:
+            - cell "562" [ref=f2e662]
+            - cell "Sv1 - Tăng Mắt Live - [ SALE ] Facebook Tăng Mắt Livestream" [ref=f2e663]:
+              - generic [ref=f2e664]:
+                - textbox [ref=f2e665]: Sv1 - Tăng Mắt Live - [ SALE ]
+                - generic [ref=f2e666]: Facebook Tăng Mắt Livestream
+            - cell "2.300 0.088462 USD" [ref=f2e667]:
+              - text: "2.300"
+              - generic [ref=f2e668]: 0.088462 USD
+            - cell [ref=f2e669]:
+              - spinbutton [ref=f2e670]: "3105"
+            - cell "50 / 20,000" [ref=f2e671]
+            - cell [ref=f2e672]:
+              - generic [ref=f2e673]:
+                - checkbox "Hiện" [checked] [ref=f2e674]
+                - text: Hiện
+            - cell [ref=f2e675]:
+              - button "Lưu" [ref=f2e676] [cursor=pointer]
+          - row [ref=f2e677]:
+            - cell "564" [ref=f2e678]
+            - cell "Sv2 - Tăng Mắt Live - [ XỊN ] Facebook Tăng Mắt Livestream" [ref=f2e679]:
+              - generic [ref=f2e680]:
+                - textbox [ref=f2e681]: Sv2 - Tăng Mắt Live - [ XỊN ]
+                - generic [ref=f2e682]: Facebook Tăng Mắt Livestream
+            - cell "2.600 0.100000 USD" [ref=f2e683]:
+              - text: "2.600"
+              - generic [ref=f2e684]: 0.100000 USD
+            - cell [ref=f2e685]:
+              - spinbutton [ref=f2e686]: "3510"
+            - cell "50 / 5,000" [ref=f2e687]
+            - cell [ref=f2e688]:
+              - generic [ref=f2e689]:
+                - checkbox "Hiện" [checked] [ref=f2e690]
+                - text: Hiện
+            - cell [ref=f2e691]:
+              - button "Lưu" [ref=f2e692] [cursor=pointer]
+          - row [ref=f2e693]:
+            - cell "690" [ref=f2e694]
+            - 'cell "Sv1 - Mắt Live Facebook Sale - [ Duy Trì : 15 Phút ] Facebook Tăng Mắt Live Facebook New 2" [ref=f2e695]':
+              - generic [ref=f2e696]:
+                - textbox [ref=f2e697]: "Sv1 - Mắt Live Facebook Sale - [ Duy Trì : 15 Phút ]"
+                - generic [ref=f2e698]: Facebook Tăng Mắt Live Facebook New 2
+            - cell "32.500 1.250000 USD" [ref=f2e699]:
+              - text: "32.500"
+              - generic [ref=f2e700]: 1.250000 USD
+            - cell [ref=f2e701]:
+              - spinbutton [ref=f2e702]: "43875"
+            - cell "10 / 20,000" [ref=f2e703]
+            - cell [ref=f2e704]:
+              - generic [ref=f2e705]:
+                - checkbox "Hiện" [checked] [ref=f2e706]
+                - text: Hiện
+            - cell [ref=f2e707]:
+              - button "Lưu" [ref=f2e708] [cursor=pointer]
+          - row [ref=f2e709]:
+            - cell "691" [ref=f2e710]
+            - 'cell "Sv2 - Mắt Live Facebook Sale - [ Duy Trì : 30 Phút ] Facebook Tăng Mắt Live Facebook New 2" [ref=f2e711]':
+              - generic [ref=f2e712]:
+                - textbox [ref=f2e713]: "Sv2 - Mắt Live Facebook Sale - [ Duy Trì : 30 Phút ]"
+                - generic [ref=f2e714]: Facebook Tăng Mắt Live Facebook New 2
+            - cell "64.599 2.484615 USD" [ref=f2e715]:
+              - text: "64.599"
+              - generic [ref=f2e716]: 2.484615 USD
+            - cell [ref=f2e717]:
+              - spinbutton [ref=f2e718]: "87209"
+            - cell "10 / 20,000" [ref=f2e719]
+            - cell [ref=f2e720]:
+              - generic [ref=f2e721]:
+                - checkbox "Hiện" [checked] [ref=f2e722]
+                - text: Hiện
+            - cell [ref=f2e723]:
+              - button "Lưu" [ref=f2e724] [cursor=pointer]
+      - navigation [ref=f2e726]:
+        - list [ref=f2e727]:
+          - listitem [ref=f2e728]:
+            - link "pagination.previous" [ref=f2e729] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=1
+              - text: ‹
+          - listitem [ref=f2e730]:
+            - link "1" [ref=f2e731] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=1
+          - listitem [ref=f2e732]:
+            - generic [ref=f2e733]: "2"
+          - listitem [ref=f2e734]:
+            - link "3" [ref=f2e735] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=3
+          - listitem [ref=f2e736]:
+            - link "4" [ref=f2e737] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=4
+          - listitem [ref=f2e738]:
+            - link "5" [ref=f2e739] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=5
+          - listitem [ref=f2e740]:
+            - link "6" [ref=f2e741] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=6
+          - listitem [ref=f2e742]:
+            - link "7" [ref=f2e743] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=7
+          - listitem [ref=f2e744]:
+            - link "8" [ref=f2e745] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=8
+          - listitem [ref=f2e746]:
+            - link "pagination.next" [ref=f2e747] [cursor=pointer]:
+              - /url: http://localhost:8000/admin/services?page=3
+              - text: ›
